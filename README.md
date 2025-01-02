@@ -1,8 +1,8 @@
-Student: [Jouw Naam]
+Student: Glenn Bokondo
 
-Email: [Jouw Email]
+Email: glenn.bokondo@student.pxl.be
 
-# [Naam project]
+# AFFIRM-8
 ## Beschrijving
 
 
