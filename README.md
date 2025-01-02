@@ -2,7 +2,7 @@ Student: Glenn Bokondo
 
 Email: glenn.bokondo@student.pxl.be
 
-# AFFIRM-8
+# AFFIRM8
 ## Beschrijving
 
 
