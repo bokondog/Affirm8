@@ -5,14 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Affirm8"
     xmlns:pages="clr-namespace:Affirm8.Pages"
-    Shell.FlyoutBehavior="Disabled"
     Title="Affirm8">
     <TabBar>
-        <Tab Title="Mates">
-            <ShellContent ContentTemplate="{DataTemplate pages:MatesPage}" />
-        </Tab>
         <Tab Title="Home">
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
+        </Tab>
+        <Tab Title="Mates">
+            <ShellContent ContentTemplate="{DataTemplate pages:MatesPage}" />
         </Tab>
         <Tab Title="Mail">
             <ShellContent ContentTemplate="{DataTemplate pages:MailPage}" />

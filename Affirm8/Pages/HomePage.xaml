@@ -14,5 +14,12 @@
             <Button x:Name="BtnNavHome" Text="Home" Clicked="BtnNavHome_Clicked"></Button>
             <Button x:Name="BtnNavMail" Text="Mail" Clicked="BtnNavMail_Clicked"></Button>
         </HorizontalStackLayout>
+        <CollectionView x:Name="CollViewPosts">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding Content}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
