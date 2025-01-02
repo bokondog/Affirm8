@@ -13,11 +13,9 @@ namespace Affirm8
         private void RegisterRoutes()
         {
             Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
-        }
-
-        private async void GoToHomePage()
-        {
-            await Shell.Current.GoToAsync(nameof(HomePage));
+            Routing.RegisterRoute(nameof(MatesPage), typeof(MatesPage));
+            Routing.RegisterRoute(nameof(MailPage), typeof(MailPage));
+            Routing.RegisterRoute(nameof(ProfilePage), typeof(ProfilePage));
         }
     }
 }

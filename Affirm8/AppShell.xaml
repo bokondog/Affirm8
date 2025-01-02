@@ -5,8 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Affirm8"
     xmlns:pages="clr-namespace:Affirm8.Pages"
-    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutBehavior="Flyout"
     Title="Affirm8">
+    <Shell.FlyoutFooter>
+        <Label>Affirm8 2025</Label>
+    </Shell.FlyoutFooter>
+    <FlyoutItem>
+        <ShellContent Title="Profile" ContentTemplate="{DataTemplate pages:ProfilePage}" />
+    </FlyoutItem>
+
     <TabBar>
         <Tab Title="Mates">
             <ShellContent ContentTemplate="{DataTemplate pages:MatesPage}" />
@@ -16,6 +23,9 @@
         </Tab>
         <Tab Title="Mail">
             <ShellContent ContentTemplate="{DataTemplate pages:MailPage}" />
+        </Tab>
+        <Tab Title="Profile">
+            <ShellContent ContentTemplate="{DataTemplate pages:ProfilePage}" />
         </Tab>
     </TabBar>
 
