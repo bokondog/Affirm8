@@ -17,6 +17,9 @@ Opsomming belangrijkste kenmerken en onderdelen/features van de applicatie:
 *Voorzie een link naar een video*
 
 ## Bronnen
+* [ContentPage](https://learn.microsoft.com/en-us/dotnet/maui/user-interface/pages/contentpage?view=net-maui-9.0)
+* [Async](https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/)
+* [Adding namespaces for DataTemplate](https://www.reddit.com/r/dotnetMAUI/comments/165xxc8/new_pages_arent_showing_up_within_datatemplate/)
 * *Zorg dat je de bronnen vermeld in een lijst.*
 * *Vermeld kort bij elke bron waarvoor je ze gebruikt hebt.*
 * *Zorg voor een verzorgde opmaak.*

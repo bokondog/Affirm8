@@ -1,11 +1,13 @@
-﻿namespace Affirm8
+﻿using Affirm8.Pages;
+
+namespace Affirm8
 {
     public partial class App : Application
     {
         public App()
         {
             InitializeComponent();
-
+            
             MainPage = new AppShell();
         }
     }
