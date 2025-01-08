@@ -8,5 +8,6 @@
             Text="This is your profile page"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Label x:Name="LblUserId"></Label>
     </VerticalStackLayout>
 </ContentPage>

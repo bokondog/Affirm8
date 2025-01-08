@@ -8,5 +8,15 @@
             Text="YOU'VE GOT MAIL"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <CollectionView x:Name="CollViewMail">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout>
+                        <Label Text="{Binding PostId}"/>
+                        <Label Text="-------------------------------------"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

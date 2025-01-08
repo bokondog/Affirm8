@@ -28,7 +28,8 @@ Opsomming belangrijkste kenmerken en onderdelen/features van de applicatie:
 * [Flyout styling](https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/shell/flyout?view=net-maui-8.0#flyout-width-and-height)
 * [Styling with XAML](https://learn.microsoft.com/en-us/dotnet/maui/user-interface/styles/xaml?view=net-maui-9.0)
 * [Resource dictionaries](https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/resource-dictionaries?view=net-maui-9.0)
-* 
+* [Web API with Swagger](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0)
+* [.NET MAUI Community Toolkit](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/)
 
 ## Future work
 *Wat zou je nog aanpassen/verbeteren mocht je meer tijd hebben? Hoe zou je dit aanpakken?* 
