@@ -7,6 +7,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
              xmlns:dataForm="clr-namespace:Syncfusion.Maui.DataForm;assembly=Syncfusion.Maui.DataForm"
              xmlns:tabView="clr-namespace:Syncfusion.Maui.Toolkit.TabView;assembly=Syncfusion.Maui.Toolkit"
              xmlns:checkBox="clr-namespace:Syncfusion.Maui.Buttons;assembly=Syncfusion.Maui.Buttons"
+             xmlns:popup="clr-namespace:Syncfusion.Maui.Popup;assembly=Syncfusion.Maui.Popup"
              xmlns:local="clr-namespace:Affirm8"
              x:DataType="local:TabbedLoginViewModel" Title="Tabbed Login">
 
@@ -85,7 +86,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                                  Style="{DynamicResource FormsButtonStyle}"
                                                  HorizontalOptions="Fill"
                                                  Clicked="loginButton_Clicked"/>
-                                <core:SfChip x:Name="chip" Text="SfChip" WidthRequest="100" HeightRequest="30"></core:SfChip>
+                                <popup:SfPopup x:Name="syncPopup"/>
                             </VerticalStackLayout>
                         </tabView:SfTabItem.Content>
                     </tabView:SfTabItem>
