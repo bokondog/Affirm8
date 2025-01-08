@@ -7,6 +7,7 @@
     xmlns:pages="clr-namespace:Affirm8.Pages"
     xmlns:nav="clr-namespace:Affirm8.Views.Navigation"
     xmlns:forms="clr-namespace:Affirm8.Views.Forms"
+    xmlns:settings="clr-namespace:Affirm8.Views.Settings"
     Title="Affirm8">
     <TabBar>
         <Tab Title="Home">
@@ -23,6 +24,9 @@
         </Tab>
         <Tab Title="Login">
             <ShellContent ContentTemplate="{DataTemplate forms:LoginPage}" />
+        </Tab>
+        <Tab Title="Settings">
+            <ShellContent ContentTemplate="{DataTemplate settings:Settings}" />
         </Tab>
     </TabBar>
 

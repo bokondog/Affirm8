@@ -6,5 +6,10 @@ namespace Affirm8.Views.Forms
         {
             InitializeComponent();
         }
+
+        private void loginButton_Clicked(object sender, EventArgs e)
+        {
+            DisplayAlert("Login SUCCESS", "You have successfully logged in! Congratulations, user", "...ok");
+        }
     }
 }

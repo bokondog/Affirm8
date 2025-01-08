@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Affirm8.Views.Forms.LoginPage"
              xmlns:button="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit"
@@ -20,8 +21,6 @@
             <Grid VerticalOptions="Center"
                   HorizontalOptions="Center">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <tabView:SfTabView Grid.Row="0"
@@ -84,7 +83,9 @@
                                                  Text="LOG IN"
                                                  Margin="20"
                                                  Style="{DynamicResource FormsButtonStyle}"
-                                                 HorizontalOptions="Fill"/>
+                                                 HorizontalOptions="Fill"
+                                                 Clicked="loginButton_Clicked"/>
+                                <core:SfChip x:Name="chip" Text="SfChip" WidthRequest="100" HeightRequest="30"></core:SfChip>
                             </VerticalStackLayout>
                         </tabView:SfTabItem.Content>
                     </tabView:SfTabItem>
@@ -140,47 +141,6 @@
                         </tabView:SfTabItem.Content>
                     </tabView:SfTabItem>
                 </tabView:SfTabView>
-                <Label Grid.Row="1"
-                       Text="Or create account using"
-                       FontSize="12"
-                       TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
-                       FontFamily="Roboto-Regular"
-                       HorizontalOptions="Center"
-                       HorizontalTextAlignment="Center"
-                       Margin="10"/>
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".5*"/>
-                        <ColumnDefinition Width=".5*"/>
-                    </Grid.ColumnDefinitions>
-                    <button:SfButton Grid.Column="0"
-                                     Text="Google"
-                                     Stroke="#E5E1E3"
-                                     StrokeThickness="1"
-                                     WidthRequest="150"
-                                     TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
-                                     ImageSource="google.png"
-                                     HorizontalOptions="End"
-                                     ImageAlignment="Start"
-                                     ShowIcon="True"
-                                     Margin="10"
-                                     Background="Transparent"
-                                     FontFamily="Roboto-Regular"/>
-                    <button:SfButton Grid.Column="1"
-                                     Text="Facebook"
-                                     Stroke="#E5E1E3"
-                                     StrokeThickness="1"
-                                     WidthRequest="150"
-                                     TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
-                                     ImageSource="facebook.png"
-                                     HorizontalOptions="Start"
-                                     ImageAlignment="Start"
-                                     ShowIcon="True"
-                                     Margin="10"
-                                     Background="Transparent"
-                                     FontFamily="Roboto-Regular"/>
-                </Grid>
-
             </Grid>
         </ScrollView>
     </ContentPage.Content>
