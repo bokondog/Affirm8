@@ -5,19 +5,24 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Affirm8"
     xmlns:pages="clr-namespace:Affirm8.Pages"
+    xmlns:nav="clr-namespace:Affirm8.Views.Navigation"
+    xmlns:forms="clr-namespace:Affirm8.Views.Forms"
     Title="Affirm8">
     <TabBar>
         <Tab Title="Home">
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
         </Tab>
         <Tab Title="Mates">
-            <ShellContent ContentTemplate="{DataTemplate pages:MatesPage}" />
+            <ShellContent ContentTemplate="{DataTemplate nav:ContactsPage}" />
         </Tab>
         <Tab Title="Mail">
             <ShellContent ContentTemplate="{DataTemplate pages:MailPage}" />
         </Tab>
         <Tab Title="Profile">
             <ShellContent ContentTemplate="{DataTemplate pages:ProfilePage}" />
+        </Tab>
+        <Tab Title="Login">
+            <ShellContent ContentTemplate="{DataTemplate forms:LoginPage}" />
         </Tab>
     </TabBar>
 
