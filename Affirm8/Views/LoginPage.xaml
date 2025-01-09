@@ -137,7 +137,6 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                                  Margin="10"
                                                  Style="{DynamicResource FormsButtonStyle}"
                                                  HorizontalOptions="Fill"/>
-
                             </Grid>
                         </tabView:SfTabItem.Content>
                     </tabView:SfTabItem>
