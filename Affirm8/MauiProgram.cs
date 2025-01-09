@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using Material.Components.Maui.Extensions;
 
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
@@ -15,6 +16,7 @@ namespace Affirm8
 				.ConfigureSyncfusionToolkit()
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseMaterialComponents()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

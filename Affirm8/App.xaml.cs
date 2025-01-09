@@ -1,3 +1,5 @@
+using Affirm8.Views.Feedback;
+using Affirm8.Views.Catalog;
 using Affirm8.Views.Settings;
 using Affirm8.Views.Forms;
 using Affirm8.Views.Navigation;

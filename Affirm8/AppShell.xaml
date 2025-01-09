@@ -8,10 +8,15 @@
     xmlns:nav="clr-namespace:Affirm8.Views.Navigation"
     xmlns:forms="clr-namespace:Affirm8.Views.Forms"
     xmlns:settings="clr-namespace:Affirm8.Views.Settings"
+    xmlns:catalog="clr-namespace:Affirm8.Views.Catalog"
+    xmlns:feedback="clr-namespace:Affirm8.Views.Feedback"
     Title="Affirm8">
     <TabBar>
         <Tab Title="Home">
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
+        </Tab>
+        <Tab Title="Feed">
+            <ShellContent ContentTemplate="{DataTemplate catalog:HomeFeed}" />
         </Tab>
         <Tab Title="Mates">
             <ShellContent ContentTemplate="{DataTemplate nav:ContactsPage}" />
@@ -24,6 +29,9 @@
         </Tab>
         <Tab Title="Login">
             <ShellContent ContentTemplate="{DataTemplate forms:LoginPage}" />
+        </Tab>
+        <Tab Title="Feedback">
+            <ShellContent ContentTemplate="{DataTemplate feedback:Feedback}" />
         </Tab>
         <Tab Title="Settings">
             <ShellContent ContentTemplate="{DataTemplate settings:Settings}" />
