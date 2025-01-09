@@ -31,6 +31,7 @@ Opsomming belangrijkste kenmerken en onderdelen/features van de applicatie:
 * [Web API with Swagger](https://learn.microsoft.com/en-us/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-8.0)
 * [.NET MAUI Community Toolkit](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/)
 * [Syncfusion MAUI examples](https://github.com/syncfusion/maui-demos)
+* [SQLite with MAUI](https://learn.microsoft.com/en-us/dotnet/maui/data-cloud/database-sqlite?view=net-maui-9.0)
 
 ## Future work
 *Wat zou je nog aanpassen/verbeteren mocht je meer tijd hebben? Hoe zou je dit aanpakken?* 
