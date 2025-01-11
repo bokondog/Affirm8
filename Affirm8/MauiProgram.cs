@@ -4,6 +4,9 @@ using Material.Components.Maui.Extensions;
 
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
+using Affirm8.Views.Catalog;
+using Affirm8.Data;
+
 namespace Affirm8
 {
     public static class MauiProgram
@@ -12,8 +15,8 @@ namespace Affirm8
         {
             var builder = MauiApp.CreateBuilder();
             builder
-				.ConfigureSyncfusionCore()
-				.ConfigureSyncfusionToolkit()
+                .ConfigureSyncfusionCore()
+                .ConfigureSyncfusionToolkit()
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseMaterialComponents()
@@ -25,11 +28,12 @@ namespace Affirm8
                     fonts.AddFont("Roboto-Regular.ttf", "Roboto-Regular");
                     fonts.AddFont("UIFontIcons.ttf", "FontIcons");
                 });
-			//Register Syncfusion license https://help.syncfusion.com/common/essential-studio/licensing/how-to-generate
-			//Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
-
+            //Register Syncfusion license https://help.syncfusion.com/common/essential-studio/licensing/how-to-generate
+            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
+            builder.Services.AddSingleton<HomeFeed>();
+            builder.Services.AddSingleton<PostDatabase>();
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

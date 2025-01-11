@@ -142,7 +142,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                  IsStickyHeader="False"
                                  ItemSize="300"
                                  ItemSpacing="0,0,0,16"
-                                 ItemsSource="{Binding Products}"
+                                 ItemsSource="{Binding Items}"
                                  Style="{DynamicResource TransparentSelectionListView}">
 
 
@@ -255,7 +255,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                                 <Grid Padding="18,8,0,18" >
                                                     <VerticalStackLayout Padding="10">
                                                         <Label Text="{Binding Description}"
-            FontAttributes="Italic" />
+                                                               FontAttributes="Italic" />
                                                     </VerticalStackLayout>
                                                 </Grid>
                                             </expander:SfExpander.Content>

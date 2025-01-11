@@ -1,15 +1,16 @@
 using System.Collections.ObjectModel;
 using System.Text.Json;
+using Affirm8.Models;
 
 namespace Affirm8
 {
     public class CartPageViewModel
     {
-        public List<Affirm8.Models.Product> Products { get; set; }
+        public List<Post> Items { get; set; }
 
         public CartPageViewModel()
         {
-            Products = new List<Affirm8.Models.Product>();
+            Items = new List<Post>();
             LoadFromJson();
         }
 
@@ -18,7 +19,7 @@ namespace Affirm8
         {
             string jsonData = @"
 {
-    ""products"": [
+    ""items"": [
   {
     ""id"": 1,
     ""previewimage"": ""Image1.png"",
@@ -129,14 +130,8 @@ namespace Affirm8
                 return;
             }
 
-            var products = data["products"];
-            var previewImages = new List<string> { "Image1.png", "Image2.png", "Image3.png", "Image4.png", "Image5.png" };
-            for (int i = 0; i < products.Count; i++)
-            {
-                var product = products[i];
-                product.PreviewImage = previewImages[i];
-                Products.Add(product);
-            }
+            var items = data["items"];
+
         }
     }
 }
