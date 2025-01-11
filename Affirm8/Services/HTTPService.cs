@@ -59,12 +59,12 @@ namespace Affirm8.Services
                 return true;
             }
             return false;
-        }
+            }
 
         
 
         public async Task<ObservableCollection<Post>> GetPosts()
-        {
+            {
             return new ObservableCollection<Post>();
         }
     }

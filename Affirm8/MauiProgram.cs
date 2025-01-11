@@ -6,6 +6,9 @@ using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using Affirm8.Views.Catalog;
 using Affirm8.Data;
+using Affirm8.Services;
+using Affirm8.ViewModels;
+using Affirm8.Views.Forms;
 
 namespace Affirm8
 {
