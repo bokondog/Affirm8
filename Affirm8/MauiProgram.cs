@@ -4,6 +4,9 @@ using Material.Components.Maui.Extensions;
 
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
+using Affirm8.Views.Catalog;
+using Affirm8.Data;
+
 namespace Affirm8
 {
     public static class MauiProgram
@@ -12,8 +15,8 @@ namespace Affirm8
         {
             var builder = MauiApp.CreateBuilder();
             builder
-				.ConfigureSyncfusionCore()
-				.ConfigureSyncfusionToolkit()
+                .ConfigureSyncfusionCore()
+                .ConfigureSyncfusionToolkit()
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseMaterialComponents()

@@ -3,7 +3,11 @@ using Android.Runtime;
 
 namespace Affirm8
 {
+    #if DEBUG
+    [Application(UsesCleartextTraffic = true)]
+    #else
     [Application]
+    #endif
     public class MainApplication : MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)
