@@ -13,7 +13,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
              xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
              xmlns:syncEffectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
              xmlns:expander="clr-namespace:Syncfusion.Maui.Expander;assembly=Syncfusion.Maui.Expander"
-             x:DataType="local:CartPageViewModel" Title="Catalog List">
+             x:DataType="local:CartPageViewModel" Title="Home">
     <ContentPage.BindingContext>
         <local:CartPageViewModel/>
     </ContentPage.BindingContext>
@@ -135,7 +135,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
             <SearchBar Grid.Row="0" Placeholder="Search" Margin="10"></SearchBar>
             <buttons:SfButton Grid.Row="1" x:Name="sfButton" Margin="10" Text="What's on your mind?" Clicked="sfButton_Clicked"/>
             <!--  ListView for catalog list  -->
-                <listView:SfListView Grid.Row="2" WidthRequest="{OnPlatform MacCatalyst=800}"
+            <listView:SfListView Grid.Row="2" WidthRequest="{OnPlatform MacCatalyst=800}"
                     BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}"
                                  x:Name="ListViewList"
                                  Padding="{OnIdiom Default='0,8,0,0',
@@ -148,25 +148,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                  ItemSize="300"
                                  ItemSpacing="0,0,0,16"
                                  ItemsSource="{Binding Products}"
-                                 Style="{DynamicResource TransparentSelectionListView}"
-                                IsStickyHeader="true"
-                                IsStickyFooter="true">
-                <listView:SfListView.HeaderTemplate>
-                    <DataTemplate>
-                        <Grid BackgroundColor="#4CA1FE" HeightRequest="45">
-                            <Label Text="Header Item" FontAttributes="Bold" FontSize="18" TextColor="White" />
-                        </Grid>
-                    </DataTemplate>
-                </listView:SfListView.HeaderTemplate>
-                <listView:SfListView.FooterTemplate>
-                    <DataTemplate>
-                        <Grid BackgroundColor="#DC595F">
-                            <Label Text="Footer Item" FontAttributes="Bold" FontSize="18" TextColor="White" />
-                        </Grid>
-                    </DataTemplate>
-                </listView:SfListView.FooterTemplate>
-
-
+                                 Style="{DynamicResource TransparentSelectionListView}">
                 <listView:SfListView.ItemTemplate>
                         <DataTemplate x:DataType="model:Product">
                             <syncEffectsView:SfEffectsView

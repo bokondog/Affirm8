@@ -1,3 +1,5 @@
+using Affirm8.Views.Social;
+using Affirm8.Views.Chat;
 using Affirm8.Views.Feedback;
 using Affirm8.Views.Catalog;
 using Affirm8.Views.Settings;
