@@ -7,19 +7,13 @@ namespace Affirm8
     {
         public ObservableCollection<Affirm8.Models.Review> FeedbackInfo { get; set; }
 
-        public ObservableCollection<RatingInfo> RatingInfo { get; set; }
+        public string Description = "qos";
+        public string Name = "bobbie";
+
 
         public FeedbackViewModel()
         {
             FeedbackInfo = new ObservableCollection<Affirm8.Models.Review>();
-            RatingInfo = new ObservableCollection<RatingInfo>()
-            {
-                new RatingInfo(){StarText="5 Star", RatingValue = 80},
-                new RatingInfo(){StarText="4 Star", RatingValue = 73},
-                new RatingInfo(){StarText="3 Star", RatingValue = 54},
-                new RatingInfo(){StarText="2 Star", RatingValue = 21},
-                new RatingInfo(){StarText="1 Star", RatingValue = 32},
-            };
             LoadData();
         }
 

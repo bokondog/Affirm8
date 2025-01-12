@@ -28,12 +28,11 @@ namespace Affirm8
                     fonts.AddFont("Roboto-Regular.ttf", "Roboto-Regular");
                     fonts.AddFont("UIFontIcons.ttf", "FontIcons");
                 });
-            //Register Syncfusion license https://help.syncfusion.com/common/essential-studio/licensing/how-to-generate
-            //Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
-            builder.Services.AddSingleton<HomeFeed>();
-            builder.Services.AddSingleton<PostDatabase>();
+			//Register Syncfusion license https://help.syncfusion.com/common/essential-studio/licensing/how-to-generate
+			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf0x3TXxbf1x1ZFRMY15bR3NPIiBoS35Rc0ViWH5fc3dXRWVZU0dz");
+
 #if DEBUG
-            builder.Logging.AddDebug();
+    		builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

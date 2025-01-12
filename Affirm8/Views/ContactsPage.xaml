@@ -5,7 +5,7 @@
              xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
              xmlns:sfavatar="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
              xmlns:local="clr-namespace:Affirm8"
-             x:DataType="local:ContactsPageViewModel" Title="Contacts List">
+             x:DataType="local:ContactsPageViewModel" Title="Mates">
     <ContentPage.BindingContext>
         <local:ContactsPageViewModel/>
     </ContentPage.BindingContext>

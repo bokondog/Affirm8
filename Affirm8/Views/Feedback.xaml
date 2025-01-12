@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
              x:Class="Affirm8.Views.Feedback.Feedback"
              xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
              xmlns:rating="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
              xmlns:progressbar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
              xmlns:local="clr-namespace:Affirm8"
              xmlns:model="clr-namespace:Affirm8.Models"
-             x:DataType="local:FeedbackViewModel" Title="Feedback">
+             xmlns:converter="clr-namespace:Affirm8.Converters"
+             xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+             xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+             xmlns:syncEffectsView="clr-namespace:Syncfusion.Maui.Toolkit.EffectsView;assembly=Syncfusion.Maui.Toolkit"
+             xmlns:expander="clr-namespace:Syncfusion.Maui.Expander;assembly=Syncfusion.Maui.Expander"
+             x:DataType="local:FeedbackViewModel" Title="Post Detail">
 
     <ContentPage.BindingContext>
         <local:FeedbackViewModel/>
@@ -38,78 +44,101 @@
     <ContentPage.Content>
         <ScrollView Margin="10">
             <Grid RowDefinitions="Auto,Auto">
-                <Border StrokeShape="RoundRectangle 10"
-                        Grid.Row="0"
-                        WidthRequest="{OnPlatform WinUI=650, MacCatalyst=650}"
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}"
-                        Margin="0,10,0,10">
-                    <StackLayout Spacing="0">
-                        <Label Text="Reviews and Ratings"
-                               FontFamily="Roboto-Medium"
-                               Margin="10"/>
-                        <BoxView Style="{DynamicResource HorizontalSeparatorStyle}"
-                                 Margin="10"/>
-                        <Grid ColumnDefinitions="Auto, Auto">
-                            <StackLayout Orientation="Vertical">
-                                <StackLayout Orientation="Horizontal">
+                <Border Margin="20,0,20,0"
+    Padding="10"
+    StrokeShape="RoundRectangle 10"
+    HeightRequest="300"
+    BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}">
+                    <Grid>
+                        <Grid.Resources>
+                            <ResourceDictionary>
+                                <converter:BooleanToStringConverter x:Key="boolToStringConverter"/>
+                                <converter:BooleanToColorConverter x:Key="boolToColorConverter"/>
+                            </ResourceDictionary>
+                        </Grid.Resources>
 
-                                    <Label Text="4/5"
-                                           Margin="10"
-                                           FontFamily="Roboto-Regular"/>
-                                </StackLayout>
-
-                                <Label Text="Based on 139 reviews"
-                                       TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
-                                       FontSize="12"
-                                       FontFamily="Roboto-Regular"
-                                       Margin="10,0,0,0"/>
-                            </StackLayout>
-
-                            <Button Grid.Column="1"
-                                    Text="Write a review"
-                                    TextColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}"
-                                    BackgroundColor="Transparent"/>
+                        <Grid
+                            Margin="0"
+                            ColumnSpacing="0"
+                            HorizontalOptions="Fill"
+                            RowDefinitions="*, *, *, Auto"
+                            RowSpacing="0"
+                            VerticalOptions="Fill">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="{OnIdiom Default=*, Desktop=*}"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- User Icon -->
+                            <core:SfAvatarView 
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                ContentType="Initials"
+                                AvatarName="BloobyScoo"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"  
+                                HeightRequest="50"
+                                CornerRadius="25"
+                                WidthRequest="50" />
+                            <!-- User Name -->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="8,15,0,4"
+                                FontSize="14"
+                                HorizontalOptions="Start"
+                                LineBreakMode="TailTruncation"
+                                MaxLines="1"
+                                Style="{DynamicResource TitleLabelStyle}"
+                                Text="BloobyScoo"/>
+                            <!-- Timestamp -->
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Margin="8,15,0,2"
+                                FontSize="14"
+                                HorizontalOptions="Start"
+                                LineBreakMode="TailTruncation"
+                                MaxLines="1"
+                                Style="{DynamicResource SimpleLabelStyle}"
+                                Text="2025-01-11T22:14:23Z"/>
+                            <!-- Post Body -->
+                            <Label
+                                Grid.Row="1"
+                                Grid.ColumnSpan="3"
+                                Margin="8,15,0,4"
+                                FontSize="14"
+                                HorizontalOptions="Start"
+                                LineBreakMode="WordWrap"
+                                MaxLines="10"
+                                Style="{DynamicResource SimpleLabelStyle}"
+                                Text="My boyfriend broke up with me..."/>
+                            <!-- Tag -->
+                            <core:SfBadgeView   
+                                Grid.Row="2" 
+                                Grid.Column="0"
+                                HorizontalOptions="End"
+                                WidthRequest="100"
+                                HeightRequest="26"
+                                BadgeText="need a hug"/>
+                            <!-- Actions -->
+                            <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="End">
+                                <mdc:IconButton Margin="5,0,5,0" IconData="{Static icon:Material.MoreHoriz}" Style="{DynamicResource FilledIconButtonStyle}" />
+                                <mdc:IconButton Margin="0" IconData="{Static icon:Material.Favorite}" Style="{DynamicResource FilledIconButtonStyle}" />
+                            </HorizontalStackLayout>
                         </Grid>
-
-                        <StackLayout BindableLayout.ItemsSource="{Binding RatingInfo}"
-                                     Margin="0,20,0,0">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="local:RatingInfo">
-                                    <Grid RowDefinitions="Auto"
-                                          ColumnDefinitions="Auto, Auto, Auto"
-                                          HeightRequest="40">
-                                        <Label Grid.Column="0"
-                                               Text="{Binding StarText}"
-                                               FontFamily="Roboto-Regular"
-                                               FontSize="14"
-                                               Margin="10,0,0,0"/>
-                                        
-                                        <StackLayout Orientation="Horizontal"
-                                                     Grid.Column="2">
-                                            <Label Text="{Binding RatingValue}"
-                                                   FontFamily="Roboto-Regular"
-                                                   FontSize="14"
-                                                   Margin="10,0,0,0"/>
-                                            <Label Text="%"
-                                                   FontFamily="Roboto-Regular"
-                                                   FontSize="14"/>
-                                        </StackLayout>
-
-                                    </Grid>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
-
-                    </StackLayout>
+                    </Grid>
                 </Border>
 
-                <Border StrokeShape="RoundRectangle 10"
+                <Border
+                    Margin="20,0,20,0"
+                    StrokeShape="RoundRectangle 10"
                         Grid.Row="1"
                         WidthRequest="{OnPlatform WinUI=650, MacCatalyst=650}"
                         BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}">
                     <StackLayout x:Name="stacklayout"
                                  Spacing="0">
-                        <Label Text="All Reviews"
+                        <Label Text="Comments"
                                FontFamily="Roboto-Medium"
                                Margin="10"/>
                         <BoxView Style="{DynamicResource HorizontalSeparatorStyle}"

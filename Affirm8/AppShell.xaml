@@ -10,33 +10,37 @@
     xmlns:settings="clr-namespace:Affirm8.Views.Settings"
     xmlns:catalog="clr-namespace:Affirm8.Views.Catalog"
     xmlns:feedback="clr-namespace:Affirm8.Views.Feedback"
+    xmlns:chat="clr-namespace:Affirm8.Views.Chat"
+    xmlns:social="clr-namespace:Affirm8.Views.Social"
     Title="Affirm8">
     <TabBar>
         <Tab Title="Home">
-            <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
-        </Tab>
-        <Tab Title="Feed">
-            <ShellContent ContentTemplate="{DataTemplate catalog:HomeFeed}" />
+            <ShellContent ContentTemplate="{DataTemplate catalog:HomeFeed}"
+                          Route="Home"/>
         </Tab>
         <Tab Title="Mates">
-            <ShellContent ContentTemplate="{DataTemplate nav:ContactsPage}" />
+            <ShellContent ContentTemplate="{DataTemplate nav:ContactsPage}"
+                          Route="Mates"/>
         </Tab>
         <Tab Title="Mail">
-            <ShellContent ContentTemplate="{DataTemplate pages:MailPage}" />
+            <ShellContent ContentTemplate="{DataTemplate chat:RecentChat}"
+                          Route="Mail"/>
         </Tab>
         <Tab Title="Profile">
-            <ShellContent ContentTemplate="{DataTemplate pages:ProfilePage}" />
+            <ShellContent ContentTemplate="{DataTemplate social:Profile}"
+                          Route="Profile"/>
         </Tab>
-        <Tab Title="Login">
-            <ShellContent ContentTemplate="{DataTemplate forms:LoginPage}" />
-        </Tab>
-        <Tab Title="Feedback">
-            <ShellContent ContentTemplate="{DataTemplate feedback:Feedback}" />
+        <Tab Title="Post detail">
+            <ShellContent ContentTemplate="{DataTemplate feedback:Feedback}"
+                          Route="Feedback"/>
         </Tab>
         <Tab Title="Settings">
-            <ShellContent ContentTemplate="{DataTemplate settings:Settings}" />
+            <ShellContent ContentTemplate="{DataTemplate settings:Settings}"
+                          Route="Settings"/>
+        </Tab>
+        <Tab Title="Login">
+            <ShellContent ContentTemplate="{DataTemplate forms:LoginPage}"
+                  Route="Login"/>
         </Tab>
     </TabBar>
-
-
 </Shell>

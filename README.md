@@ -32,6 +32,8 @@ Opsomming belangrijkste kenmerken en onderdelen/features van de applicatie:
 * [.NET MAUI Community Toolkit](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/)
 * [Syncfusion MAUI examples](https://github.com/syncfusion/maui-demos)
 * [SQLite with MAUI](https://learn.microsoft.com/en-us/dotnet/maui/data-cloud/database-sqlite?view=net-maui-9.0)
+* [SfListView Sorting](https://help.syncfusion.com/maui/listview/getting-started#sorting)
+* [SfListView Filtering](https://help.syncfusion.com/maui/listview/getting-started#filtering)
 * [Microsoft Learn Course: Create a web API with ASP.NET Core controllers](https://learn.microsoft.com/en-us/training/modules/build-web-api-aspnet-core/)
 * [Dev Tunnels](https://learn.microsoft.com/en-us/azure/developer/dev-tunnels/overview)
 * [Connecting to local webservices](https://learn.microsoft.com/en-us/dotnet/maui/data-cloud/local-web-services?view=net-maui-9.0)
