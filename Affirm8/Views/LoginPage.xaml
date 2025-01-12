@@ -85,7 +85,7 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                                  Margin="20"
                                                  Style="{DynamicResource FormsButtonStyle}"
                                                  HorizontalOptions="Fill"
-                                                 Clicked="loginButton_Clicked"/>
+                                                 Command="{Binding LoginCommand}"/>
                                 <popup:SfPopup x:Name="syncPopup"/>
                             </VerticalStackLayout>
                         </tabView:SfTabItem.Content>

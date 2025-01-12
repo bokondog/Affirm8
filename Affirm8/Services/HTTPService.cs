@@ -27,7 +27,7 @@ namespace Affirm8.Services
         {
             Uri uri = new Uri(string.Format(_URI + "Authentication/login", string.Empty));
 
-            var loginObject = new { email = userEmail, password = userPassword };
+            var loginObject = new { email = userEmail, password = "string" };
             string json = JsonSerializer.Serialize(loginObject);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 

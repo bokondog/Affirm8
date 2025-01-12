@@ -16,7 +16,8 @@
             <ShellContent ContentTemplate="{DataTemplate pages:HomePage}" />
         </Tab>
         <Tab Title="Feed">
-            <ShellContent ContentTemplate="{DataTemplate catalog:HomeFeed}" />
+            <ShellContent ContentTemplate="{DataTemplate catalog:HomeFeed}"
+                          Route="Home"/>
         </Tab>
         <Tab Title="Mates">
             <ShellContent ContentTemplate="{DataTemplate nav:ContactsPage}" />
