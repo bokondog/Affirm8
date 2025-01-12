@@ -129,9 +129,13 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
 
         <Grid
             ColumnSpacing="0"
-            RowSpacing="0">
+            RowSpacing="0"
+            RowDefinitions="Auto,Auto,*"
+            >
+            <SearchBar Grid.Row="0" Placeholder="Search" Margin="10"></SearchBar>
+            <buttons:SfButton Grid.Row="1" x:Name="sfButton" Margin="10" Text="What's on your mind?" Clicked="sfButton_Clicked"/>
             <!--  ListView for catalog list  -->
-            <listView:SfListView WidthRequest="{OnPlatform MacCatalyst=800}"
+                <listView:SfListView Grid.Row="2" WidthRequest="{OnPlatform MacCatalyst=800}"
                     BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}"
                                  x:Name="ListViewList"
                                  Padding="{OnIdiom Default='0,8,0,0',
@@ -139,45 +143,62 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                  AutoFitMode="Height"
                                  HeaderTemplate="{DynamicResource CatalogDefaultHeaderTemplate}"
                                  HorizontalOptions="Fill"
+                                 VerticalOptions="Fill"
                                  IsStickyHeader="False"
                                  ItemSize="300"
                                  ItemSpacing="0,0,0,16"
                                  ItemsSource="{Binding Products}"
-                                 Style="{DynamicResource TransparentSelectionListView}">
+                                 Style="{DynamicResource TransparentSelectionListView}"
+                                IsStickyHeader="true"
+                                IsStickyFooter="true">
+                <listView:SfListView.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid BackgroundColor="#4CA1FE" HeightRequest="45">
+                            <Label Text="Header Item" FontAttributes="Bold" FontSize="18" TextColor="White" />
+                        </Grid>
+                    </DataTemplate>
+                </listView:SfListView.HeaderTemplate>
+                <listView:SfListView.FooterTemplate>
+                    <DataTemplate>
+                        <Grid BackgroundColor="#DC595F">
+                            <Label Text="Footer Item" FontAttributes="Bold" FontSize="18" TextColor="White" />
+                        </Grid>
+                    </DataTemplate>
+                </listView:SfListView.FooterTemplate>
 
 
                 <listView:SfListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Product">
-                        <syncEffectsView:SfEffectsView
+                        <DataTemplate x:DataType="model:Product">
+                            <syncEffectsView:SfEffectsView
                             RippleBackground="{DynamicResource Gray-300}"
                             TouchDownEffects="Ripple">
-                            <Border Margin="20,0,20,0"
+                                <Border Margin="20,0,20,0"
                                     Padding="10"
                                     StrokeShape="RoundRectangle 10"
                                     HeightRequest="300"
                                     BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}">
-                                <Grid>
-                                    <Grid.Resources>
-                                        <ResourceDictionary>
-                                            <converter:BooleanToStringConverter x:Key="boolToStringConverter"/>
-                                            <converter:BooleanToColorConverter x:Key="boolToColorConverter"/>
-                                        </ResourceDictionary>
-                                    </Grid.Resources>
+                                    <Grid>
+                                        <Grid.Resources>
+                                            <ResourceDictionary>
+                                                <converter:BooleanToStringConverter x:Key="boolToStringConverter"/>
+                                                <converter:BooleanToColorConverter x:Key="boolToColorConverter"/>
+                                            </ResourceDictionary>
+                                        </Grid.Resources>
 
-                                    <Grid
+                                        <Grid
                                         Margin="0"
                                         ColumnSpacing="0"
                                         HorizontalOptions="Fill"
                                         RowDefinitions="*, *, *, Auto"
                                         RowSpacing="0"
                                         VerticalOptions="Fill">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="{OnIdiom Default=*, Desktop=*}"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <!-- User Icon -->
-                                        <core:SfAvatarView 
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="{OnIdiom Default=*, Desktop=*}"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <!-- User Icon -->
+                                            <core:SfAvatarView 
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             ContentType="Initials"
@@ -187,8 +208,8 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                             HeightRequest="50"
                                             CornerRadius="25"
                                             WidthRequest="50" />
-                                        <!-- User Name -->
-                                        <Label
+                                            <!-- User Name -->
+                                            <Label
                                             Grid.Row="0"
                                             Grid.Column="1"
                                             Margin="8,15,0,4"
@@ -198,8 +219,8 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                             MaxLines="1"
                                             Style="{DynamicResource TitleLabelStyle}"
                                             Text="{Binding Name}"/>
-                                        <!-- Timestamp -->
-                                        <Label
+                                            <!-- Timestamp -->
+                                            <Label
                                             Grid.Row="0"
                                             Grid.Column="2"
                                             Margin="8,15,0,2"
@@ -209,8 +230,8 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                             MaxLines="1"
                                             Style="{DynamicResource SimpleLabelStyle}"
                                             Text="{Binding Timestamp}"/>
-                                        <!-- Post Body -->
-                                        <Label
+                                            <!-- Post Body -->
+                                            <Label
                                             Grid.Row="1"
                                             Grid.ColumnSpan="3"
                                             Margin="8,15,0,4"
@@ -220,55 +241,55 @@ xmlns:core="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
                                             MaxLines="10"
                                             Style="{DynamicResource SimpleLabelStyle}"
                                             Text="{Binding Description}"/>
-                                        <!-- Tag -->
-                                        <core:SfBadgeView   
+                                            <!-- Tag -->
+                                            <core:SfBadgeView   
                                             Grid.Row="2" 
                                             Grid.Column="0"
                                             HorizontalOptions="End"
                                             WidthRequest="100"
                                             HeightRequest="26"
                                             BadgeText="{Binding Tag}"/>
-                                        <!-- Actions -->
-                                        <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="End">
-                                            <mdc:IconButton Margin="5,0,5,0" IconData="{Static icon:Material.MoreHoriz}" Style="{DynamicResource FilledIconButtonStyle}" />
-                                            <mdc:IconButton Margin="0" Clicked="FavouriteButton_Clicked" IconData="{Static icon:Material.Favorite}" Style="{DynamicResource FilledIconButtonStyle}" />
-                                        </HorizontalStackLayout>
-                                        <expander:SfExpander Grid.Row="3" Grid.ColumnSpan="3">
-                                            <expander:SfExpander.Header>
-                                                <Grid 
+                                            <!-- Actions -->
+                                            <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalOptions="End">
+                                                <mdc:IconButton Margin="5,0,5,0" IconData="{Static icon:Material.MoreHoriz}" Style="{DynamicResource FilledIconButtonStyle}" />
+                                                <mdc:IconButton Margin="0" Clicked="FavouriteButton_Clicked" IconData="{Static icon:Material.Favorite}" Style="{DynamicResource FilledIconButtonStyle}" />
+                                            </HorizontalStackLayout>
+                                            <expander:SfExpander Grid.Row="3" Grid.ColumnSpan="3">
+                                                <expander:SfExpander.Header>
+                                                    <Grid 
                                                     RowDefinitions="Auto"
                                                     ColumnDefinitions="*, *, *"
                                                     Margin="10"
                                                     Padding="10">
-                                                    <BoxView Grid.Row="0"
+                                                        <BoxView Grid.Row="0"
                                                      Grid.Column="0"
                                                      HeightRequest="1"
                                                      Style="{DynamicResource HorizontalSeparatorStyle}"/>
-                                                    <mdc:IconButton Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" IconData="{Static icon:Material.AddComment}" Style="{DynamicResource FilledIconButtonStyle}"/>
-                                                    <BoxView Grid.Row="0"
+                                                        <mdc:IconButton Grid.Row="0" Grid.Column="1" Margin="0,0,0,0" IconData="{Static icon:Material.AddComment}" Style="{DynamicResource FilledIconButtonStyle}"/>
+                                                        <BoxView Grid.Row="0"
                                                      Grid.Column="2"
                                                      HeightRequest="1"
                                                      Style="{DynamicResource HorizontalSeparatorStyle}"/>
-                                                </Grid>
-                                            </expander:SfExpander.Header>
-                                            <expander:SfExpander.Content>
-                                                <Grid Padding="18,8,0,18" >
-                                                    <VerticalStackLayout Padding="10">
-                                                        <Label Text="{Binding Description}"
+                                                    </Grid>
+                                                </expander:SfExpander.Header>
+                                                <expander:SfExpander.Content>
+                                                    <Grid Padding="18,8,0,18" >
+                                                        <VerticalStackLayout Padding="10">
+                                                            <Label Text="{Binding Description}"
             FontAttributes="Italic" />
-                                                    </VerticalStackLayout>
-                                                </Grid>
-                                            </expander:SfExpander.Content>
-                                            
-                                        </expander:SfExpander>
+                                                        </VerticalStackLayout>
+                                                    </Grid>
+                                                </expander:SfExpander.Content>
 
+                                            </expander:SfExpander>
+
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </Border>
-                        </syncEffectsView:SfEffectsView>
-                    </DataTemplate>
-                </listView:SfListView.ItemTemplate>
-            </listView:SfListView>
+                                </Border>
+                            </syncEffectsView:SfEffectsView>
+                        </DataTemplate>
+                    </listView:SfListView.ItemTemplate>
+                </listView:SfListView>
         </Grid>
 
     </ContentPage.Content>

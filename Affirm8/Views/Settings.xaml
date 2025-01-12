@@ -363,9 +363,12 @@
 
             <!--  Logout button  -->
             <buttons:SfButton
+               x:Name="BtnLogout"
                Margin="0,24,0,32"
                Text="Log out"
-               Style="{DynamicResource FormsButtonStyle}"/>
+               Style="{DynamicResource FormsButtonStyle}"
+               Clicked="BtnLogout_Clicked"
+               />
 
          </StackLayout>
       </ScrollView>

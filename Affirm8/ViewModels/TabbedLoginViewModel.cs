@@ -22,10 +22,10 @@ namespace Affirm8
         [RelayCommand]
         private async Task Login()
         {
-            bool loginSuccess = await _httpService.Login(LoginInfo.Email, LoginInfo.Password.ToString());
+            bool loginSuccess = await _httpService.Login(LoginInfo.Email, LoginInfo.Password);
             if (loginSuccess)
             {
-                // Navigate! 
+                // Navigate!
                 await Shell.Current.GoToAsync("//Home");
             }
             else

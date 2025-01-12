@@ -19,5 +19,9 @@ namespace Affirm8.Views.Catalog
             }
         }
 
+        private async void sfButton_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Home");
+        }
     }
 }

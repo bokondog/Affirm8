@@ -29,7 +29,8 @@
             <ShellContent ContentTemplate="{DataTemplate pages:ProfilePage}" />
         </Tab>
         <Tab Title="Login">
-            <ShellContent ContentTemplate="{DataTemplate forms:LoginPage}" />
+            <ShellContent ContentTemplate="{DataTemplate forms:LoginPage}"
+                          Route="Login"/>
         </Tab>
         <Tab Title="Feedback">
             <ShellContent ContentTemplate="{DataTemplate feedback:Feedback}" />

@@ -55,4 +55,9 @@ public partial class HomePage : ContentPage
     {
         await Shell.Current.GoToAsync(nameof(MailPage));
     }
+
+    private async void sfButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//Home");
+    }
 }
