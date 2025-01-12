@@ -81,7 +81,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\..\stuff\school\c_sharp_mobile\example-web-api\ExampleWebApi\ExampleWebApi.Api.csproj" />
+	  <ProjectReference Include="..\api\ExampleWebApi\ExampleWebApi.Api.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
