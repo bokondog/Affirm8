@@ -5,7 +5,6 @@ namespace Affirm8.Views.Chat
         public RecentChat()
         {
             InitializeComponent();
-            this.ProfileImage.Source = App.ImageServerPath + "ProfileImage1.png";
         }
     }
 }

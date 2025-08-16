@@ -1,18 +1,65 @@
 using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Affirm8
 {
-    public class ReviewViewModel
+    public partial class ReviewViewModel : ObservableObject
     {
-        public ReviewInfo ReviewInfo { get; set; }
+        [ObservableProperty]
+        private string productImage = "Image1.png";
 
-        #region Constructor
+        [ObservableProperty]
+        private string productName = "Sample Product";
+
+        [ObservableProperty]
+        private double rating = 0.0;
+
+        [ObservableProperty]
+        private string reviewTitle = "";
+
+        [ObservableProperty]
+        private string reviewContent = "";
+
+        [ObservableProperty]
+        private string reviewerName = "";
+
+        [ObservableProperty]
+        private string reviewerEmail = "";
+
+        [ObservableProperty]
+        private string productDescription = "Sample product description";
+
+        [ObservableProperty]
+        private string reviewDescription = "";
+
         public ReviewViewModel()
         {
-            this.ReviewInfo = new ReviewInfo();
+            // Initialize with sample data
+            ProductName = "Sample Product";
+            ProductImage = "Image1.png";
         }
 
-        #endregion
+        [RelayCommand]
+        private async Task SubmitReview()
+        {
+            // Submit review logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Submit()
+        {
+            // Submit logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Cancel()
+        {
+            // Cancel logic
+            await Task.CompletedTask;
+        }
     }
     public class ReviewInfo
     {

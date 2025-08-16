@@ -1,16 +1,62 @@
 using System.Collections.ObjectModel;
 using System.Text.Json;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Affirm8
 {
-    public class ContactsPageViewModel
+    public partial class ContactsPageViewModel : ObservableObject
     {
         public ObservableCollection<Contact> ContactsList { get; set; }
+
+        public ObservableCollection<Contact> Contacts => ContactsList;
+
+        [ObservableProperty]
+        private string searchText = "";
+
+        [ObservableProperty]
+        private Contact? selectedContact;
 
         public ContactsPageViewModel()
         {
             ContactsList = new ObservableCollection<Contact>();
             LoadData();
+        }
+
+        [RelayCommand]
+        private async Task Add()
+        {
+            // Add new contact logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Call(Contact contact)
+        {
+            // Call contact logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Message(Contact contact)
+        {
+            // Message contact logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Search(string query)
+        {
+            // Search logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task ContactSelectionChanged(Contact contact)
+        {
+            SelectedContact = contact;
+            // Handle contact selection
+            await Task.CompletedTask;
         }
 
         private void LoadData()
@@ -53,8 +99,13 @@ namespace Affirm8
 
     public class Contact
     {
-        public string? Name { get; set; }
-        public string? BackgroundColor { get; set; }
+        public string Name { get; set; } = "";
+        public string Initials { get; set; } = "";
+        public string PhoneNumber { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string EmailAddress { get; set; } = "";
+        public bool HasPhoneNumber => !string.IsNullOrEmpty(PhoneNumber);
+        public bool HasEmail => !string.IsNullOrEmpty(Email);
     }
 
     public class ContactsData

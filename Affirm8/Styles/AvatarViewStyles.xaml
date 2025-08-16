@@ -1,18 +1,45 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Affirm8.Styles.AvatarViewStyles"
-                    xmlns:sfavatar="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Style x:Key="AvatarViewStyle" TargetType="sfavatar:SfAvatarView">
-        <Setter Property="ContentType" Value="Initials" />
-        <Setter Property="InitialsType" Value="DoubleCharacter" />
-        <Setter Property="FontFamily" Value="Roboto-Medium" />
-        <Setter Property="InitialsColor" Value="#ffffff" />
-        <Setter Property="AvatarShape" Value="Circle" />
-        <Setter Property="AvatarSize" Value="Medium" />
-        <Setter Property="VerticalOptions" Value="Center" />
+    <!-- Default Avatar Style using Border -->
+    <Style x:Key="AvatarViewStyle" TargetType="Border">
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+        <Setter Property="Stroke" Value="Transparent" />
         <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <Ellipse />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Large Avatar Style -->
+    <Style x:Key="LargeAvatarStyle" TargetType="Border" BasedOn="{StaticResource AvatarViewStyle}">
+        <Setter Property="WidthRequest" Value="60" />
+        <Setter Property="HeightRequest" Value="60" />
+    </Style>
+
+    <!-- Small Avatar Style -->
+    <Style x:Key="SmallAvatarStyle" TargetType="Border" BasedOn="{StaticResource AvatarViewStyle}">
+        <Setter Property="WidthRequest" Value="30" />
+        <Setter Property="HeightRequest" Value="30" />
+    </Style>
+
+    <!-- Profile Border Style -->
+    <Style x:Key="ProfileBorderStyle" TargetType="Border">
+        <Setter Property="WidthRequest" Value="50" />
+        <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}" />
+        <Setter Property="StrokeThickness" Value="2" />
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <Ellipse />
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

@@ -5,19 +5,18 @@
                     xmlns:styles="clr-namespace:Affirm8.Styles">
 
     <ResourceDictionary.MergedDictionaries>
-        <styles:ButtonStyles />
+        <ResourceDictionary Source="../Styles/ButtonStyles.xaml" />
         <styles:LabelStyles />
         <styles:BorderStyles />
-        <styles:ListViewStyles />
-        <styles:RatingStyles />
+        <ResourceDictionary Source="../Styles/ListViewStyles.xaml" />
+        <ResourceDictionary Source="../Styles/RatingStyles.xaml" />
         <styles:BoxViewStyles />
-        <styles:AvatarViewStyles />
+        <ResourceDictionary Source="../Styles/AvatarViewStyles.xaml" />
         <styles:EntryStyles />
         <styles:FontIcons />
         <styles:Colors />
         <styles:EditorStyles />
-        <styles:RadioButtonStyles />
-        <styles:SegmentedControlStyles />
+        <!-- RadioButtonStyles and SegmentedControlStyles removed -->
     </ResourceDictionary.MergedDictionaries>
 
     <Color x:Key="PrimaryDarkColor">#2A89FF</Color>

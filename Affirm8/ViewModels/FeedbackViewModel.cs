@@ -1,108 +1,98 @@
 using System.Collections.ObjectModel;
 using System.Text.Json;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Affirm8
 {
-    public class FeedbackViewModel
+    public partial class FeedbackViewModel : ObservableObject
     {
-        public ObservableCollection<Affirm8.Models.Review> FeedbackInfo { get; set; }
+        public ObservableCollection<Review> Reviews { get; set; }
 
-        public string Description = "qos";
-        public string Name = "bobbie";
+        [ObservableProperty]
+        private string productImage = "Image1.png";
 
+        [ObservableProperty]
+        private string productName = "Sample Product";
+
+        [ObservableProperty]
+        private string productDescription = "Sample description";
+
+        [ObservableProperty]
+        private double overallRating = 4.5;
+
+        [ObservableProperty]
+        private double fiveStarPercent = 0.6;
+
+        [ObservableProperty]
+        private int fiveStarCount = 12;
+
+        [ObservableProperty]
+        private double fourStarPercent = 0.3;
+
+        [ObservableProperty]
+        private int fourStarCount = 6;
+
+        [ObservableProperty]
+        private double threeStarPercent = 0.1;
+
+        [ObservableProperty]
+        private int threeStarCount = 2;
+
+        [ObservableProperty]
+        private double twoStarPercent = 0.0;
+
+        [ObservableProperty]
+        private int twoStarCount = 0;
+
+        [ObservableProperty]
+        private double oneStarPercent = 0.0;
+
+        [ObservableProperty]
+        private int oneStarCount = 0;
 
         public FeedbackViewModel()
         {
-            FeedbackInfo = new ObservableCollection<Affirm8.Models.Review>();
-            LoadData();
+            Reviews = new ObservableCollection<Review>();
+            LoadReviews();
         }
 
-        private void LoadData()
+        private void LoadReviews()
         {
-            string jsonData = @"
+            // Sample reviews data
+            Reviews.Add(new Review
+            {
+                ReviewerName = "John Doe",
+                Rating = 5,
+                Title = "Great product!",
+                Content = "I really love this product. It exceeded my expectations.",
+                Date = DateTime.Now.AddDays(-7)
+            });
+
+            Reviews.Add(new Review
+            {
+                ReviewerName = "Jane Smith",
+                Rating = 4,
+                Title = "Good quality",
+                Content = "Nice quality for the price. Would recommend.",
+                Date = DateTime.Now.AddDays(-14)
+            });
+        }
+
+        [RelayCommand]
+        private async Task WriteReview()
         {
-            ""feedbackInfo"": [
-                {
-                    ""customerName"": ""Jessica Park"",
-                    ""comment"": ""These boots are stunning and I look stunning in them."",
-                    ""images"": [ ""ReviewShoe.png"", ""ReviewShoe.png"" ],
-                    ""customerImage"": ""ProfileImage5.png"",
-                    ""rating"": 3
-                },
-                {
-                    ""customerName"": ""Alice"",
-                    ""comment"": ""Greatest purchase I have ever made in my life. No lie."",
-                    ""images"": [ ""ReviewShoe.png"", ""ReviewShoe.png"" ],
-                    ""customerImage"": ""ProfileImage3.png"",
-                    ""rating"": 3
-                },
-                {
-                    ""customerName"": ""John"",
-                    ""comment"": ""Absolutely love them! Can't stop wearing!"",
-                    ""images"": [ ""ReviewShoe.png"", ""ReviewShoe.png"" ],
-                    ""customerImage"": ""ProfileImage1.png"",
-                    ""rating"": 2
-                },
-                {
-                    ""customerName"": ""Lisa"",
-                    ""comment"": ""These boots are very much comfortable for wearing."",
-                    ""images"": [ ""ReviewShoe.png"", ""ReviewShoe.png"", ""ReviewShoe.png"" ],
-                    ""customerImage"": ""ProfileImage6.png"",
-                    ""rating"": 4
-                },
-                {
-                    ""customerName"": ""Rebacca"",
-                    ""comment"": ""Absolutely love them! Can't stop wearing!"",
-                    ""images"": [ ""ReviewShoe.png"", ""ReviewShoe.png"" ],
-                    ""customerImage"": ""ProfileImage10.png"",
-                    ""rating"": 4
-                },
-                {
-                    ""customerName"": ""Jessica Park"",
-                    ""comment"": ""Happy purchasing!"",
-                    ""images"": [ ""ReviewShoe.png"", ""ReviewShoe.png"", ""ReviewShoe.png"", ""ReviewShoe.png"" ],
-                    ""customerImage"": ""ProfileImage13.png"",
-                    ""rating"": 4
-                },
-                {
-                    ""customerName"": ""Alice"",
-                    ""comment"": ""Happy buying!"",
-                    ""images"": [ ""ReviewShoe.png"", ""ReviewShoe.png"", ""ReviewShoe.png"", ""ReviewShoe.png"" ],
-                    ""customerImage"": ""ProfileImage8.png"",
-                    ""rating"": 4
-                }
-            ]
-        }";
-
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            var feedbackRoot = JsonSerializer.Deserialize<FeedbackRoot>(jsonData, options);
-            var customerImages = new List<string>() { "ProfileImage5.png", "ProfileImage3.png", "ProfileImage1.png", "ProfileImage6.png", "ProfileImage10.png", "ProfileImage13.png", "ProfileImage8.png" };
-            var reviewedDates = new List<string>() { "03 Jan, 2024", "12 Jan, 2024", "23 Feb, 2024", "05 Mar, 2024", "14 Mar, 2024", "30 Mar, 2024", "10 Apr, 2024" };
-
-            if (feedbackRoot?.FeedbackInfo == null)
-            {
-                return;
-            }
-
-            for (int i = 0; i < feedbackRoot?.FeedbackInfo.Count; i++)
-            {
-                feedbackRoot.FeedbackInfo[i].CustomerImage = customerImages[i];
-                feedbackRoot.FeedbackInfo[i].ReviewedDate = reviewedDates[i];
-                FeedbackInfo.Add(feedbackRoot.FeedbackInfo[i]);
-            }
+            // Navigate to write review page
+            await Task.CompletedTask;
         }
     }
 
-    public class FeedbackRoot
+    public class Review
     {
-        public List<Affirm8.Models.Review>? FeedbackInfo { get; set; }
+        public string ReviewerName { get; set; } = "";
+        public int Rating { get; set; }
+        public string Title { get; set; } = "";
+        public string Content { get; set; } = "";
+        public DateTime Date { get; set; }
     }
-
-    public class RatingInfo
-    {
-        public string? StarText { get; set; }
-
-        public int RatingValue { get; set; }
-    }
-
 }

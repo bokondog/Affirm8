@@ -1,4 +1,4 @@
-using Syncfusion.Maui.Toolkit.Buttons;
+
 
 namespace Affirm8.Views.Catalog
 {
@@ -11,7 +11,7 @@ namespace Affirm8.Views.Catalog
 
         private void FavouriteButton_Clicked(object sender, EventArgs e)
         {
-            SfButton? button = sender as SfButton;
+            Button? button = sender as Button;
             var product = button?.BindingContext as Affirm8.Models.Product;
             if (product != null)
             {

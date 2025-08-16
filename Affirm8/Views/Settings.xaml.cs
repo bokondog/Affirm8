@@ -5,7 +5,6 @@ namespace Affirm8.Views.Settings
         public Settings()
         {
             InitializeComponent();
-            this.profileImage.Source = App.ImageServerPath + "ProfileImage1.png";
         }
 
         private async void BtnLogout_Clicked(object sender, EventArgs e)

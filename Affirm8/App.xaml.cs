@@ -11,7 +11,7 @@ namespace Affirm8
 {
     public partial class App : Application
     {
-		public static string ImageServerPath { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-.net-maui/common/uikitimages/";
+		        public static string ImageServerPath { get; } = "https://picsum.photos/";
 
         public App()
         {

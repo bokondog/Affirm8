@@ -1,4 +1,5 @@
 using System.Globalization;
+using Affirm8;
 
 namespace Affirm8.Converters
 {
@@ -28,7 +29,7 @@ namespace Affirm8.Converters
                 return value;
             }
 
-            var bindingContext = label.BindingContext as ChatItem;
+            var bindingContext = label.BindingContext as ChatMessage;
             object messageType;
 
             switch ((string)value)

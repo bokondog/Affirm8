@@ -1,17 +1,93 @@
 using System.Collections.ObjectModel;
 using System.Text.Json;
 using Affirm8.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Affirm8
 {
-    public class CartPageViewModel
+    public partial class CartPageViewModel : ObservableObject
     {
         public List<Post> Items { get; set; }
+
+        public List<Post> Products => Items;
+
+        [ObservableProperty]
+        private bool isRefreshing = false;
+
+        [ObservableProperty]
+        private Post? selectedProduct;
 
         public CartPageViewModel()
         {
             Items = new List<Post>();
             LoadFromJson();
+        }
+
+        [RelayCommand]
+        private async Task Search(string query)
+        {
+            // Search logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Filter()
+        {
+            // Filter logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Like(Post post)
+        {
+            // Like logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Comment(Post post)
+        {
+            // Comment logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Share(Post post)
+        {
+            // Share logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task AddToCart(Post post)
+        {
+            // Add to cart logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Settings()
+        {
+            // Settings logic
+            await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task Refresh()
+        {
+            IsRefreshing = true;
+            // Refresh logic
+            await Task.Delay(1000);
+            IsRefreshing = false;
+        }
+
+        [RelayCommand]
+        private async Task ProductSelectionChanged(Post product)
+        {
+            SelectedProduct = product;
+            // Handle product selection
+            await Task.CompletedTask;
         }
 
         // Method to load data from JSON

@@ -35,7 +35,7 @@ namespace Affirm8.Services
             if (response.IsSuccessStatusCode)
             {
                 string responseData = await response.Content.ReadAsStringAsync();
-                var token = JsonSerializer.Deserialize<LoginModel>(responseData, _serializerOptions);
+                var token = JsonSerializer.Deserialize<Affirm8.Models.LoginModel>(responseData, _serializerOptions);
                 _token = token?.Token;
                 return true;
             }

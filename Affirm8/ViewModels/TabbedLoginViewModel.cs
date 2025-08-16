@@ -1,92 +1,102 @@
-using Syncfusion.Maui.DataForm;
+
 using System.ComponentModel.DataAnnotations;
 using Affirm8.Services;
+using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
-namespace Affirm8
+namespace Affirm8.ViewModels;
+
+public partial class TabbedLoginViewModel : ObservableObject
 {
-    public partial class TabbedLoginViewModel : BaseViewModel
+    public TabbedLoginViewModel()
     {
+        LoginInfo = new LoginModel();
+        SignUpInfo = new SignUpModel();
+    }
 
-        private readonly IHTTPService _httpService;
+    [ObservableProperty]
+    private LoginModel loginInfo;
 
-        public LoginInfo LoginInfo { get; set; }
-        public SignUpFormInfo SignUpInfo { get; set; }
+    [ObservableProperty]
+    private SignUpModel signUpInfo;
 
-        public TabbedLoginViewModel()
+    [RelayCommand]
+    private async Task Login()
+    {
+        try
         {
-            _httpService = new HTTPService();
-            this.LoginInfo = new LoginInfo();
-            this.SignUpInfo = new SignUpFormInfo();
+            // Implement login logic
+            await Shell.Current.GoToAsync("//Home");
         }
-
-        [RelayCommand]
-        private async Task Login()
+        catch (Exception ex)
         {
-            bool loginSuccess = await _httpService.Login(LoginInfo.Email, LoginInfo.Password);
-            if (loginSuccess)
-            {
-                // Navigate!
-                await Shell.Current.GoToAsync("//Home");
-            }
-            else
-            {
-                // Show fail message
-                await Shell.Current.GoToAsync("//Home");
-            }
-
+            // Handle login error
+            await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
         }
     }
 
-    public class LoginInfo
+    [RelayCommand]
+    private async Task SignUp()
     {
-        public LoginInfo()
+        try
         {
-            this.Email = string.Empty;
-            this.Password = string.Empty;
+            // Implement signup logic
+            await Shell.Current.GoToAsync("//Home");
         }
-
-        [Display(Name = "Email")]
-        [DataFormDisplayOptions(ColumnSpan = 3)]
-        [EmailAddress(ErrorMessage = "Enter your email")]
-        public string Email { get; set; }
-
-        [Display(Name = "Password")]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Enter the password")]
-        [DataFormDisplayOptions(ColumnSpan = 3)]
-        public string Password { get; set; }
+        catch (Exception ex)
+        {
+            // Handle signup error
+            await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+        }
     }
 
-    public class SignUpFormInfo
+    [RelayCommand]
+    private async Task ForgotPassword()
     {
-        public SignUpFormInfo()
-        {
-            this.Name = string.Empty;
-            this.Email = string.Empty;
-            this.Password = string.Empty;
-            this.ConfirmPassword = string.Empty;
-        }
-
-        [Display(Name = "Name")]
-        [DataFormDisplayOptions(ColumnSpan = 3)]
-        [Required(ErrorMessage = "Enter your name")]
-        public string Name { get; set; }
-
-        [Display(Name = "Email")]
-        [DataFormDisplayOptions(ColumnSpan = 3)]
-        [EmailAddress(ErrorMessage = "Enter your email")]
-        public string Email { get; set; }
-
-        [Display(Name = "Password")]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Enter the password")]
-        [DataFormDisplayOptions(ColumnSpan = 3)]
-        public string Password { get; set; }
-
-        [Display(Name = "Confirm Password")]
-        [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Enter the password")]
-        [DataFormDisplayOptions(ColumnSpan = 3)]
-        public string ConfirmPassword { get; set; }
+        await Shell.Current.DisplayAlert("Forgot Password", "Password reset functionality coming soon!", "OK");
     }
+
+    [RelayCommand]
+    private void SwitchToLogin()
+    {
+        // Logic to switch to login tab
+    }
+}
+
+public partial class LoginModel : ObservableValidator
+{
+    [ObservableProperty]
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    private string email = string.Empty;
+
+    [ObservableProperty]
+    [Required(ErrorMessage = "Password is required")]
+    [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
+    private string password = string.Empty;
+
+    [ObservableProperty]
+    private bool rememberMe;
+}
+
+public partial class SignUpModel : ObservableValidator
+{
+    [ObservableProperty]
+    [Required(ErrorMessage = "Name is required")]
+    private string name = string.Empty;
+
+    [ObservableProperty]
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Invalid email format")]
+    private string email = string.Empty;
+
+    [ObservableProperty]
+    [Required(ErrorMessage = "Password is required")]
+    [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
+    private string password = string.Empty;
+
+    [ObservableProperty]
+    [Required(ErrorMessage = "Confirm Password is required")]
+    private string confirmPassword = string.Empty;
 }

@@ -1,14 +1,23 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Affirm8.Styles.ListViewStyles"
-                    xmlns:listView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Style x:Key="TransparentSelectionListView" TargetType="listView:SfListView">
-        <Setter Property="BackgroundColor" Value="{DynamicResource Gray-Bg}" />
-        <Setter Property="SelectionBackground" Value="Transparent" />
-        <Setter Property="ScrollBarVisibility" Value="Never" />
-        <Setter Property="VerticalOptions" Value="Fill" />
+    <!-- Transparent Selection ListView Style -->
+    <Style x:Key="TransparentSelectionListView" TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="SelectionMode" Value="Single" />
+    </Style>
+
+    <!-- Default ListView Style -->
+    <Style x:Key="DefaultListView" TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}" />
+        <Setter Property="SelectionMode" Value="Single" />
+    </Style>
+
+    <!-- Card ListView Style -->
+    <Style x:Key="CardListView" TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="SelectionMode" Value="Single" />
     </Style>
 
 </ResourceDictionary>

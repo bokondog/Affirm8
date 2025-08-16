@@ -1,30 +1,30 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Affirm8.Styles.RatingStyles"
-                    xmlns:rating="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:controls="clr-namespace:Affirm8.Controls">
 
-    <Style x:Key="RatingStyle" TargetType="rating:SfRating">
-        <Setter Property="ItemCount" Value="5" />
-        <Setter Property="IsReadOnly" Value="True" />
-        <Setter Property="ItemSize" Value="14" />
-        <Setter Property="ItemSpacing" Value="0" />
-        <Setter Property="VerticalOptions" Value="Center" />
+    <!-- Default Rating Style -->
+    <Style x:Key="RatingStyle" TargetType="controls:RatingControl">
         <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
-    <rating:RatingSettings
-    x:Key="RatingSettings"
-    RatedFill="#fcbc0f"
-    RatedStroke="#fcbc0f"
-    UnratedStroke="{DynamicResource Gray-600}" />
+    <!-- Large Rating Style -->
+    <Style x:Key="LargeRatingStyle" TargetType="controls:RatingControl">
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
 
+    <!-- Small Rating Style -->
+    <Style x:Key="SmallRatingStyle" TargetType="controls:RatingControl">
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
 
-    <rating:RatingSettings
-    x:Key="CommonRatingSettings"
-    RatedFill="#fcbc0f"
-    RatedStroke="#fcbc0f"
-    UnratedStroke="{DynamicResource Gray-600}"
-    UnratedStrokeThickness="1" />
+    <!-- Common Rating Settings (placeholder for backward compatibility) -->
+    <Style x:Key="CommonRatingSettings" TargetType="controls:RatingControl">
+        <Setter Property="Maximum" Value="5" />
+        <Setter Property="IsReadOnly" Value="False" />
+    </Style>
 
 </ResourceDictionary>

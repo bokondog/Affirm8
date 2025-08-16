@@ -1,10 +1,10 @@
-using Syncfusion.Maui.Core;
+
 using System.Globalization;
 
 namespace Affirm8.Converters
 {
     /// <summary>
-    /// This class have methods to convert the availability-status of chat message recipients from string to Syncfusion.XForms.BadgeView.BadgeIcon.
+    /// This class converts the availability-status of chat message recipients from string to a simple icon string.
     /// </summary>
     public class StringToBadgeIconConverter : IValueConverter
     {
@@ -15,28 +15,34 @@ namespace Affirm8.Converters
         /// <param name="targetType">Gets the target type.</param>
         /// <param name="parameter">Gets the parameter.</param>
         /// <param name="culture">Gets the culture.</param>
-        /// <returns>Return the badge icon.</returns>
-        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        /// <returns>Returns the badge icon.</returns>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value != null)
             {
-                return BadgeIcon.None;
+                return value.ToString() switch
+                {
+                    "Available" => "●", // Green dot
+                    "Busy" => "●", // Red dot  
+                    "Away" => "●", // Yellow dot
+                    _ => "○" // Empty circle
+                };
             }
 
-            return (string)value == "Available" ? BadgeIcon.Dot : BadgeIcon.None;
+            return "○";
         }
 
         /// <summary>
-        /// This method is used to convert the color to badge icon.
+        /// This method is used to convert the badge icon to string.
         /// </summary>
         /// <param name="value">Gets the value.</param>
         /// <param name="targetType">Gets the target type.</param>
         /// <param name="parameter">Gets the parameter.</param>
         /// <param name="culture">Gets the culture.</param>
-        /// <returns>Returns null.</returns>
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        /// <returns>Returns the string.</returns>
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return null;
+            return string.Empty;
         }
     }
 }

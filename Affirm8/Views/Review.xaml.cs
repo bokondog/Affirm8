@@ -5,7 +5,6 @@ namespace Affirm8.Views.Feedback
         public Review()
         {
             InitializeComponent();
-            this.ProductImage.Source = App.ImageServerPath + "Image1.png";
         }
     }
 }

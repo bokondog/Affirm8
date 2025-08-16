@@ -79,7 +79,7 @@ namespace Affirm8.Models
         /// </summary>
         public string? Name { get; set; }
 
-        public string? Timestamp { get; set; }
+        public DateTime Timestamp { get; set; } = DateTime.Now;
 
         public string? Tag { get; set; }
 
@@ -214,6 +214,20 @@ namespace Affirm8.Models
                 this.NotifyPropertyChanged(nameof(this.TotalQuantity));
             }
         }
+
+        #endregion
+
+        #region User Properties
+
+        /// <summary>
+        /// Gets or sets the user initials.
+        /// </summary>
+        public string UserInitials { get; set; } = "JD";
+
+        /// <summary>
+        /// Gets or sets the user name.
+        /// </summary>
+        public string UserName { get; set; } = "John Doe";
 
         #endregion
 

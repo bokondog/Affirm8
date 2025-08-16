@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="KindWords.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Settings"
+             BackgroundColor="#F0F8FF">
+
+    <ScrollView Padding="20">
+        <StackLayout Spacing="20">
+            
+            <!-- Header -->
+            <StackLayout HorizontalOptions="Center" Spacing="8">
+                <Label Text="⚙️"
+                       FontSize="48"
+                       HorizontalOptions="Center" />
+                <Label Text="Settings"
+                       FontSize="24"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="#4682B4"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+
+            <!-- Privacy Section -->
+            <StackLayout Spacing="12">
+                <Label Text="Privacy and Anonymity"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="#2F4F4F" />
+                
+                <StackLayout Orientation="Horizontal" Spacing="12">
+                    <Switch x:Name="AnonymousSwitch" IsToggled="True" />
+                    <Label Text="Keep my messages anonymous"
+                           FontFamily="OpenSansRegular"
+                           TextColor="#2F4F4F"
+                           VerticalOptions="Center" />
+                </StackLayout>
+                
+                <StackLayout Orientation="Horizontal" Spacing="12">
+                    <Switch x:Name="NotificationsSwitch" IsToggled="True" />
+                    <Label Text="Allow kindness notifications"
+                           FontFamily="OpenSansRegular"
+                           TextColor="#2F4F4F"
+                           VerticalOptions="Center" />
+                </StackLayout>
+            </StackLayout>
+
+            <!-- About Section -->
+            <StackLayout Spacing="12">
+                <Label Text="About Kind Words"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="#2F4F4F" />
+                
+                <Label Text="Kind Words is a social affirmation platform inspired by the beautiful concept of anonymous kindness. Share your light and help others through their journey."
+                       FontFamily="OpenSansRegular"
+                       FontSize="14"
+                       TextColor="#555"
+                       LineBreakMode="WordWrap" />
+                
+                <Label Text="Version 1.0.0"
+                       FontFamily="OpenSansRegular"
+                       FontSize="12"
+                       TextColor="#888"
+                       HorizontalOptions="Center"
+                       Margin="0,20,0,0" />
+            </StackLayout>
+
+            <!-- Authentication Section -->
+            <StackLayout Spacing="12">
+                <Label Text="Account"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="#2F4F4F" />
+                
+                <!-- Authentication Form -->
+                <StackLayout x:Name="AuthForm" Spacing="8">
+                    
+                    <!-- Email -->
+                    <Entry x:Name="EmailEntry"
+                           Placeholder="Email"
+                           Keyboard="Email"
+                           BackgroundColor="White"
+                           TextColor="#2F4F4F" />
+                    
+                    <!-- Password -->
+                    <Entry x:Name="PasswordEntry"
+                           Placeholder="Password"
+                           IsPassword="True"
+                           BackgroundColor="White"
+                           TextColor="#2F4F4F" />
+                    
+                    <!-- Nickname (for register) -->
+                    <Entry x:Name="NickNameEntry"
+                           Placeholder="Nickname"
+                           BackgroundColor="White"
+                           TextColor="#2F4F4F"
+                           IsVisible="False" />
+                    
+                    <!-- Error message -->
+                    <Label x:Name="ErrorLabel"
+                           TextColor="Red"
+                           FontSize="12"
+                           IsVisible="False" />
+                    
+                    <!-- Login/Register buttons -->
+                    <StackLayout Orientation="Horizontal" Spacing="8" HorizontalOptions="Center">
+                        <Button x:Name="LoginButton"
+                                Text="Login"
+                                BackgroundColor="#4682B4"
+                                TextColor="White"
+                                FontFamily="OpenSansSemibold"
+                                CornerRadius="8"
+                                WidthRequest="100"
+                                Clicked="OnLoginClicked" />
+                        
+                        <Button x:Name="RegisterButton"
+                                Text="Register"
+                                BackgroundColor="#98FB98"
+                                TextColor="#2E8B57"
+                                FontFamily="OpenSansSemibold"
+                                CornerRadius="8"
+                                WidthRequest="100"
+                                Clicked="OnRegisterClicked" />
+                    </StackLayout>
+                    
+                    <Button x:Name="SwitchModeButton"
+                            Text="Need an account? Register here"
+                            BackgroundColor="Transparent"
+                            TextColor="#4682B4"
+                            FontSize="12"
+                            Clicked="OnSwitchModeClicked" />
+                </StackLayout>
+                
+                <!-- Logged in state -->
+                <StackLayout x:Name="LoggedInSection" IsVisible="False" Spacing="8">
+                    <Label x:Name="WelcomeLabel"
+                           Text="Welcome back!"
+                           FontFamily="OpenSansSemibold"
+                           TextColor="#2E8B57" />
+                    
+                    <Button Text="Logout"
+                            BackgroundColor="#FF6B6B"
+                            TextColor="White"
+                            FontFamily="OpenSansSemibold"
+                            CornerRadius="8"
+                            WidthRequest="100"
+                            HorizontalOptions="Center"
+                            Clicked="OnLogoutClicked" />
+                </StackLayout>
+                
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage> 
