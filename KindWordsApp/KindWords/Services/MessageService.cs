@@ -213,6 +213,111 @@ namespace KindWords.Services
             }
         }
 
+        public async Task<bool> LikeReplyAsync(int replyId)
+        {
+            try
+            {
+                if (!AddAuthorizationHeader())
+                {
+                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot like reply");
+                    return false;
+                }
+
+                var response = await _httpClient.PostAsync($"{BaseUrl}/messages/replies/{replyId}/like", null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Reply {replyId} liked successfully");
+                    return true;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Failed to like reply {replyId}. Status: {response.StatusCode}, Content: {errorContent}");
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error liking reply {replyId}: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UnlikeReplyAsync(int replyId)
+        {
+            try
+            {
+                if (!AddAuthorizationHeader())
+                {
+                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot unlike reply");
+                    return false;
+                }
+
+                var response = await _httpClient.DeleteAsync($"{BaseUrl}/messages/replies/{replyId}/like");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Reply {replyId} unliked successfully");
+                    return true;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Failed to unlike reply {replyId}. Status: {response.StatusCode}, Content: {errorContent}");
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error unliking reply {replyId}: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<UserStatistics?> GetUserStatisticsAsync()
+        {
+            try
+            {
+                if (!AddAuthorizationHeader())
+                {
+                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot get statistics");
+                    return null;
+                }
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/auth/statistics");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var statsDto = JsonSerializer.Deserialize<UserStatisticsDto>(json, GetJsonOptions());
+                    
+                    if (statsDto != null)
+                    {
+                        return new UserStatistics
+                        {
+                            MessagesSent = statsDto.MessagesSent,
+                            RepliesReceived = statsDto.RepliesReceived,
+                            RepliesSent = statsDto.RepliesSent,
+                            LikesReceived = statsDto.LikesReceived,
+                            ImpactRatio = statsDto.ImpactRatio,
+                            JoinedAt = statsDto.JoinedAt,
+                            DaysActive = statsDto.DaysActive
+                        };
+                    }
+                }
+                
+                return null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting user statistics: {ex.Message}");
+                return null;
+            }
+        }
+
         #region Helper Methods
 
         private bool AddAuthorizationHeader()
@@ -262,7 +367,9 @@ namespace KindWords.Services
                 Content = dto.Content,
                 CreatedAt = dto.CreatedAt,
                 UserId = dto.UserId,
-                IsAnonymous = dto.IsAnonymous
+                IsAnonymous = dto.IsAnonymous,
+                LikeCount = dto.LikeCount,
+                IsLikedByMessageOwner = dto.IsLikedByMessageOwner
             };
         }
 
@@ -304,5 +411,18 @@ namespace KindWords.Services
         public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
         public bool IsAnonymous { get; set; }
+        public int LikeCount { get; set; }
+        public bool IsLikedByMessageOwner { get; set; }
+    }
+
+    public class UserStatisticsDto
+    {
+        public int MessagesSent { get; set; }
+        public int RepliesReceived { get; set; }
+        public int RepliesSent { get; set; }
+        public int LikesReceived { get; set; }
+        public double ImpactRatio { get; set; }
+        public DateTime JoinedAt { get; set; }
+        public int DaysActive { get; set; }
     }
 } 

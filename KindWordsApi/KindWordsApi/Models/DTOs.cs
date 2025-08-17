@@ -104,5 +104,23 @@ namespace KindWordsApi.Models
         public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
         public bool IsAnonymous { get; set; }
+        public int LikeCount { get; set; }
+        public bool IsLikedByMessageOwner { get; set; }
+    }
+
+    public class UserStatisticsDto
+    {
+        public int MessagesSent { get; set; }
+        public int RepliesReceived { get; set; }
+        public int RepliesSent { get; set; }
+        public int LikesReceived { get; set; }
+        public double ImpactRatio { get; set; } // RepliesReceived / MessagesSent
+        public DateTime JoinedAt { get; set; }
+        public int DaysActive { get; set; }
+    }
+
+    public class LikeReplyRequest
+    {
+        public int ReplyId { get; set; }
     }
 } 

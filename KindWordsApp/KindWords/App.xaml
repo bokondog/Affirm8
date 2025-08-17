@@ -12,9 +12,12 @@
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->
-            <converters:BoolToSendButtonTextConverter x:Key="BoolToSendButtonTextConverter" />
-            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
-            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+                    <converters:BoolToSendButtonTextConverter x:Key="BoolToSendButtonTextConverter" />
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+        <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+        <converters:BoolToHeartConverter x:Key="BoolToHeartConverter" />
+        <converters:BoolToLikeColorConverter x:Key="BoolToLikeColorConverter" />
+        <converters:IsNotZeroConverter x:Key="IsNotZeroConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

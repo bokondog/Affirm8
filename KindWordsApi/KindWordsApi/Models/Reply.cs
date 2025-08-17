@@ -23,11 +23,17 @@ namespace KindWordsApi.Models
 
         public bool IsAnonymous { get; set; } = true;
 
+        public int LikeCount { get; set; } = 0;
+        
+        public bool IsLikedByMessageOwner { get; set; } = false;
+
         // Navigation properties
         [ForeignKey("MessageId")]
         public virtual Message Message { get; set; } = null!;
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; } = null!;
+
+        public virtual ICollection<ReplyLike> Likes { get; set; } = new List<ReplyLike>();
     }
 }

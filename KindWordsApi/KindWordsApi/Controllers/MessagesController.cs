@@ -260,6 +260,100 @@ namespace KindWordsApi.Controllers
             }
         }
 
+        [HttpPost("replies/{replyId}/like")]
+        public async Task<ActionResult> LikeReply(int replyId)
+        {
+            try
+            {
+                var currentUserId = GetCurrentUserId();
+                if (currentUserId == null)
+                    return Unauthorized();
+
+                // Get the reply and its message
+                var reply = await _context.Replies
+                    .Include(r => r.Message)
+                    .Include(r => r.Likes)
+                    .FirstOrDefaultAsync(r => r.Id == replyId);
+
+                if (reply == null)
+                    return NotFound("Reply not found");
+
+                // Check if current user is the message owner
+                if (reply.Message.UserId != currentUserId.Value)
+                    return Forbid("Only the message owner can like replies");
+
+                // Check if already liked
+                var existingLike = reply.Likes.FirstOrDefault(l => l.MessageOwnerId == currentUserId.Value);
+                if (existingLike != null)
+                    return BadRequest("Reply already liked");
+
+                // Add the like
+                var replyLike = new ReplyLike
+                {
+                    ReplyId = replyId,
+                    MessageOwnerId = currentUserId.Value,
+                    LikedAt = DateTime.UtcNow
+                };
+
+                _context.ReplyLikes.Add(replyLike);
+
+                // Update reply like count and status
+                reply.LikeCount++;
+                reply.IsLikedByMessageOwner = true;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Reply liked successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to like reply", error = ex.Message });
+            }
+        }
+
+        [HttpDelete("replies/{replyId}/like")]
+        public async Task<ActionResult> UnlikeReply(int replyId)
+        {
+            try
+            {
+                var currentUserId = GetCurrentUserId();
+                if (currentUserId == null)
+                    return Unauthorized();
+
+                // Get the reply and its message
+                var reply = await _context.Replies
+                    .Include(r => r.Message)
+                    .Include(r => r.Likes)
+                    .FirstOrDefaultAsync(r => r.Id == replyId);
+
+                if (reply == null)
+                    return NotFound("Reply not found");
+
+                // Check if current user is the message owner
+                if (reply.Message.UserId != currentUserId.Value)
+                    return Forbid("Only the message owner can unlike replies");
+
+                // Find and remove the like
+                var existingLike = reply.Likes.FirstOrDefault(l => l.MessageOwnerId == currentUserId.Value);
+                if (existingLike == null)
+                    return BadRequest("Reply not liked yet");
+
+                _context.ReplyLikes.Remove(existingLike);
+
+                // Update reply like count and status
+                reply.LikeCount = Math.Max(0, reply.LikeCount - 1);
+                reply.IsLikedByMessageOwner = false;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Reply unliked successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to unlike reply", error = ex.Message });
+            }
+        }
+
         #region Helper Methods
 
         private Guid? GetCurrentUserId()
@@ -300,7 +394,9 @@ namespace KindWordsApi.Controllers
                 Content = reply.Content,
                 CreatedAt = reply.CreatedAt,
                 UserId = reply.UserId,
-                IsAnonymous = reply.IsAnonymous
+                IsAnonymous = reply.IsAnonymous,
+                LikeCount = reply.LikeCount,
+                IsLikedByMessageOwner = reply.IsLikedByMessageOwner
             };
         }
 

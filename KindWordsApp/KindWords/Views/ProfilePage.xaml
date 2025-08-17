@@ -2,33 +2,235 @@
 <ContentPage x:Class="KindWords.Views.ProfilePage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:KindWords.ViewModels"
+             x:DataType="viewmodels:ProfileViewModel"
              Title="Profile"
-             BackgroundColor="#E6E6FA">
+             BackgroundColor="#F5F1E8">
 
-    <StackLayout Padding="20" Spacing="20" VerticalOptions="Center">
-        <Label Text="👤"
-               FontSize="64"
-               HorizontalOptions="Center" />
-        
-        <Label Text="Your Kindness Profile"
-               FontSize="24"
-               FontFamily="OpenSansSemibold"
-               TextColor="#663399"
-               HorizontalOptions="Center" />
-        
-        <Label Text="View your impact, achievements, and kindness stats"
-               FontSize="16"
-               FontFamily="OpenSansRegular"
-               TextColor="#2F4F4F"
-               HorizontalOptions="Center"
-               HorizontalTextAlignment="Center" />
-        
-        <Label Text="Coming soon! 🚧"
-               FontSize="14"
-               FontFamily="OpenSansRegular"
-               TextColor="#888"
-               HorizontalOptions="Center"
-               Margin="0,20,0,0" />
-    </StackLayout>
+    <RefreshView IsRefreshing="{Binding IsLoading}" 
+                 Command="{Binding RefreshCommand}">
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="20">
+                
+                <!-- User Profile Header -->
+                <Frame BackgroundColor="White" 
+                       CornerRadius="15" 
+                       Padding="20"
+                       HasShadow="True">
+                    <StackLayout Spacing="10">
+                        <Label Text="👤"
+                               FontSize="48"
+                               HorizontalOptions="Center" />
+                        
+                        <Label Text="{Binding UserName}"
+                               FontSize="24"
+                               FontFamily="OpenSansSemibold"
+                               TextColor="#663399"
+                               HorizontalOptions="Center" />
+                        
+                        <Label Text="{Binding UserEmail}"
+                               FontSize="14"
+                               FontFamily="OpenSansRegular"
+                               TextColor="#666"
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Statistics Dashboard -->
+                <Label Text="Your Kindness Impact" 
+                       FontSize="20" 
+                       FontFamily="OpenSansSemibold" 
+                       TextColor="#663399"
+                       Margin="0,10,0,0"
+                       IsVisible="{Binding HasData}" />
+
+                <!-- Main Stats Grid -->
+                <Grid ColumnDefinitions="*,*" 
+                      RowDefinitions="Auto,Auto" 
+                      ColumnSpacing="10" 
+                      RowSpacing="10"
+                      IsVisible="{Binding HasData}">
+                    
+                    <!-- Messages Sent -->
+                    <Frame Grid.Row="0" Grid.Column="0" 
+                           BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="15"
+                           HasShadow="True">
+                        <StackLayout Spacing="5">
+                            <Label Text="💌" 
+                                   FontSize="32" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding UserStatistics.MessagesSent}" 
+                                   FontSize="28" 
+                                   FontFamily="OpenSansSemibold" 
+                                   TextColor="#FF6B6B" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Messages Sent" 
+                                   FontSize="12" 
+                                   TextColor="#666" 
+                                   HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Replies Received -->
+                    <Frame Grid.Row="0" Grid.Column="1" 
+                           BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="15"
+                           HasShadow="True">
+                        <StackLayout Spacing="5">
+                            <Label Text="💬" 
+                                   FontSize="32" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding UserStatistics.RepliesReceived}" 
+                                   FontSize="28" 
+                                   FontFamily="OpenSansSemibold" 
+                                   TextColor="#4ECDC4" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Replies Received" 
+                                   FontSize="12" 
+                                   TextColor="#666" 
+                                   HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Replies Sent -->
+                    <Frame Grid.Row="1" Grid.Column="0" 
+                           BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="15"
+                           HasShadow="True">
+                        <StackLayout Spacing="5">
+                            <Label Text="✉️" 
+                                   FontSize="32" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding UserStatistics.RepliesSent}" 
+                                   FontSize="28" 
+                                   FontFamily="OpenSansSemibold" 
+                                   TextColor="#45B7D1" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Replies Sent" 
+                                   FontSize="12" 
+                                   TextColor="#666" 
+                                   HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Frame>
+
+                    <!-- Likes Received -->
+                    <Frame Grid.Row="1" Grid.Column="1" 
+                           BackgroundColor="White" 
+                           CornerRadius="12" 
+                           Padding="15"
+                           HasShadow="True">
+                        <StackLayout Spacing="5">
+                            <Label Text="❤️" 
+                                   FontSize="32" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="{Binding UserStatistics.LikesReceived}" 
+                                   FontSize="28" 
+                                   FontFamily="OpenSansSemibold" 
+                                   TextColor="#FF8A95" 
+                                   HorizontalOptions="Center" />
+                            <Label Text="Likes Received" 
+                                   FontSize="12" 
+                                   TextColor="#666" 
+                                   HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- Impact Ratio Card -->
+                <Frame BackgroundColor="White" 
+                       CornerRadius="15" 
+                       Padding="20"
+                       HasShadow="True"
+                       IsVisible="{Binding HasData}">
+                    <StackLayout Spacing="10">
+                        <Label Text="🎯 Your Impact Score" 
+                               FontSize="18" 
+                               FontFamily="OpenSansSemibold" 
+                               TextColor="#663399"
+                               HorizontalOptions="Center" />
+                        
+                        <Label Text="{Binding UserStatistics.ImpactRatioText}" 
+                               FontSize="36" 
+                               FontFamily="OpenSansSemibold" 
+                               TextColor="#FF6B6B" 
+                               HorizontalOptions="Center" />
+                        
+                        <Label Text="{Binding UserStatistics.ImpactDescription}" 
+                               FontSize="16" 
+                               FontFamily="OpenSansRegular" 
+                               TextColor="#663399"
+                               HorizontalOptions="Center" />
+                        
+                        <Label Text="(Replies received per message sent)" 
+                               FontSize="12" 
+                               TextColor="#888" 
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Activity Info -->
+                <Frame BackgroundColor="White" 
+                       CornerRadius="15" 
+                       Padding="20"
+                       HasShadow="True"
+                       IsVisible="{Binding HasData}">
+                    <StackLayout Spacing="8">
+                        <Label Text="📅 Activity" 
+                               FontSize="16" 
+                               FontFamily="OpenSansSemibold" 
+                               TextColor="#663399" />
+                        
+                        <Label Text="{Binding UserStatistics.JoinedText}" 
+                               FontSize="14" 
+                               TextColor="#666" />
+                        
+                        <Label Text="{Binding UserStatistics.DaysActiveText}" 
+                               FontSize="14" 
+                               TextColor="#666" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Loading State -->
+                <StackLayout IsVisible="{Binding IsLoading}" 
+                             VerticalOptions="Center" 
+                             Spacing="20" 
+                             Margin="0,50,0,0">
+                    <ActivityIndicator IsRunning="True" 
+                                       Color="#663399" 
+                                       Scale="1.5" 
+                                       HorizontalOptions="Center" />
+                    <Label Text="Loading your kindness stats..." 
+                           FontSize="16" 
+                           TextColor="#663399" 
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+                <!-- No Data State -->
+                <StackLayout IsVisible="{Binding HasData, Converter={StaticResource InverseBoolConverter}}" 
+                             VerticalOptions="Center" 
+                             Spacing="20" 
+                             Margin="0,50,0,0">
+                    <Label Text="📊" 
+                           FontSize="64" 
+                           HorizontalOptions="Center" />
+                    <Label Text="No stats yet!" 
+                           FontSize="20" 
+                           FontFamily="OpenSansSemibold" 
+                           TextColor="#663399" 
+                           HorizontalOptions="Center" />
+                    <Label Text="Send your first message to start building your kindness profile" 
+                           FontSize="16" 
+                           TextColor="#666" 
+                           HorizontalOptions="Center" 
+                           HorizontalTextAlignment="Center" />
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
 
 </ContentPage> 

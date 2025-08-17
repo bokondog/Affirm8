@@ -76,5 +76,44 @@ namespace KindWords.ViewModels
         {
             await LoadMyMessagesAsync();
         }
+
+        [RelayCommand]
+        public async Task ToggleLikeReplyAsync(Reply reply)
+        {
+            try
+            {
+                bool success;
+                if (reply.IsLikedByMessageOwner)
+                {
+                    // Unlike the reply
+                    success = await _messageService.UnlikeReplyAsync(reply.Id);
+                    if (success)
+                    {
+                        reply.IsLikedByMessageOwner = false;
+                        reply.LikeCount = Math.Max(0, reply.LikeCount - 1);
+                    }
+                }
+                else
+                {
+                    // Like the reply
+                    success = await _messageService.LikeReplyAsync(reply.Id);
+                    if (success)
+                    {
+                        reply.IsLikedByMessageOwner = true;
+                        reply.LikeCount++;
+                    }
+                }
+
+                if (!success)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to update like. Please try again.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error toggling like for reply {reply.Id}: {ex.Message}");
+                await Application.Current.MainPage.DisplayAlert("Error", "Something went wrong. Please try again.", "OK");
+            }
+        }
     }
 } 

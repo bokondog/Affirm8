@@ -14,6 +14,7 @@ namespace KindWordsApi.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<MessageReply> MessageReplies { get; set; }
+        public DbSet<ReplyLike> ReplyLikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,11 +77,32 @@ namespace KindWordsApi.Data
                       .HasForeignKey(e => e.MessageId)
                       .OnDelete(DeleteBehavior.Cascade);
                       
-                entity.HasOne(e => e.User)
-                      .WithMany()
-                      .HasForeignKey(e => e.UserId)
-                      .OnDelete(DeleteBehavior.NoAction); // Changed to NoAction to avoid cascade conflicts
-            });
+                                        entity.HasOne(e => e.User)
+                              .WithMany()
+                              .HasForeignKey(e => e.UserId)
+                              .OnDelete(DeleteBehavior.NoAction); // Changed to NoAction to avoid cascade conflicts
+                    });
+
+                    // Configure ReplyLike entity
+                    modelBuilder.Entity<ReplyLike>(entity =>
+                    {
+                        entity.HasKey(e => e.Id);
+                        
+                        // One reply can have multiple likes (though currently only message owner)
+                        entity.HasOne(e => e.Reply)
+                              .WithMany(r => r.Likes)
+                              .HasForeignKey(e => e.ReplyId)
+                              .OnDelete(DeleteBehavior.Cascade);
+
+                        // One user (message owner) can like multiple replies
+                        entity.HasOne(e => e.MessageOwner)
+                              .WithMany()
+                              .HasForeignKey(e => e.MessageOwnerId)
+                              .OnDelete(DeleteBehavior.NoAction);
+
+                        // Prevent duplicate likes from same user on same reply
+                        entity.HasIndex(e => new { e.ReplyId, e.MessageOwnerId }).IsUnique();
+                    });
+                }
+            }
         }
-    }
-}

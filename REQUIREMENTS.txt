@@ -1,0 +1,67 @@
+1
+C# Mobile 24-25: Project
+1. Inleiding
+Het project van C# Mobile wordt individueel gemaakt en het onderwerp van de applicatie mag zelf gekozen worden. Het onderwerp dient te voldoen aan de vereisten zoals beschreven in punt 2 en dient voorgesteld te worden o.b.v. mock-ups. Na goedkeuring mag de applicatie effectief uitgewerkt worden.
+2. Vereisten
+2.1 Minimale vereisten
+Onderstaande vereisten dienen minimaal opgenomen te worden in de mobiele applicatie:
+• De applicatie dient ontwikkeld te worden in .NET MAUI voor zowel Android als Windows
+• De applicatie bevat minstens 5 schermen waar tussen genavigeerd kan worden
+• Flyout en/of Tab navigatie dient voorzien te worden
+• De applicatie bevat een vorm van inloggen
+• Styles worden op minstens 4 plaatsen (her-)gebruikt en worden beschikbaar gemaakt in App.xaml
+• Minstens 1 CollectionView waarbij selectie voorzien wordt om detailinformatie van het geselecteerd item op te vragen
+• Er kan gefilterd (zoekterm, soort, …) of gerangschikt (grootte, prijs, rating, …) worden op de elementen in de lijst
+• De applicatie bevat een settingspagina
+• Data binding wordt op verschillende plaatsen in de applicatie correct toegepast
+• Er wordt gebruikgemaakt compiled bindings
+• Er is minstens één nuttige converter en behavior
+• MVVM patroon is aanwezig in de applicatie en de verschillende componenten kunnen worden benoemd
+• De gegevens worden opgehaald en bewaard in een externe database. De database wordt benaderd via een eigen ontwikkelde REST service Opgelet: de applicatie spreekt deze database nooit rechtstreeks aan. De transacties verlopen steeds via de REST service
+2.2 Extra’s
+Hieronder enkele voorbeelden van extra’s. De ingezette extra’s moeten natuurlijk nuttig zijn binnen de applicatie:
+• Media toevoegen: foto’s en/of filmpjes maken en koppelen in de applicatie
+• Logo applicatie
+• Splash screen bij het opstarten
+• Meer geavanceerde queries op de database (zoekfunctionaliteit, meerdere tabellen met joins, …)
+• Geavanceerde CollectionView implementeren met bijvoorbeeld context menu’s, pull to refresh, grouping,…
+• Externe componenten van bijvoorbeeld Syncfusion gebruiken (https://syncfusion.com/)
+• Localization van strings toevoegen
+• Meer geavanceerde vorm van MVVM gebruiken: Messaging,…
+• Implementeren van gestures interactie zoals bijvoorbeeld Drag&Drop, Pan, Pinch, Swipe, Tap,…
+2
+• Mooie layouts integreren/nabouwen m.b.v. bijvoorbeeld externe toolkits. Vergeet zeker de bron niet vermelden
+• Voorzie de applicatie van een SQLite database met basis functionaliteit (lezen, updaten, aanmaken en verwijderen) voor zelf gedefinieerde objecten (modelklassen)
+• Andere extra’s zijn zeker mogelijk, gelieve kort een bericht te sturen ter goedkeuring
+2.3 Code kwaliteit
+De code moet verzorgd op de GitHub repository aanwezig zijn. Dit wil zeggen dat:
+- er een consistente stijl aanwezig is
+- de gangbare conventies in .NET gevolgd worden
+- er geen overbodige code in commentaar staat
+- de code duidelijk leesbaar is door het gebruik van duidelijke klassenamen, properties, variabelen enzovoort.
+2.4 Werking applicatie
+De applicatie moet vlot opstarten en bruikbaar zijn. Het is niet de bedoeling dat er voor onderdelen van het programma een heropstart nodig is of code veranderd moet worden. De uiteindelijke inlevering bevat dus een functionele mobiele applicatie.
+De requirements die op voorhand werden afgesproken moeten natuurlijk zoveel mogelijk aanwezig zijn in de uiteindelijke applicatie.
+3. Puntenverdeling
+• 30% Minimale vereisten (zie punt 2.1)
+• 20% Extra’s (zie punt 2.2)
+o Duidelijk aangeven tijdens demo wat extra is
+• 20% Code en algemene werking (zie punt 2.3 en 2.4)
+• 5% GitHub repository
+o Verzorgde README
+o Commit historiek
+o Bronnen
+• 15% Demo en verdediging
+o Presentatie van de app
+o Video van de app
+o Inzichtsvragen
+• 10% PE: Presentatie onderwerp o.b.v. mock-ups
+4. Belangrijke data
+• 14/10/2024: Presenteren onderwerp o.b.v. mock-ups
+• 12/01/2025: Indienen project + demofilmpje van applicatie
+• Examenperiode januari Demo en verdediging project
+Herkansing
+• 17/08/2025 Indienen project + demofilmpje van applicatie
+• Examenperiode aug/sept Demo en verdediging project
+5. GitHub repository
+Gebruik de GitHub Classroom link op Blackboard om je persoonlijke repository aan te maken!

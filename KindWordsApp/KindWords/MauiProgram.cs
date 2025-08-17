@@ -29,6 +29,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<SendMessageViewModel>();
 		builder.Services.AddTransient<InboxViewModel>();
 		builder.Services.AddTransient<MyMessagesViewModel>();
+		builder.Services.AddTransient<ProfileViewModel>();
 		builder.Services.AddTransient<AuthenticationViewModel>();
 
 		// Register Views

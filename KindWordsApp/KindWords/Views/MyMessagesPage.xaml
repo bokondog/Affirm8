@@ -3,8 +3,8 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:KindWords.Models"
-             x:DataType="viewmodels:MyMessagesViewModel"
              xmlns:viewmodels="clr-namespace:KindWords.ViewModels"
+             x:DataType="viewmodels:MyMessagesViewModel"
              Title="My Messages"
              BackgroundColor="#F5F5DC">
 
@@ -157,14 +157,43 @@
                                                            Padding="12"
                                                            HasShadow="False"
                                                            Margin="16,0,0,0">
-                                                        <StackLayout Spacing="4">
+                                                        <StackLayout Spacing="8">
                                                             <Label Text="{Binding Content}"
                                                                    FontSize="14"
                                                                    TextColor="#2F4F4F"
                                                                    LineBreakMode="WordWrap" />
-                                                            <Label Text="{Binding CreatedAt, StringFormat='Received on {0:MMM dd, h:mm tt}'}"
-                                                                   FontSize="11"
-                                                                   TextColor="#8B7355" />
+                                                            
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                
+                                                                <Label Grid.Column="0"
+                                                                       Text="{Binding TimeAgo}"
+                                                                       FontSize="11"
+                                                                       TextColor="#8B7355"
+                                                                       VerticalOptions="Center" />
+                                                                
+                                                                <!-- Like Button and Count -->
+                                                                <StackLayout Grid.Column="1" 
+                                                                             Orientation="Horizontal" 
+                                                                             Spacing="4">
+                                                                    <Button Text="{Binding IsLikedByMessageOwner, Converter={StaticResource BoolToHeartConverter}}"
+                                                                            BackgroundColor="Transparent"
+                                                                            TextColor="{Binding IsLikedByMessageOwner, Converter={StaticResource BoolToLikeColorConverter}}"
+                                                                            FontSize="18"
+                                                                            Padding="4"
+                                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MyMessagesViewModel}}, Path=ToggleLikeReplyCommand}"
+                                                                            CommandParameter="{Binding .}" />
+                                                                    
+                                                                    <Label Text="{Binding LikeCount}"
+                                                                           FontSize="11"
+                                                                           TextColor="#8B7355"
+                                                                           VerticalOptions="Center"
+                                                                           IsVisible="{Binding LikeCount, Converter={StaticResource IsNotZeroConverter}}" />
+                                                                </StackLayout>
+                                                            </Grid>
                                                         </StackLayout>
                                                     </Frame>
                                                 </DataTemplate>

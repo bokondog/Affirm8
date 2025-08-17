@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KindWordsApi.Data;
 using KindWordsApi.Models;
 using KindWordsApi.Services;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -129,6 +131,50 @@ namespace KindWordsApi.Controllers
             return newHash == hash;
         }
 
+        [HttpGet("statistics")]
+        [Authorize]
+        public async Task<ActionResult<UserStatisticsDto>> GetUserStatistics()
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst("userId")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim == null || !Guid.TryParse(userIdClaim, out var userId))
+                    return Unauthorized();
+
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null)
+                    return NotFound("User not found");
+
+                // Calculate statistics
+                var messagesSent = await _context.Messages.CountAsync(m => m.UserId == userId);
+                var repliesReceived = await _context.Replies.CountAsync(r => r.Message.UserId == userId);
+                var repliesSent = await _context.Replies.CountAsync(r => r.UserId == userId);
+                var likesReceived = await _context.ReplyLikes
+                    .Include(rl => rl.Reply)
+                    .ThenInclude(r => r.Message)
+                    .CountAsync(rl => rl.Reply.UserId == userId);
+
+                var impactRatio = repliesSent > 0 ? (double)likesReceived / repliesSent : 0.0;
+                var daysActive = (DateTime.UtcNow - user.JoinedAt).Days;
+
+                var statistics = new UserStatisticsDto
+                {
+                    MessagesSent = messagesSent,
+                    RepliesReceived = repliesReceived,
+                    RepliesSent = repliesSent,
+                    LikesReceived = likesReceived,
+                    ImpactRatio = Math.Round(impactRatio, 2),
+                    JoinedAt = user.JoinedAt,
+                    DaysActive = Math.Max(1, daysActive) // At least 1 day
+                };
+
+                return Ok(statistics);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to get user statistics", error = ex.Message });
+            }
+        }
 
     }
 } 
