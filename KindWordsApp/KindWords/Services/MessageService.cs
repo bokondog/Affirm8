@@ -1,24 +1,23 @@
 using KindWords.Models;
 using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Text;
 
 namespace KindWords.Services
 {
     /// <summary>
-    /// Service for managing messages and replies with proper business logic
+    /// Service for managing messages and replies via REST API
     /// </summary>
     public class MessageService
     {
-        private List<Message> _messages = new();
-        private List<Reply> _replies = new();
-        private int _nextMessageId = 1;
-        private int _nextReplyId = 1;
+        private readonly HttpClient _httpClient;
         private readonly AuthenticationService _authService;
+        private const string BaseUrl = "https://localhost:7001/api";
 
-        public MessageService(AuthenticationService authService)
+        public MessageService(IHttpClientFactory httpClientFactory, AuthenticationService authService)
         {
+            _httpClient = httpClientFactory.CreateClient();
             _authService = authService;
-            // Add some sample data for demo
-            SeedSampleData();
         }
 
         /// <summary>
@@ -26,18 +25,30 @@ namespace KindWords.Services
         /// </summary>
         public async Task<List<Message>> GetInboxMessagesAsync(int count = 5)
         {
-            await Task.Delay(100); // Simulate API delay
-            
-            var currentUserId = _authService.GetCurrentUserId();
-            
-            // Filter out messages the user has already replied to, and their own messages
-            var availableMessages = _messages
-                .Where(m => m.UserId != currentUserId && !m.HasUserReplied(currentUserId))
-                .OrderBy(x => Guid.NewGuid()) // Random order
-                .Take(count)
-                .ToList();
-            
-            return availableMessages;
+            try
+            {
+                if (!AddAuthorizationHeader())
+                {
+                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot get inbox messages");
+                    return new List<Message>();
+                }
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/messages/inbox?count={count}");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var messageDtos = JsonSerializer.Deserialize<List<MessageDto>>(json, GetJsonOptions());
+                    return messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                }
+                
+                return new List<Message>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting inbox messages: {ex.Message}");
+                return new List<Message>();
+            }
         }
 
         /// <summary>
@@ -45,80 +56,129 @@ namespace KindWords.Services
         /// </summary>
         public async Task<List<Message>> GetMyMessagesAsync()
         {
-            await Task.Delay(100);
-            
-            var currentUserId = _authService.GetCurrentUserId();
-            var userMessages = _messages
-                .Where(m => m.UserId == currentUserId)
-                .OrderByDescending(m => m.CreatedAt)
-                .ToList();
-
-            // For each message, load all replies (only creator can see all replies)
-            foreach (var message in userMessages)
+            try
             {
-                message.AllReplies = _replies
-                    .Where(r => r.MessageId == message.Id)
-                    .OrderBy(r => r.CreatedAt)
-                    .ToList();
+                if (!AddAuthorizationHeader())
+                {
+                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot get my messages");
+                    return new List<Message>();
+                }
+
+                var response = await _httpClient.GetAsync($"{BaseUrl}/messages/my-messages");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var messageDtos = JsonSerializer.Deserialize<List<MessageDto>>(json, GetJsonOptions());
+                    return messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                }
+                
+                return new List<Message>();
             }
-            
-            return userMessages;
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting my messages: {ex.Message}");
+                return new List<Message>();
+            }
         }
 
         public async Task<List<Reply>> GetRepliesForMessageAsync(int messageId)
         {
-            await Task.Delay(100);
-            return _replies.Where(r => r.MessageId == messageId).OrderBy(r => r.CreatedAt).ToList();
+            try
+            {
+                AddAuthorizationHeader();
+                var response = await _httpClient.GetAsync($"{BaseUrl}/messages/{messageId}");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var messageDto = JsonSerializer.Deserialize<MessageDto>(json, GetJsonOptions());
+                    return messageDto?.Replies?.Select(ConvertReplyFromDto).ToList() ?? new List<Reply>();
+                }
+                
+                return new List<Reply>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting replies for message {messageId}: {ex.Message}");
+                return new List<Reply>();
+            }
         }
 
         public async Task<Message> SendMessageAsync(string content, string category)
         {
-            var currentUserId = _authService.GetCurrentUserId();
-            
-            var message = new Message
+            try
             {
-                Id = _nextMessageId++,
-                Content = content,
-                Category = category,
-                UserId = currentUserId,
-                CreatedAt = DateTime.Now,
-                RepliedByUserIds = new List<Guid>() // Initialize empty list
-            };
-
-            _messages.Add(message);
-            return await Task.FromResult(message);
+                if (!AddAuthorizationHeader())
+                {
+                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot send message");
+                    return new Message();
+                }
+                
+                var request = new CreateMessageRequest
+                {
+                    Content = content,
+                    Category = category
+                };
+                
+                var json = JsonSerializer.Serialize(request, GetJsonOptions());
+                var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                
+                var response = await _httpClient.PostAsync($"{BaseUrl}/messages", httpContent);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Message sent successfully: {responseJson}");
+                    var messageDto = JsonSerializer.Deserialize<MessageDto>(responseJson, GetJsonOptions());
+                    return messageDto != null ? ConvertFromDto(messageDto) : new Message();
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Failed to send message. Status: {response.StatusCode}, Content: {errorContent}");
+                }
+                
+                return new Message();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error sending message: {ex.Message}");
+                return new Message();
+            }
         }
 
         public async Task<Reply> SendReplyAsync(int messageId, string content)
         {
-            var currentUserId = _authService.GetCurrentUserId();
-            
-            var reply = new Reply
+            try
             {
-                Id = _nextReplyId++,
-                MessageId = messageId,
-                Content = content,
-                UserId = currentUserId,
-                CreatedAt = DateTime.Now
-            };
-
-            _replies.Add(reply);
-
-            // Update message reply count and track that this user has replied
-            var message = _messages.FirstOrDefault(m => m.Id == messageId);
-            if (message != null)
-            {
-                message.ReplyCount++;
-                message.HasBeenRepliedTo = true;
+                AddAuthorizationHeader();
                 
-                // Track that this user has replied to this message
-                if (!message.RepliedByUserIds.Contains(currentUserId))
+                var request = new CreateReplyRequest
                 {
-                    message.RepliedByUserIds.Add(currentUserId);
+                    MessageId = messageId,
+                    Content = content
+                };
+                
+                var json = JsonSerializer.Serialize(request, GetJsonOptions());
+                var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                
+                var response = await _httpClient.PostAsync($"{BaseUrl}/messages/{messageId}/reply", httpContent);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseJson = await response.Content.ReadAsStringAsync();
+                    var replyDto = JsonSerializer.Deserialize<ReplyDto>(responseJson, GetJsonOptions());
+                    return replyDto != null ? ConvertReplyFromDto(replyDto) : new Reply();
                 }
+                
+                return new Reply();
             }
-
-            return await Task.FromResult(reply);
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error sending reply: {ex.Message}");
+                return new Reply();
+            }
         }
 
         /// <summary>
@@ -126,120 +186,123 @@ namespace KindWords.Services
         /// </summary>
         public async Task<List<Message>> SearchInboxMessagesAsync(string searchTerm, string? category = null)
         {
-            await Task.Delay(100);
-            
-            var currentUserId = _authService.GetCurrentUserId();
-            
-            var filtered = _messages.Where(m => 
-                m.UserId != currentUserId && // Not user's own messages
-                !m.HasUserReplied(currentUserId) && // User hasn't replied yet
-                m.Content.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
-            
-            if (!string.IsNullOrEmpty(category) && category != "All")
+            try
             {
-                filtered = filtered.Where(m => m.Category == category);
-            }
-            
-            return filtered.OrderByDescending(m => m.CreatedAt).ToList();
-        }
-
-        private void SeedSampleData()
-        {
-            // Create some dummy users for demo
-            var user1 = Guid.Parse("00000000-0000-0000-0000-000000000001");
-            var user2 = Guid.Parse("00000000-0000-0000-0000-000000000002");
-            var user3 = Guid.Parse("00000000-0000-0000-0000-000000000003");
-            
-            var sampleMessages = new[]
-            {
-                new Message { 
-                    Id = _nextMessageId++, 
-                    Content = "I'm feeling overwhelmed with school lately. Could use some encouragement.", 
-                    Category = "Support", 
-                    UserId = user2, // Different user so current user can see it
-                    CreatedAt = DateTime.Now.AddHours(-2),
-                    RepliedByUserIds = new List<Guid>()
-                },
-                new Message { 
-                    Id = _nextMessageId++, 
-                    Content = "Just got my first job! Can't believe it actually happened!", 
-                    Category = "Celebration", 
-                    UserId = user3,
-                    CreatedAt = DateTime.Now.AddHours(-4),
-                    RepliedByUserIds = new List<Guid>()
-                },
-                new Message { 
-                    Id = _nextMessageId++, 
-                    Content = "Grateful for my family who supports me through everything.", 
-                    Category = "Gratitude", 
-                    UserId = user2,
-                    CreatedAt = DateTime.Now.AddHours(-6),
-                    RepliedByUserIds = new List<Guid>()
-                },
-                new Message { 
-                    Id = _nextMessageId++, 
-                    Content = "Tomorrow is a new day and I believe things will get better.", 
-                    Category = "Hope", 
-                    UserId = user3,
-                    CreatedAt = DateTime.Now.AddHours(-8),
-                    RepliedByUserIds = new List<Guid>()
-                },
-                new Message { 
-                    Id = _nextMessageId++, 
-                    Content = "Struggling to see the light at the end of the tunnel right now.", 
-                    Category = "Support", 
-                    UserId = user2,
-                    CreatedAt = DateTime.Now.AddHours(-10),
-                    RepliedByUserIds = new List<Guid>()
-                }
-            };
-
-            _messages.AddRange(sampleMessages);
-
-            // Add some sample replies
-            var sampleReplies = new[]
-            {
-                new Reply { 
-                    Id = _nextReplyId++, 
-                    MessageId = 1, 
-                    Content = "You're stronger than you know! Take it one day at a time. 💪", 
-                    UserId = user3,
-                    CreatedAt = DateTime.Now.AddHours(-1) 
-                },
-                new Reply { 
-                    Id = _nextReplyId++, 
-                    MessageId = 2, 
-                    Content = "Congratulations! Your hard work paid off! 🎉", 
-                    UserId = user1,
-                    CreatedAt = DateTime.Now.AddHours(-3) 
-                },
-                new Reply { 
-                    Id = _nextReplyId++, 
-                    MessageId = 5, 
-                    Content = "The storm will pass. You're not alone in this journey. 🌈", 
-                    UserId = user3,
-                    CreatedAt = DateTime.Now.AddHours(-9) 
-                }
-            };
-
-            _replies.AddRange(sampleReplies);
-
-            // Update message reply counts and track replied users
-            foreach (var reply in sampleReplies)
-            {
-                var message = _messages.FirstOrDefault(m => m.Id == reply.MessageId);
-                if (message != null)
+                AddAuthorizationHeader();
+                var url = $"{BaseUrl}/messages/search?term={Uri.EscapeDataString(searchTerm)}";
+                if (!string.IsNullOrEmpty(category) && category != "All")
                 {
-                    message.ReplyCount++;
-                    message.HasBeenRepliedTo = true;
-                    
-                    // Track who replied
-                    if (!message.RepliedByUserIds.Contains(reply.UserId))
-                    {
-                        message.RepliedByUserIds.Add(reply.UserId);
-                    }
+                    url += $"&category={Uri.EscapeDataString(category)}";
                 }
+                
+                var response = await _httpClient.GetAsync(url);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var messageDtos = JsonSerializer.Deserialize<List<MessageDto>>(json, GetJsonOptions());
+                    return messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                }
+                
+                return new List<Message>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error searching messages: {ex.Message}");
+                return new List<Message>();
             }
         }
+
+        #region Helper Methods
+
+        private bool AddAuthorizationHeader()
+        {
+            var token = _authService.CurrentUser?.Token;
+            if (!string.IsNullOrEmpty(token))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = 
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                return true;
+            }
+            return false;
+        }
+
+        private JsonSerializerOptions GetJsonOptions()
+        {
+            return new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+        }
+
+        private Message ConvertFromDto(MessageDto dto)
+        {
+            return new Message
+            {
+                Id = dto.Id,
+                Content = dto.Content,
+                Category = dto.Category,
+                CreatedAt = dto.CreatedAt,
+                UserId = dto.UserId,
+                IsAnonymous = dto.IsAnonymous,
+                ReplyCount = dto.ReplyCount,
+                HasBeenRepliedTo = dto.HasBeenRepliedTo,
+                RepliedByUserIds = dto.RepliedByUserIds,
+                AllReplies = dto.Replies?.Select(ConvertReplyFromDto).ToList() ?? new List<Reply>()
+            };
+        }
+
+        private Reply ConvertReplyFromDto(ReplyDto dto)
+        {
+            return new Reply
+            {
+                Id = dto.Id,
+                MessageId = dto.MessageId,
+                Content = dto.Content,
+                CreatedAt = dto.CreatedAt,
+                UserId = dto.UserId,
+                IsAnonymous = dto.IsAnonymous
+            };
+        }
+
+        #endregion
+    }
+
+    // DTO classes for API communication
+    public class CreateMessageRequest
+    {
+        public string Content { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+    }
+
+    public class CreateReplyRequest
+    {
+        public int MessageId { get; set; }
+        public string Content { get; set; } = string.Empty;
+    }
+
+    public class MessageDto
+    {
+        public int Id { get; set; }
+        public string Content { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+        public Guid UserId { get; set; }
+        public bool IsAnonymous { get; set; }
+        public int ReplyCount { get; set; }
+        public bool HasBeenRepliedTo { get; set; }
+        public List<ReplyDto> Replies { get; set; } = new();
+        public List<Guid> RepliedByUserIds { get; set; } = new();
+    }
+
+    public class ReplyDto
+    {
+        public int Id { get; set; }
+        public int MessageId { get; set; }
+        public string Content { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+        public Guid UserId { get; set; }
+        public bool IsAnonymous { get; set; }
     }
 } 

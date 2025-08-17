@@ -12,6 +12,7 @@ namespace KindWords.ViewModels
     public partial class InboxViewModel : ObservableObject
     {
         private readonly MessageService _messageService;
+        private readonly AuthenticationService _authService;
 
         [ObservableProperty]
         private ObservableCollection<Message> messages = new();
@@ -43,9 +44,24 @@ namespace KindWords.ViewModels
             "Gratitude"
         };
 
-        public InboxViewModel(MessageService messageService)
+        public InboxViewModel(MessageService messageService, AuthenticationService authService)
         {
             _messageService = messageService;
+            _authService = authService;
+            
+            // Listen for authentication changes
+            _authService.CurrentUserChanged += OnCurrentUserChanged;
+        }
+
+        private void OnCurrentUserChanged(User? user)
+        {
+            // Clear messages when user logs out
+            if (user == null)
+            {
+                Messages.Clear();
+                SelectedMessage = null;
+                ReplyContent = string.Empty;
+            }
         }
 
         public async Task InitializeAsync()

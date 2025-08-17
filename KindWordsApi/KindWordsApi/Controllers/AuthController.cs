@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using KindWordsApi.Data;
 using KindWordsApi.Models;
 using KindWordsApi.Services;
 using System.Security.Cryptography;
@@ -10,11 +12,13 @@ namespace KindWordsApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly DataService _dataService;
+        private readonly ApplicationDbContext _context;
+        private readonly JwtService _jwtService;
 
-        public AuthController(DataService dataService)
+        public AuthController(ApplicationDbContext context, JwtService jwtService)
         {
-            _dataService = dataService;
+            _context = context;
+            _jwtService = jwtService;
         }
 
         [HttpPost("register")]
@@ -23,7 +27,8 @@ namespace KindWordsApi.Controllers
             try
             {
                 // Check if user already exists
-                var existingUser = _dataService.GetUserByEmail(request.Email);
+                var existingUser = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
                 if (existingUser != null)
                 {
                     return BadRequest(new { message = "User with this email already exists" });
@@ -33,7 +38,19 @@ namespace KindWordsApi.Controllers
                 var passwordHash = HashPassword(request.Password);
 
                 // Create user
-                var user = _dataService.CreateUser(request.Email, passwordHash, request.NickName);
+                var user = new User
+                {
+                    Email = request.Email,
+                    PasswordHash = passwordHash,
+                    NickName = request.NickName,
+                    JoinedAt = DateTime.UtcNow
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                // Generate JWT token
+                var token = _jwtService.GenerateToken(user.Id, user.Email, user.NickName);
 
                 // Create response
                 var response = new LoginResponse
@@ -45,7 +62,7 @@ namespace KindWordsApi.Controllers
                         NickName = user.NickName,
                         JoinedAt = user.JoinedAt
                     },
-                    Token = GenerateToken(user.Id) // Simple token for now
+                    Token = token
                 };
 
                 return Ok(response);
@@ -62,7 +79,8 @@ namespace KindWordsApi.Controllers
             try
             {
                 // Find user
-                var user = _dataService.GetUserByEmail(request.Email);
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
                 if (user == null)
                 {
                     return BadRequest(new { message = "Invalid email or password" });
@@ -74,6 +92,9 @@ namespace KindWordsApi.Controllers
                     return BadRequest(new { message = "Invalid email or password" });
                 }
 
+                // Generate JWT token
+                var token = _jwtService.GenerateToken(user.Id, user.Email, user.NickName);
+
                 // Create response
                 var response = new LoginResponse
                 {
@@ -84,7 +105,7 @@ namespace KindWordsApi.Controllers
                         NickName = user.NickName,
                         JoinedAt = user.JoinedAt
                     },
-                    Token = GenerateToken(user.Id)
+                    Token = token
                 };
 
                 return Ok(response);
@@ -108,10 +129,6 @@ namespace KindWordsApi.Controllers
             return newHash == hash;
         }
 
-        private string GenerateToken(Guid userId)
-        {
-            // Simple token for development - in production use proper JWT
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes($"{userId}:{DateTime.UtcNow:yyyy-MM-dd}"));
-        }
+
     }
 } 

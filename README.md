@@ -6,7 +6,7 @@ Email: glenn.bokondo@student.pxl.be
 
 ## 📖 Beschrijving
 
-**Kind Words** is een volledige full-stack sociale affirmatie platform geïnspireerd op het indie spel waar gebruikers anoniem bemoedigende berichten kunnen versturen en ontvangen. Het project bestaat uit een **.NET MAUI frontend** en een **ASP.NET Core Web API backend**.
+**Kind Words** is een volledige full-stack sociale affirmatie platform geïnspireerd op het indie spel waar gebruikers anoniem bemoedigende berichten kunnen versturen en ontvangen. Het project bestaat uit een **.NET MAUI frontend**, een **ASP.NET Core Web API backend**, en een **SQL Server database** - volledig voldoend aan de schooleisen waarbij de app **nooit rechtstreeks de database aanspreekt**.
 
 ### 🎯 Concept
 
@@ -21,13 +21,16 @@ Email: glenn.bokondo@student.pxl.be
 
 ```
 📱 Kind Words MAUI App (.NET 8)
-    ↕️ HTTPS API Calls
+    ↕️ HTTPS REST API Calls (JWT)
 🔧 Kind Words API (.NET 9)
+    ↕️ Entity Framework Core
+🗄️ SQL Server Database (LocalDB)
 ```
 
 **Frontend**: .NET MAUI cross-platform app (Android, Windows)
 **Backend**: ASP.NET Core Web API met JWT authenticatie
-**Database**: In-memory (klaar voor Entity Framework uitbreiding)
+**Database**: SQL Server met Entity Framework Core + Migrations
+**Compliance**: **MAUI spreekt database NOOIT rechtstreeks aan** ✅
 
 ## ✨ Features
 
@@ -41,12 +44,20 @@ Email: glenn.bokondo@student.pxl.be
 
 ### 🔧 API Features
 
-- **RESTful Endpoints** voor authenticatie (register/login)
-- **JWT Authenticatie** met custom token generatie
-- **In-memory Storage** (ConcurrentDictionary - development only)
+- **Complete REST Endpoints** voor auth en message management
+- **JWT Bearer Authenticatie** met proper token validatie
+- **SQL Server Database** met Entity Framework Core 8.0
+- **Database Migrations** en automatische seeding
 - **CORS Configuratie** voor MAUI app integratie
 - **Swagger UI** voor API documentatie en testing
 - **Port Configuratie** (HTTPS: 7001)
+
+### 🗄️ Database Features
+
+- **Auto-Migration** op eerste start
+- **Test Data Seeding** met 3 gebruikers en sample berichten
+- **Relationele Structuur** (Users, Messages, Replies, MessageReplies)
+- **Connection String**: LocalDB automatisch geconfigureerd
 
 ### 🎯 Kernfunctionaliteit
 
@@ -55,7 +66,10 @@ Email: glenn.bokondo@student.pxl.be
 - ✅ **Custom converters** en UI componenten
 - ✅ **Inbox business logic** (willekeurige berichten, reply filtering)
 - ✅ **My Messages** functionaliteit (eigen berichten + alle replies)
-- ✅ **Authentication flow** (ready voor API integratie)
+- ✅ **Full REST API integratie** met realtime database communication
+- ✅ **SQL Server Database** met persistente data storage
+- ✅ **JWT Authentication** beschermt alle API endpoints
+- ✅ **Database Seeding** met test gebruikers en berichten
 
 ## 🚀 Hoe te Starten
 
@@ -63,7 +77,16 @@ Email: glenn.bokondo@student.pxl.be
 
 1. Open `KindWords-FullStack.sln` in Visual Studio 2022
 2. Druk op **F5** - beide projecten starten automatisch
-3. API start eerst, MAUI app verbindt zich daarna
+3. API start eerst, database wordt automatisch aangemaakt en geseeded
+4. MAUI app verbindt zich daarna met de API
+
+### 🔐 Test Accounts
+
+Login met een van deze test accounts:
+
+- **Email**: `alice@kindwords.com` | **Wachtwoord**: `password123`
+- **Email**: `bob@kindwords.com` | **Wachtwoord**: `password123`
+- **Email**: `charlie@kindwords.com` | **Wachtwoord**: `password123`
 
 ### Option 2: Command Line Scripts
 
@@ -89,21 +112,25 @@ dotnet run --framework net8.0-windows10.0.19041.0
 
 ## 📊 Project Status
 
-### ✅ Voltooid
+### ✅ Volledig Voltooid
 
 - **Multi-project configuratie** met Visual Studio F5 startup
 - **Complete MAUI UI** voor alle schermen
 - **MVVM architectuur** met proper separation
 - **Authentication API** met register/login endpoints
 - **JWT token system** werkend tussen API en MAUI
-- **In-memory data storage** voor development
+- **SQL Server Database** met Entity Framework Core
+- **Message API endpoints** (send/inbox/my-messages/reply/search)
+- **Database integratie** met automatische migrations en seeding
+- **Message business logic** op API niveau (inbox filtering, permissions)
+- **School requirement compliance** (MAUI → REST API → Database)
 
-### 🔧 In Ontwikkeling
+### 🔧 Optionele Uitbreidingen
 
-- **Message API endpoints** (send/inbox/my-messages)
-- **Database integratie** met Entity Framework + SQL
-- **Message business logic** op API niveau
-- **Real-time updates** tussen API en MAUI
+- **Real-time updates** met SignalR
+- **Production deployment** naar Azure/AWS
+- **App store packaging** voor Android/Windows
+- **Profile statistics** uitbreiding
 
 ## 📋 Screenshots
 

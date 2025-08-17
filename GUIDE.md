@@ -8,20 +8,20 @@ This guide explains **how Kind Words works** from a software developer's perspec
 
 ## 🏗️ **Architecture Overview**
 
-### **High-Level Architecture**
+### **High-Level Architecture (School Requirement Compliant)**
 
 ```
-┌─────────────────────┐    HTTPS/7001     ┌─────────────────────┐
-│   Kind Words MAUI   │◄──────────────────►│  Kind Words API     │
-│   (.NET 8)          │                    │  (.NET 9)           │
-│                     │                    │                     │
-│ ┌─────────────────┐ │                    │ ┌─────────────────┐ │
-│ │  ViewModels     │ │                    │ │  Controllers    │ │
-│ │  (MVVM)         │ │                    │ │  (REST API)     │ │
-│ └─────────────────┘ │                    │ └─────────────────┘ │
-│ ┌─────────────────┐ │                    │ ┌─────────────────┐ │
-│ │  Services       │ │                    │ │  Services       │ │
-│ │  (HTTP calls)   │ │                    │ │  (Business)     │ │
+┌─────────────────────┐    HTTPS/7001     ┌─────────────────────┐    EF Core    ┌─────────────────────┐
+│   Kind Words MAUI   │◄──────────────────►│  Kind Words API     │◄─────────────►│   SQL Server DB     │
+│   (.NET 8)          │    JWT Bearer      │  (.NET 9)           │   Migrations  │   (LocalDB)         │
+│                     │                    │                     │               │                     │
+│ ┌─────────────────┐ │                    │ ┌─────────────────┐ │               │ ┌─────────────────┐ │
+│ │  ViewModels     │ │                    │ │  Controllers    │ │               │ │  Users Table    │ │
+│ │  (MVVM)         │ │                    │ │  (REST API)     │ │               │ │  Messages Table │ │
+│ └─────────────────┘ │                    │ └─────────────────┘ │               │ │  Replies Table  │ │
+│ ┌─────────────────┐ │                    │ ┌─────────────────┐ │               │ │  MessageReplies │ │
+│ │  Services       │ │                    │ │  EF DbContext   │ │               │ └─────────────────┘ │
+│ │  (HTTP calls)   │ │                    │ │  (Database)     │ │               └─────────────────────┘
 │ └─────────────────┘ │                    │ └─────────────────┘ │
 │ ┌─────────────────┐ │                    │ ┌─────────────────┐ │
 │ │  Views (XAML)   │ │                    │ │  Models/DTOs    │ │
@@ -29,15 +29,18 @@ This guide explains **how Kind Words works** from a software developer's perspec
 └─────────────────────┘                    └─────────────────────┘
 ```
 
+**✅ School Requirement Compliance:** _"De applicatie spreekt deze database nooit rechtstreeks aan. De transacties verlopen steeds via de REST service"_
+
 ### **Technology Stack**
 
 - **Frontend**: .NET MAUI 8.0 (Cross-platform: Android, Windows)
 - **Backend**: ASP.NET Core Web API (.NET 9)
-- **Database**: In-memory storage (ConcurrentDictionary) - development only
-- **Architecture**: MVVM (Frontend) + REST API (Backend)
-- **Communication**: HTTPS/JSON via HttpClient
-- **Authentication**: Custom JWT implementation (simple tokens)
+- **Database**: SQL Server with Entity Framework Core 8.0
+- **Architecture**: MVVM (Frontend) + REST API (Backend) + EF Core (Database)
+- **Communication**: HTTPS/JSON via HttpClient with JWT Bearer tokens
+- **Authentication**: JWT implementation with proper token validation
 - **UI Framework**: Native MAUI + CommunityToolkit.Mvvm
+- **Data Persistence**: SQL Server LocalDB with auto-migrations and seeding
 
 ---
 
@@ -63,8 +66,8 @@ This guide explains **how Kind Words works** from a software developer's perspec
 │   ├── ProfilePage.xaml             # User statistics
 │   └── SettingsPage.xaml            # Login/preferences
 ├── 📁 Services/            # Business services
-│   ├── AuthenticationService.cs     # API authentication
-│   └── MessageService.cs            # Message operations (in-memory)
+│   ├── AuthenticationService.cs     # JWT token management + API auth
+│   └── MessageService.cs            # REST API message operations (HTTP only)
 └── 📁 Converters/          # XAML value converters
     ├── BoolToSendButtonTextConverter.cs
     ├── InverseBoolConverter.cs
@@ -77,9 +80,11 @@ This guide explains **how Kind Words works** from a software developer's perspec
 2. **Data Binding** → ViewModel Command/Property
 3. **Business Logic** → ViewModel processes data
 4. **Service Call** → ViewModel calls Service (AuthenticationService, MessageService)
-5. **HTTP Request** → Service calls API via HttpClient
-6. **Update UI** → ViewModel updates ObservableProperties
-7. **UI Refresh** → XAML automatically updates via data binding
+5. **HTTP Request** → Service calls API via HttpClient with JWT Bearer token
+6. **Database Update** → API uses Entity Framework to persist to SQL Server
+7. **Response** → API returns data via JSON
+8. **Update UI** → ViewModel updates ObservableProperties
+9. **UI Refresh** → XAML automatically updates via data binding
 
 **Example Flow - Sending a Message:**
 
@@ -87,7 +92,9 @@ This guide explains **how Kind Words works** from a software developer's perspec
 SendMessagePage.xaml (Button)
 → SendMessageViewModel.SendMessageCommand
 → MessageService.SendMessageAsync()
-→ HTTP POST to API
+→ HTTP POST to API with JWT Bearer token
+→ API saves to SQL Server via Entity Framework
+→ API returns success/error response
 → Update ViewModel properties
 → UI refreshes automatically
 ```
@@ -102,37 +109,55 @@ SendMessagePage.xaml (Button)
 📁 KindWordsApi/KindWordsApi/
 ├── 📁 Controllers/         # REST API endpoints
 │   ├── AuthController.cs          # POST /api/auth/login, /register
-│   ├── MessagesController.cs      # GET/POST /api/messages/*
-│   └── TestController.cs          # GET /api/test (health check)
-├── 📁 Models/              # Entity models
-│   ├── User.cs            # User entity
-│   ├── Message.cs         # Message entity
+│   └── MessagesController.cs      # Complete message CRUD operations
+├── 📁 Data/               # Entity Framework
+│   └── ApplicationDbContext.cs    # EF DbContext with DbSets
+├── 📁 Models/              # Entity models + DTOs
+│   ├── User.cs            # User entity (EF model)
+│   ├── Message.cs         # Message entity with navigation properties
 │   ├── Reply.cs           # Reply entity
-│   └── DTOs/              # Data Transfer Objects
-│       ├── LoginRequest.cs        # API request/response models
-│       ├── MessageDTOs.cs         # Message-related DTOs
-│       └── UserDto.cs             # User data for responses
+│   ├── MessageReply.cs    # Junction table for tracking replies
+│   └── DTOs.cs            # All API request/response DTOs
 ├── 📁 Services/           # Business logic services
 │   ├── JwtService.cs             # JWT token generation/validation
-│   └── KindWordsDataService.cs   # In-memory data operations
-├── Program.cs             # API configuration (CORS, JWT, DI)
-├── appsettings.json       # Configuration (JWT secrets, etc.)
+│   └── DatabaseSeeder.cs         # Auto-seeding sample data
+├── 📁 Migrations/         # Entity Framework migrations
+│   ├── [timestamp]_InitialCreate.cs    # Auto-generated
+│   └── ApplicationDbContextModelSnapshot.cs
+├── Program.cs             # API + EF + JWT configuration
+├── appsettings.json       # JWT + Connection String configuration
 └── Properties/
-    └── launchSettings.json       # Port configuration (7001/5001)
+    └── launchSettings.json       # Port configuration (7001)
 ```
 
 ### **API Endpoints Design**
 
-| **Method** | **Endpoint**                     | **Purpose**                       | **Auth Required** |
-| ---------- | -------------------------------- | --------------------------------- | ----------------- |
-| `POST`     | `/api/auth/register`             | User registration                 | ❌ No             |
-| `POST`     | `/api/auth/login`                | User login                        | ❌ No             |
-| `GET`      | `/api/auth/me`                   | Get current user                  | ✅ Yes            |
-| `GET`      | `/api/messages/inbox?count=5`    | Get random messages to reply to   | ✅ Yes            |
-| `GET`      | `/api/messages/my-messages`      | Get user's own messages + replies | ✅ Yes            |
-| `POST`     | `/api/messages`                  | Send new message                  | ✅ Yes            |
-| `POST`     | `/api/messages/reply`            | Reply to message                  | ✅ Yes            |
-| `GET`      | `/api/messages/search?query=...` | Search messages                   | ✅ Yes            |
+| **Method** | **Endpoint**                                 | **Purpose**                       | **Auth Required** |
+| ---------- | -------------------------------------------- | --------------------------------- | ----------------- |
+| `POST`     | `/api/auth/register`                         | User registration                 | ❌ No             |
+| `POST`     | `/api/auth/login`                            | User login                        | ❌ No             |
+| `GET`      | `/api/messages/inbox?count=5`                | Get random messages to reply to   | ✅ Yes            |
+| `GET`      | `/api/messages/my-messages`                  | Get user's own messages + replies | ✅ Yes            |
+| `POST`     | `/api/messages`                              | Send new message                  | ✅ Yes            |
+| `POST`     | `/api/messages/{id}/reply`                   | Reply to specific message         | ✅ Yes            |
+| `GET`      | `/api/messages/search?term=...&category=...` | Search inbox messages             | ✅ Yes            |
+| `GET`      | `/api/messages/{id}`                         | Get specific message details      | ✅ Yes            |
+
+### **🗄️ Database Schema**
+
+```sql
+Users (Id GUID, Email, NickName, PasswordHash, JoinedAt)
+├── Messages (Id INT, Content, Category, UserId, CreatedAt, IsAnonymous, ReplyCount, HasBeenRepliedTo)
+│   └── Replies (Id INT, MessageId, Content, UserId, CreatedAt, IsAnonymous)
+└── MessageReplies (Id INT, MessageId, UserId, RepliedAt) -- Junction table for tracking
+```
+
+### **🌱 Auto-Seeded Test Data**
+
+- **3 Users**: alice@kindwords.com, bob@kindwords.com, charlie@kindwords.com (password: `password123`)
+- **8 Messages**: Across all categories with realistic content
+- **6 Replies**: Demonstrating conversation flows
+- **MessageReply Tracking**: Who replied to what (for inbox filtering)
 
 ---
 

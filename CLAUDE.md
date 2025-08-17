@@ -85,10 +85,63 @@ The initial project was **bloated and unfocused**, suffering from:
 
 - **Frontend**: .NET MAUI 8.0
 - **Backend**: ASP.NET Core Web API (.NET 9)
-- **Database**: In-memory storage (ready for Entity Framework + SQL)
-- **Authentication**: Custom JWT implementation
+- **Database**: SQL Server with Entity Framework Core 8.0
+- **Authentication**: JWT Bearer tokens with proper validation
 - **Patterns**: MVVM with CommunityToolkit.Mvvm
 - **UI Components**: Native MAUI + CommunityToolkit + Custom Controls
+- **HTTP Client**: Microsoft.Extensions.Http for REST communication
+
+### **🔗 REST API Architecture (School Requirement Compliant)**
+
+```
+📱 MAUI App (KindWords)
+    ↓ HTTP REST calls with JWT
+🌐 REST API (KindWordsApi)
+    ↓ Entity Framework Core
+🗄️ SQL Server Database (KindWordsDb)
+```
+
+**✅ Compliance**: _"De applicatie spreekt deze database nooit rechtstreeks aan. De transacties verlopen steeds via de REST service"_
+
+### **🚀 API Endpoints**
+
+| Method   | Endpoint                                     | Description                                | Auth Required |
+| -------- | -------------------------------------------- | ------------------------------------------ | ------------- |
+| **POST** | `/api/auth/register`                         | User registration                          | ❌            |
+| **POST** | `/api/auth/login`                            | User login                                 | ❌            |
+| **GET**  | `/api/messages/inbox?count=5`                | Get random messages user hasn't replied to | ✅            |
+| **GET**  | `/api/messages/my-messages`                  | Get user's own messages with all replies   | ✅            |
+| **POST** | `/api/messages`                              | Send new message                           | ✅            |
+| **POST** | `/api/messages/{id}/reply`                   | Reply to a message                         | ✅            |
+| **GET**  | `/api/messages/search?term=...&category=...` | Search inbox messages                      | ✅            |
+| **GET**  | `/api/messages/{id}`                         | Get specific message details               | ✅            |
+
+### **🗄️ Database Schema**
+
+```sql
+Users (Id, Email, NickName, PasswordHash, JoinedAt)
+├── Messages (Id, Content, Category, UserId, CreatedAt, ...)
+│   └── Replies (Id, MessageId, Content, UserId, CreatedAt, ...)
+└── MessageReplies (Id, MessageId, UserId, RepliedAt) -- Junction table
+```
+
+### **🌱 Seeded Test Data**
+
+**Test Users** (password: `password123`):
+
+- `alice@kindwords.com` (Alice)
+- `bob@kindwords.com` (Bob)
+- `charlie@kindwords.com` (Charlie)
+
+**Sample Messages**: 8 messages across all categories (Support, Hope, Celebration, Gratitude)
+**Sample Replies**: 6 thoughtful replies demonstrating the system
+
+### **🔑 Authentication Flow**
+
+1. **Register/Login** → Receive JWT token
+2. **All API calls** → Include `Authorization: Bearer {token}` header
+3. **Token validation** → API verifies JWT and extracts user ID
+4. **Business logic** → Messages filtered by user permissions
 
 ### **Project Structure**
 
@@ -180,12 +233,14 @@ The initial project was **bloated and unfocused**, suffering from:
 ### **Kind Words Full-Stack Solution**
 
 **Build Status**: ✅ **Building successfully (0 errors)**  
-**API Status**: ✅ **Kind Words API running on port 7001**  
-**Authentication**: ✅ **Registration and login working**  
-**MAUI App Status**: ✅ **Connected to API, authentication functional**  
-**Data Storage**: ⚠️ **In-memory only (resets on restart)**  
+**API Status**: ✅ **Kind Words API running on port 7001 with SQL Server**  
+**Authentication**: ✅ **JWT authentication fully working**  
+**MAUI App Status**: ✅ **Connected to real API + database via REST**  
+**Data Storage**: ✅ **SQL Server with Entity Framework + seeded data**  
 **Multi-Project Setup**: ✅ **Visual Studio F5 starts both projects**  
-**Architecture**: ✅ **Full-stack: API + MAUI + JWT auth**
+**Architecture**: ✅ **Complete: MAUI → REST API → SQL Database**  
+**Message Endpoints**: ✅ **Inbox, Send, Reply, My Messages all working**  
+**Compliance**: ✅ **MAUI never touches database directly (REST-only)**
 
 ### **Legacy Affirm8 Status**
 
@@ -195,15 +250,24 @@ The initial project was **bloated and unfocused**, suffering from:
 **Architecture**: 🚫 **Complex, unfocused**  
 **App Launch**: 🚫 **Blocked by errors**
 
-### **Next Steps**
+### **Completed Implementation**
 
 1. **✅ Multi-project setup completed** (API + MAUI configured)
 2. **✅ Core MAUI functionality implemented** (Send/Inbox/My Messages UI)
 3. **✅ Authentication endpoints implemented** (Login/Register API working)
-4. **✅ MAUI connected to real API** (Registration working)
-5. **🔧 Implement message endpoints** (Send/Inbox/My Messages API)
-6. **🔧 Replace in-memory storage** with Entity Framework + SQL
-7. **🔧 Complete profile statistics** and polish
+4. **✅ MAUI connected to real API** (Full REST integration)
+5. **✅ Message endpoints implemented** (Send/Inbox/My Messages/Reply/Search)
+6. **✅ SQL Server database implemented** with Entity Framework + migrations
+7. **✅ Database seeding** with sample users and messages
+8. **✅ JWT authentication** protecting all API endpoints
+9. **✅ School requirement compliance** (MAUI only via REST API)
+
+### **Optional Enhancements**
+
+- **🔧 Complete profile statistics** and polish Profile page
+- **🔧 Real-time updates** between API and MAUI
+- **🔧 Production deployment** (Azure/AWS)
+- **🔧 App store packaging** (Android/Windows)
 
 ---
 
@@ -271,38 +335,48 @@ The initial project was **bloated and unfocused**, suffering from:
 
 - Visual Studio 2022 with .NET MAUI workload
 - .NET 8.0 SDK
+- .NET 9.0 SDK (for API)
+- SQL Server LocalDB or SQL Server
 - Android SDK (for Android development)
 
-### **Running Kind Words**
+### **🔧 Quick Start (F5 in Visual Studio)**
 
-1. **Navigate to the project**
+1. **Open `KindWords-FullStack.sln`** in Visual Studio
+2. **Set multiple startup projects**:
+   - `KindWordsApi` (Start)
+   - `KindWords` (Start)
+3. **Press F5** - Both API and MAUI app will start!
 
-   ```bash
-   cd KindWordsApp/KindWords
-   ```
+### **🐛 Manual Start (if needed)**
 
-2. **Restore packages**
+**Start API First:**
 
-   ```bash
-   dotnet restore
-   ```
+```bash
+cd KindWordsApi/KindWordsApi
+dotnet run
+# API runs on https://localhost:7001
+```
 
-3. **Build the project**
+**Start MAUI App:**
 
-   ```bash
-   dotnet build
-   ```
+```bash
+cd KindWordsApp/KindWords
+dotnet run --framework net8.0-windows10.0.19041.0
+```
 
-4. **Run on Windows**
+### **🗄️ Database Setup (Automatic)**
 
-   ```bash
-   dotnet run --framework net8.0-windows10.0.19041.0
-   ```
+- Database creates automatically on first API run
+- Seeded with 3 test users and sample messages
+- Connection: `(localdb)\mssqllocaldb` database `KindWordsDb`
 
-5. **Run on Android** (with device/emulator)
-   ```bash
-   dotnet run --framework net8.0-android
-   ```
+### **🔐 Test Login**
+
+Use any of these test accounts:
+
+- Email: `alice@kindwords.com` | Password: `password123`
+- Email: `bob@kindwords.com` | Password: `password123`
+- Email: `charlie@kindwords.com` | Password: `password123`
 
 ### **Running Legacy Affirm8** (Not Recommended)
 

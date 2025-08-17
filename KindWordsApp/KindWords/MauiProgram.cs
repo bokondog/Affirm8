@@ -21,6 +21,7 @@ public static class MauiProgram
 			});
 
 		// Register services
+		builder.Services.AddHttpClient();
 		builder.Services.AddSingleton<AuthenticationService>();
 		builder.Services.AddSingleton<MessageService>();
 

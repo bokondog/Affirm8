@@ -12,6 +12,7 @@ namespace KindWords.ViewModels
     public partial class MyMessagesViewModel : ObservableObject
     {
         private readonly MessageService _messageService;
+        private readonly AuthenticationService _authService;
 
         [ObservableProperty]
         private ObservableCollection<Message> myMessages = new();
@@ -22,9 +23,23 @@ namespace KindWords.ViewModels
         [ObservableProperty]
         private bool hasMessages = false;
 
-        public MyMessagesViewModel(MessageService messageService)
+        public MyMessagesViewModel(MessageService messageService, AuthenticationService authService)
         {
             _messageService = messageService;
+            _authService = authService;
+            
+            // Listen for authentication changes
+            _authService.CurrentUserChanged += OnCurrentUserChanged;
+        }
+
+        private void OnCurrentUserChanged(User? user)
+        {
+            // Clear messages when user logs out
+            if (user == null)
+            {
+                MyMessages.Clear();
+                HasMessages = false;
+            }
         }
 
         public async Task InitializeAsync()

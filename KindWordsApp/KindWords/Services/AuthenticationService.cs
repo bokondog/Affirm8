@@ -117,11 +117,11 @@ namespace KindWords.Services
         }
 
         /// <summary>
-        /// Get current user ID (dummy user for now if not authenticated)
+        /// Get current user ID (returns null if not authenticated)
         /// </summary>
-        public Guid GetCurrentUserId()
+        public Guid? GetCurrentUserId()
         {
-            return CurrentUser?.Id ?? Guid.Parse("00000000-0000-0000-0000-000000000001"); // Dummy user for demo
+            return CurrentUser?.Id;
         }
     }
 } 
