@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:Affirm8"
     xmlns:views="clr-namespace:Affirm8.Views"
     Shell.FlyoutBehavior="Disabled"
-    Title="Kind Words">
+    Title="Affirm8">
 
     <TabBar>
         <ShellContent

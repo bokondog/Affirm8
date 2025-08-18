@@ -1,54 +1,17 @@
-# Kind Words - C# Mobile Full-Stack Project
+# Affirm8 - C# Mobile Full-Stack Project
 
 **Student**: Glenn Bokondo  
 **Course**: C# Mobile Development  
 **Year**: 2024-25
 
-## 🎉 **PROJECT STATUS: SUCCESSFULLY COMPLETED**
-
-**Build Status**: ✅ **All systems operational**  
-**Architecture**: ✅ **MAUI → REST API → SQL Server**  
-**Authentication**: ✅ **JWT working with real data loading**  
-**Compliance**: ✅ **All school requirements met**
-
----
-
-## 📖 **Project Evolution & Lessons Learned**
-
-### **🚫 From Chaos: Original Affirm8**
-
-The initial **Affirm8** project was **overcomplicated and unfocused**:
-
-- **22+ Syncfusion dependency errors** causing constant build failures
-- **Complex e-commerce features** (Product, Cart, Pricing) unrelated to assignment goals
-- **247-line Product model** with unnecessary complexity
-- **7+ confusing screens** with unclear purpose
-- **Heavy third-party dependencies** creating maintenance nightmares
-- **No clear vision** or user value proposition
-
-### **✨ To Clarity: Kind Words**
-
-**Complete rebuild** with **laser focus**: Anonymous social affirmation platform inspired by the "Kind Words" indie game.
-
-**Clear Concept**:
-
-- **Send**: Share affirmations, support requests, or gratitude anonymously
-- **Receive**: Get random messages from others to respond to with kindness
-- **Reply**: Send encouraging words back to help someone's journey
-- **Connect**: Build a community of anonymous support and positivity
-
-**Result**: ✅ **Clean, focused, maintainable full-stack social platform**
-
----
-
-## 🏗️ **Final Architecture (WORKING)**
+## 🏗️ **Code Architecture**
 
 ### **Technology Stack**
 
 - **Frontend**: .NET MAUI 8.0 with native controls
 - **Backend**: ASP.NET Core Web API (.NET 9)
 - **Database**: SQL Server LocalDB with Entity Framework Core
-- **Authentication**: JWT Bearer tokens with proper validation
+- **Authentication**: JWT Bearer tokens with validation
 - **HTTP**: Microsoft.Extensions.Http for REST communication
 - **MVVM**: CommunityToolkit.Mvvm for clean separation
 
@@ -62,12 +25,10 @@ The initial **Affirm8** project was **overcomplicated and unfocused**:
 🗄️ SQL Server LocalDB (KindWordsDb)
 ```
 
-**✅ School Compliance**: _"De applicatie spreekt deze database nooit rechtstreeks aan. De transacties verlopen steeds via de REST service"_
-
-### **📁 Current Clean Project Structure**
+### **📁 Project Structure**
 
 ```
-📁 Affirm8/ (Repository Root - Clean & Lean)
+📁 Affirm8/ (Repository Root)
 ├── 📁 Affirm8/                    # ✅ MAUI App (.NET 8)
 │   ├── Models/                    # Message, Reply, User, UserStatistics
 │   ├── ViewModels/                # MVVM with CommunityToolkit
@@ -83,30 +44,13 @@ The initial **Affirm8** project was **overcomplicated and unfocused**:
 │       ├── Data/                  # ApplicationDbContext
 │       └── Migrations/            # EF Core database migrations
 ├── 📄 Affirm8.sln                 # ✅ Main solution file (multi-project)
-├── 📄 CLAUDE.md                   # This technical documentation
+├── 📄 CODE.md                     # This technical documentation
 ├── 📄 README.md                   # User guide & project overview
 ├── 📄 GUIDE.md                    # Developer guide
 └── 📄 REQUIREMENTS.txt            # School requirements reference
 ```
 
-### **🗑️ Bloat Removed (January 2025 Cleanup)**
-
-- ~~KindWords-FullStack.sln~~ (redundant solution)
-- ~~KindWordsApp.sln~~ (redundant solution)
-- ~~MULTI-PROJECT-SETUP.md~~ (outdated documentation)
-- ~~STARTUP.md~~ (redundant documentation)
-- ~~start-\*.bat/.ps1~~ (redundant scripts)
-- ~~Program.cs~~ (orphaned in root)
-- ~~appsettings.json~~ (orphaned in root)
-- ~~Affirm8/test_auth.md~~ (temporary test file)
-- ~~Affirm8/README.md~~ (redundant)
-- ~~\*.disabled files~~ (unused UI files)
-- ~~A1.png~~ (orphaned image)
-- ~~OpgaveProjectPRO.pdf~~ (assignment file)
-
----
-
-## 🚀 **API Endpoints (All Working)**
+## 🚀 **API Endpoints**
 
 ### **Authentication Endpoints**
 
@@ -118,14 +62,15 @@ The initial **Affirm8** project was **overcomplicated and unfocused**:
 
 ### **Message Endpoints**
 
-| Method   | Endpoint                                           | Description                                | Auth Required |
-| -------- | -------------------------------------------------- | ------------------------------------------ | ------------- |
-| **GET**  | `/api/messages/inbox?count=5`                      | Get random messages user hasn't replied to | ✅            |
-| **GET**  | `/api/messages/my-messages`                        | Get user's own messages with all replies   | ✅            |
-| **POST** | `/api/messages`                                    | Send new message                           | ✅            |
-| **POST** | `/api/messages/{id}/reply`                         | Reply to a message                         | ✅            |
-| **POST** | `/api/messages/{messageId}/replies/{replyId}/like` | Like a reply                               | ✅            |
-| **GET**  | `/api/messages/search?term=...`                    | Search inbox messages                      | ✅            |
+| Method   | Endpoint                                           | Description                                           | Auth Required |
+| -------- | -------------------------------------------------- | ----------------------------------------------------- | ------------- |
+| **GET**  | `/api/messages/inbox?count=5`                      | Get random messages user hasn't replied to            | ✅            |
+| **GET**  | `/api/messages/inbox/category/{category}`          | Get inbox messages filtered by category only          | ✅            |
+| **GET**  | `/api/messages/my-messages`                        | Get user's own messages with all replies              | ✅            |
+| **POST** | `/api/messages`                                    | Send new message                                      | ✅            |
+| **POST** | `/api/messages/{id}/reply`                         | Reply to a message                                    | ✅            |
+| **POST** | `/api/messages/{messageId}/replies/{replyId}/like` | Like a reply                                          | ✅            |
+| **GET**  | `/api/messages/search?term=...&category=...`       | Search inbox messages with text and optional category | ✅            |
 
 ### **🗄️ Database Schema**
 
@@ -139,7 +84,7 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 
 ---
 
-## 🔑 **Authentication & Data Flow (WORKING)**
+## 🔑 **Authentication & Data Flow**
 
 ### **Authentication Process**
 
@@ -148,7 +93,7 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 3. **API Calls**: All requests include `Authorization: Bearer {token}` header
 4. **Token Validation**: API validates JWT and extracts user ID for business logic
 
-### **Data Loading Process (FIXED)**
+### **Data Loading Process**
 
 **Critical Issues Resolved**:
 
@@ -171,7 +116,7 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 5. **❌ ViewModels Not Loading on Login**: Auth state changes weren't triggering data loads
    - **✅ Fix**: ViewModels now subscribe to `CurrentUserChanged` events
 
-### **Current Working Flow**
+### **Flow**
 
 ```
 1. User logs in → JWT token received (419 chars)
@@ -186,7 +131,7 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 
 ## 🧪 **Test Data & Users**
 
-### **Test Accounts** (All working with password: `password123`)
+### **Test Accounts** (All with password: `password123`)
 
 - **alice@kindwords.com** → Username: `SunflowerDreamer` → Has 3 messages
 - **bob@kindwords.com** → Username: `KindSoul88` → Active replier
@@ -203,7 +148,7 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 
 ## ✅ **Requirements Compliance**
 
-| **School Requirement**                      | **Kind Words Implementation**                       | **Status**   |
+| **School Requirement**                      | **Affirm8 Implementation**                          | **Status**   |
 | ------------------------------------------- | --------------------------------------------------- | ------------ |
 | .NET MAUI for Android & Windows             | ✅ Multi-platform targeting                         | **Complete** |
 | 5+ screens with navigation                  | ✅ Login, Inbox, My Messages, Send Message, Profile | **Complete** |
@@ -222,8 +167,6 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 
 ### **Extra Features Implemented**
 
-- **🎨 Dark Mode**: AppThemeBinding with system theme detection
-- **🌐 Localization**: Dutch/English language switcher
 - **🔄 Pull-to-Refresh**: Native RefreshView implementation
 - **❤️ Like System**: Reply likes with impact score calculation
 - **📊 User Dashboard**: Statistics tracking (messages, replies, likes)
@@ -350,7 +293,7 @@ GetMyMessagesAsync: Converted 3 messages
 
 ## 🎯 **Conclusion**
 
-**Kind Words** represents a **complete transformation** from a broken, overcomplicated project to a **clean, focused, production-ready mobile application**.
+**Affirm8** represents a **complete transformation** from a broken, overcomplicated project to a **clean, focused, production-ready mobile application**.
 
 ### **Key Success Factors**
 
@@ -373,7 +316,7 @@ The project **exceeds all school requirements** and demonstrates:
 
 ---
 
-_Last Updated: January 15, 2025_  
+_Last Updated: August 18, 2025_  
 _Status: Successfully completed - authentication working, data loading operational, all requirements met_
 
 ---
@@ -385,4 +328,4 @@ _Status: Successfully completed - authentication working, data loading operation
 - **API**: `https://localhost:7001`
 - **Database**: `(localdb)\mssqllocaldb` → `KindWordsDb` (auto-created)
 - **Command**: Press F5 in Visual Studio → Both projects start
-- **Documentation**: All in main folder - `README.md`, `CLAUDE.md`, `GUIDE.md`
+- **Documentation**: All in main folder - `README.md`, `CODE.md`, `GUIDE.md`

@@ -76,7 +76,7 @@
                         <RoundRectangle CornerRadius="12" />
                     </Border.StrokeShape>
                     <StackLayout Spacing="8">
-                        <Label Text="Kind Words"
+                        <Label Text="Affirm8"
                                FontFamily="OpenSansSemibold"
                                FontSize="16"
                                TextColor="#8B4513" />

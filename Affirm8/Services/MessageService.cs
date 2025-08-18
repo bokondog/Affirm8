@@ -207,6 +207,34 @@ namespace Affirm8.Services
         }
 
         /// <summary>
+        /// Get inbox messages filtered by category only (no search term)
+        /// </summary>
+        public async Task<List<Message>> GetInboxMessagesByCategoryAsync(string category)
+        {
+            try
+            {
+                AddAuthorizationHeader();
+                var url = $"{BaseUrl}/messages/inbox/category/{Uri.EscapeDataString(category)}";
+                
+                var response = await _httpClient.GetAsync(url);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var messageDtos = JsonSerializer.Deserialize<List<MessageDto>>(json, GetJsonOptions());
+                    return messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                }
+                
+                return new List<Message>();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting messages by category: {ex.Message}");
+                return new List<Message>();
+            }
+        }
+
+        /// <summary>
         /// Search messages in inbox (only messages user hasn't replied to)
         /// </summary>
         public async Task<List<Message>> SearchInboxMessagesAsync(string searchTerm, string? category = null)

@@ -10,7 +10,7 @@
                    WidthRequest="200" 
                    HeightRequest="200" />
             
-            <Label Text="Kind Words"
+            <Label Text="Affirm8"
                    FontSize="32"
                    FontFamily="OpenSansSemibold"
                    TextColor="#4682B4"

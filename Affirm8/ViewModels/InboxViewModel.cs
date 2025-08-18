@@ -118,6 +118,7 @@ namespace Affirm8.ViewModels
         [RelayCommand]
         public async Task SearchMessagesAsync()
         {
+            // If no search text and no category filter, load all messages
             if (string.IsNullOrWhiteSpace(SearchText) && SelectedCategoryFilter == "All")
             {
                 await LoadMessagesAsync();
@@ -128,11 +129,26 @@ namespace Affirm8.ViewModels
             try
             {
                 var categoryFilter = SelectedCategoryFilter == "All" ? null : SelectedCategoryFilter;
-                var messageList = await _messageService.SearchInboxMessagesAsync(SearchText, categoryFilter);
-                Messages.Clear();
-                foreach (var message in messageList)
+                
+                // If we have a category filter but no search text, use category-only filtering
+                if (string.IsNullOrWhiteSpace(SearchText) && !string.IsNullOrEmpty(categoryFilter))
                 {
-                    Messages.Add(message);
+                    var messageList = await _messageService.GetInboxMessagesByCategoryAsync(categoryFilter);
+                    Messages.Clear();
+                    foreach (var message in messageList)
+                    {
+                        Messages.Add(message);
+                    }
+                }
+                else
+                {
+                    // Use search with both text and optional category
+                    var messageList = await _messageService.SearchInboxMessagesAsync(SearchText, categoryFilter);
+                    Messages.Clear();
+                    foreach (var message in messageList)
+                    {
+                        Messages.Add(message);
+                    }
                 }
             }
             catch (Exception ex)

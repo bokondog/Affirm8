@@ -1,18 +1,18 @@
-# 📚 Kind Words - Developer Guide
+# 📚 Affirm8 - Developer Guide
 
 ## 🎯 **Overview**
 
-This guide explains **how Kind Words works** from a software developer's perspective - covering architecture, data flow, connections between components, and how to make changes efficiently.
+This guide explains **how Affirm8 works** from a software developer's perspective - covering architecture, data flow, connections between components, and how to make changes efficiently.
 
 ---
 
 ## 🏗️ **Architecture Overview**
 
-### **High-Level Architecture (School Requirement Compliant)**
+### **High-Level Architecture**
 
 ```
 ┌─────────────────────┐    HTTPS/7001     ┌─────────────────────┐    EF Core    ┌─────────────────────┐
-│   Kind Words MAUI   │◄──────────────────►│  Kind Words API     │◄─────────────►│   SQL Server DB     │
+│   Affirm8 MAUI   │◄──────────────────►│  Affirm8 API     │◄─────────────►│   SQL Server DB     │
 │   (.NET 8)          │    JWT Bearer      │  (.NET 9)           │   Migrations  │   (LocalDB)         │
 │                     │                    │                     │               │                     │
 │ ┌─────────────────┐ │                    │ ┌─────────────────┐ │               │ ┌─────────────────┐ │
@@ -182,7 +182,7 @@ sequenceDiagram
     participant V as SettingsPage
     participant VM as AuthViewModel
     participant AS as AuthService
-    participant API as Kind Words API
+    participant API as Affirm8 API
 
     U->>V: Enter email/password, click Login
     V->>VM: Execute LoginCommand
@@ -202,7 +202,7 @@ sequenceDiagram
     participant V as SendMessagePage
     participant VM as SendMessageViewModel
     participant MS as MessageService
-    participant API as Kind Words API
+    participant API as Affirm8 API
 
     U->>V: Type message, select category, click Send
     V->>VM: Execute SendMessageCommand
@@ -222,7 +222,7 @@ sequenceDiagram
     participant V as InboxPage
     participant VM as InboxViewModel
     participant MS as MessageService
-    participant API as Kind Words API
+    participant API as Affirm8 API
 
     U->>V: Open Inbox tab or pull-to-refresh
     V->>VM: Execute LoadMessagesCommand
@@ -491,4 +491,4 @@ cd Affirm8 && dotnet run --framework net8.0-windows10.0.19041.0
 
 ---
 
-**This guide should give you everything you need to understand, modify, and extend the Kind Words application efficiently!** 🚀
+**This guide should give you everything you need to understand, modify, and extend the Affirm8 application efficiently!** 🚀

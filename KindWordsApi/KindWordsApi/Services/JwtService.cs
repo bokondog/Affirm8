@@ -6,7 +6,7 @@ using System.Text;
 namespace KindWordsApi.Services
 {
     /// <summary>
-    /// Simple JWT service for Kind Words API
+    /// Simple JWT service for Affirm8 API
     /// </summary>
     public class JwtService
     {

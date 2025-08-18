@@ -10,7 +10,7 @@ namespace Affirm8.Services
     public class AuthenticationService
     {
         private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://localhost:7001/api"; // Kind Words API URL
+        private const string BaseUrl = "https://localhost:7001/api"; // Affirm8 API URL
 
         private User? _currentUser;
         public User? CurrentUser 

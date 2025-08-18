@@ -5,18 +5,9 @@
 
 # KIND WORDS - Full-Stack Social Affirmation Platform
 
-## 🎉 **PROJECT STATUS: SUCCESSFULLY COMPLETED**
-
-**Build Status**: ✅ **All systems operational**  
-**Architecture**: ✅ **MAUI → REST API → SQL Server**  
-**Authentication**: ✅ **JWT working with real data loading**  
-**Compliance**: ✅ **All school requirements met**
-
----
-
 ## 📖 **Project Beschrijving**
 
-**Kind Words** is een volledige full-stack sociale affirmatie platform geïnspireerd op het indie spel waar gebruikers anoniem bemoedigende berichten kunnen versturen en ontvangen. Het project bestaat uit een **.NET MAUI frontend**, een **ASP.NET Core Web API backend**, en een **SQL Server database** - volledig voldoend aan de schooleisen waarbij de app **nooit rechtstreeks de database aanspreekt**.
+**Affirm8** is een volledige full-stack sociale affirmatie platform geïnspireerd op het indie spel waar gebruikers anoniem bemoedigende berichten kunnen versturen en ontvangen. Het project bestaat uit een **.NET MAUI frontend**, een **ASP.NET Core Web API backend**, en een **SQL Server database**.
 
 ### 🎯 **Concept**
 
@@ -40,8 +31,7 @@
 **Frontend**: .NET MAUI 8.0 cross-platform app (Android, Windows)  
 **Backend**: ASP.NET Core Web API (.NET 9) met JWT authenticatie  
 **Database**: SQL Server LocalDB met Entity Framework Core 8.0 + Migrations  
-**Communication**: HTTPS JSON REST API calls with JWT Bearer tokens  
-**Compliance**: **MAUI spreekt database NOOIT rechtstreeks aan** ✅
+**Communication**: HTTPS JSON REST API calls met JWT Bearer tokens
 
 ### **Project Structure**
 
@@ -62,7 +52,7 @@
 │       ├── Data/                  # ApplicationDbContext
 │       └── Migrations/            # EF Core database migrations
 ├── 📄 Affirm8.sln                 # ✅ Solution file (multi-project)
-├── 📄 CLAUDE.md                   # Complete technical documentation
+├── 📄 CODE.md                   # Complete technical documentation
 ├── 📄 README.md                   # This user guide
 └── 📄 GUIDE.md                    # Developer guide
 ```
@@ -151,7 +141,7 @@ dotnet run --framework net8.0-windows10.0.19041.0
 
 ## ✅ **Requirements Compliance**
 
-| **School Requirement**                      | **Kind Words Implementation**                       | **Status**   |
+| **School Requirement**                      | **Affirm8 Implementation**                          | **Status**   |
 | ------------------------------------------- | --------------------------------------------------- | ------------ |
 | .NET MAUI for Android & Windows             | ✅ Multi-platform targeting                         | **Complete** |
 | 5+ screens with navigation                  | ✅ Login, Inbox, My Messages, Send Message, Profile | **Complete** |
@@ -160,7 +150,6 @@ dotnet run --framework net8.0-windows10.0.19041.0
 | Styles reused 4+ places                     | ✅ App.xaml resource dictionaries                   | **Complete** |
 | CollectionView with selection               | ✅ Messages and replies lists with tap selection    | **Complete** |
 | Filtering/Sorting                           | ✅ Search functionality in inbox                    | **Complete** |
-| Settings page                               | ✅ Dark mode toggle and language selector           | **Complete** |
 | Data binding throughout                     | ✅ Extensive use with compiled bindings             | **Complete** |
 | Compiled bindings                           | ✅ `x:DataType` used consistently                   | **Complete** |
 | Value converter                             | ✅ 7 custom converters implemented                  | **Complete** |
@@ -170,14 +159,11 @@ dotnet run --framework net8.0-windows10.0.19041.0
 
 ### **Extra Features Implemented**
 
-- **🎨 Dark Mode**: AppThemeBinding with system theme detection
-- **🌐 Localization**: Dutch/English language switcher
 - **🔄 Pull-to-Refresh**: Native RefreshView implementation
 - **❤️ Like System**: Reply likes with impact score calculation
 - **📊 User Dashboard**: Statistics tracking (messages, replies, likes)
 - **🖼️ Splash Screen**: Custom branded loading screen
 - **👁️ Password Visibility**: Toggle for login security
-- **🔍 Search**: Real-time message search with API integration
 
 ## 📊 **Project Metrics**
 
@@ -197,17 +183,8 @@ dotnet run --framework net8.0-windows10.0.19041.0
 - ✅ **JWT authentication** with proper security
 - ✅ **Message system** with replies and likes
 - ✅ **User dashboard** with statistics
-- ✅ **Dark mode** and **localization**
 - ✅ **Pull-to-refresh** and modern UX
 - ✅ **Cross-platform** deployment ready
-
-## 📋 Screenshots
-
-_Screenshots van de app interfaces worden hier toegevoegd_
-
-## 🎥 Videolink
-
-_Link naar demonstratie video komt hier_
 
 ## 📚 Bronnen
 
@@ -229,7 +206,7 @@ _Link naar demonstratie video komt hier_
 - **Git** voor versie controle
 - **Swagger UI** voor API testing
 
-## 🔗 **API Endpoints (All Working)**
+## 🔗 **API Endpoints**
 
 ### **Authentication Endpoints**
 
@@ -241,14 +218,15 @@ _Link naar demonstratie video komt hier_
 
 ### **Message Endpoints**
 
-| Method   | Endpoint                                           | Description                                | Auth Required |
-| -------- | -------------------------------------------------- | ------------------------------------------ | ------------- |
-| **GET**  | `/api/messages/inbox?count=5`                      | Get random messages user hasn't replied to | ✅            |
-| **GET**  | `/api/messages/my-messages`                        | Get user's own messages with all replies   | ✅            |
-| **POST** | `/api/messages`                                    | Send new message                           | ✅            |
-| **POST** | `/api/messages/{id}/reply`                         | Reply to a message                         | ✅            |
-| **POST** | `/api/messages/{messageId}/replies/{replyId}/like` | Like a reply                               | ✅            |
-| **GET**  | `/api/messages/search?term=...`                    | Search inbox messages                      | ✅            |
+| Method   | Endpoint                                           | Description                                           | Auth Required |
+| -------- | -------------------------------------------------- | ----------------------------------------------------- | ------------- |
+| **GET**  | `/api/messages/inbox?count=5`                      | Get random messages user hasn't replied to            | ✅            |
+| **GET**  | `/api/messages/my-messages`                        | Get user's own messages with all replies              | ✅            |
+| **POST** | `/api/messages`                                    | Send new message                                      | ✅            |
+| **POST** | `/api/messages/{id}/reply`                         | Reply to a message                                    | ✅            |
+| **POST** | `/api/messages/{messageId}/replies/{replyId}/like` | Like a reply                                          | ✅            |
+| **GET**  | `/api/messages/inbox/category/{category}`          | Get inbox messages filtered by category only          | ✅            |
+| **GET**  | `/api/messages/search?term=...&category=...`       | Search inbox messages with text and optional category | ✅            |
 
 ### **🗄️ Database Schema**
 
@@ -259,23 +237,6 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 ├── MessageReplies (Id, MessageId, UserId, RepliedAt) -- Junction table for inbox filtering
 └── ReplyLikes (Id, ReplyId, UserId, CreatedAt) -- Like tracking
 ```
-
----
-
-## 🎯 **Conclusion**
-
-**Kind Words** represents a **complete transformation** from a broken, overcomplicated project to a **clean, focused, production-ready mobile application**.
-
-### **Ready for Submission**
-
-The project **exceeds all school requirements** and demonstrates:
-
-- **Technical competence** in .NET MAUI and ASP.NET Core
-- **Architectural understanding** of full-stack development
-- **Problem-solving skills** through major refactoring
-- **Code quality** with maintainable, documented solutions
-
-**Final Status**: ✅ **Production-ready full-stack mobile application** 🚀
 
 ---
 

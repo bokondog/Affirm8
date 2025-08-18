@@ -217,6 +217,43 @@ namespace KindWordsApi.Controllers
             }
         }
 
+        // GET: api/messages/inbox/category/{category}
+        [HttpGet("inbox/category/{category}")]
+        public async Task<ActionResult<List<MessageDto>>> GetInboxMessagesByCategory(string category)
+        {
+            try
+            {
+                var currentUserId = GetCurrentUserId();
+                if (currentUserId == null)
+                    return Unauthorized();
+
+                if (string.IsNullOrWhiteSpace(category))
+                    return BadRequest("Category is required");
+
+                // Get messages that current user hasn't replied to, filtered by category
+                var repliedMessageIds = await _context.MessageReplies
+                    .Where(mr => mr.UserId == currentUserId)
+                    .Select(mr => mr.MessageId)
+                    .ToListAsync();
+
+                var messages = await _context.Messages
+                    .Where(m => m.UserId != currentUserId && 
+                               !repliedMessageIds.Contains(m.Id) &&
+                               m.Category == category)
+                    .OrderByDescending(m => m.CreatedAt)
+                    .Take(20) // Limit results
+                    .Include(m => m.MessageReplies)
+                    .ToListAsync();
+
+                var messageDtos = messages.Select(m => MapToMessageDto(m)).ToList();
+                return Ok(messageDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Failed to get messages by category", error = ex.Message });
+            }
+        }
+
         // GET: api/messages/search?term=anxiety&category=Support
         [HttpGet("search")]
         public async Task<ActionResult<List<MessageDto>>> SearchInboxMessages(
