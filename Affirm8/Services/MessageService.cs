@@ -143,9 +143,12 @@ namespace Affirm8.Services
                     Category = category
                 };
                 
+                System.Diagnostics.Debug.WriteLine($"SendMessageAsync: Sending request - Content: '{content}', Category: '{category}'");
                 var json = JsonSerializer.Serialize(request, GetJsonOptions());
+                System.Diagnostics.Debug.WriteLine($"SendMessageAsync: JSON payload: {json}");
                 var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
                 
+                System.Diagnostics.Debug.WriteLine($"SendMessageAsync: Making POST request to {BaseUrl}/messages");
                 var response = await _httpClient.PostAsync($"{BaseUrl}/messages", httpContent);
                 
                 if (response.IsSuccessStatusCode)

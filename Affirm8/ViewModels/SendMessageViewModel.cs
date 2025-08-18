@@ -45,8 +45,12 @@ namespace Affirm8.ViewModels
 
             try
             {
+                // Ensure we always have a valid category
+                var categoryToSend = string.IsNullOrWhiteSpace(SelectedCategory) ? "Support" : SelectedCategory;
+                
                 // Send message using current authenticated user
-                await _messageService.SendMessageAsync(MessageContent, SelectedCategory);
+                System.Diagnostics.Debug.WriteLine($"SendMessageViewModel: Sending message with Category='{categoryToSend}', Content='{MessageContent.Substring(0, Math.Min(50, MessageContent.Length))}...'");
+                await _messageService.SendMessageAsync(MessageContent, categoryToSend);
                 
                 // Clear the form
                 MessageContent = string.Empty;

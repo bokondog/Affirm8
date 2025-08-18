@@ -30,7 +30,8 @@
                        FontFamily="OpenSansSemibold"
                        TextColor="#2F4F4F" />
                 
-                <CollectionView ItemsSource="{Binding Categories}"
+                <CollectionView x:Name="CategoryCollectionView"
+                                ItemsSource="{Binding Categories}"
                                 SelectedItem="{Binding SelectedCategory}"
                                 SelectionMode="Single"
                                 HeightRequest="60">
