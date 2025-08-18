@@ -64,16 +64,16 @@ The initial **Affirm8** project was **overcomplicated and unfocused**:
 
 **✅ School Compliance**: _"De applicatie spreekt deze database nooit rechtstreeks aan. De transacties verlopen steeds via de REST service"_
 
-### **📁 Current Project Structure**
+### **📁 Current Clean Project Structure**
 
 ```
-📁 Affirm8/ (Repository Root)
+📁 Affirm8/ (Repository Root - Clean & Lean)
 ├── 📁 Affirm8/                    # ✅ MAUI App (.NET 8)
 │   ├── Models/                    # Message, Reply, User, UserStatistics
 │   ├── ViewModels/                # MVVM with CommunityToolkit
 │   ├── Views/                     # LoginPage, ProfilePage, InboxPage, etc.
 │   ├── Services/                  # AuthenticationService, MessageService
-│   ├── Converters/                # Custom value converters
+│   ├── Converters/                # 7 custom value converters
 │   └── Resources/                 # Styles, Colors, Images
 ├── 📁 KindWordsApi/               # ✅ REST API (.NET 9)
 │   └── 📁 KindWordsApi/
@@ -82,11 +82,27 @@ The initial **Affirm8** project was **overcomplicated and unfocused**:
 │       ├── Services/              # JwtService, DatabaseSeeder
 │       ├── Data/                  # ApplicationDbContext
 │       └── Migrations/            # EF Core database migrations
-├── 📄 Affirm8.sln                 # ✅ Solution file (multi-project)
-├── 📄 CLAUDE.md                   # This documentation
-├── 📄 README.md                   # User guide
-└── 📄 GUIDE.md                    # Developer guide
+├── 📄 Affirm8.sln                 # ✅ Main solution file (multi-project)
+├── 📄 CLAUDE.md                   # This technical documentation
+├── 📄 README.md                   # User guide & project overview
+├── 📄 GUIDE.md                    # Developer guide
+└── 📄 REQUIREMENTS.txt            # School requirements reference
 ```
+
+### **🗑️ Bloat Removed (January 2025 Cleanup)**
+
+- ~~KindWords-FullStack.sln~~ (redundant solution)
+- ~~KindWordsApp.sln~~ (redundant solution)
+- ~~MULTI-PROJECT-SETUP.md~~ (outdated documentation)
+- ~~STARTUP.md~~ (redundant documentation)
+- ~~start-\*.bat/.ps1~~ (redundant scripts)
+- ~~Program.cs~~ (orphaned in root)
+- ~~appsettings.json~~ (orphaned in root)
+- ~~Affirm8/test_auth.md~~ (temporary test file)
+- ~~Affirm8/README.md~~ (redundant)
+- ~~\*.disabled files~~ (unused UI files)
+- ~~A1.png~~ (orphaned image)
+- ~~OpgaveProjectPRO.pdf~~ (assignment file)
 
 ---
 
@@ -275,13 +291,14 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 
 ### **✅ Quick Start (Recommended)**
 
-1. **Open `Affirm8.sln`** in Visual Studio
+1. **Open `Affirm8.sln`** in Visual Studio 2022
 2. **Set multiple startup projects** in Solution Properties:
    - `KindWordsApi` → Start
    - `Affirm8` → Start
 3. **Press F5** → Both API and MAUI app start automatically
-4. **Login** with `alice@kindwords.com` / `password123`
-5. **Navigate** to "My Messages" → See Alice's 3 messages loaded from API
+4. **Database auto-created** with migrations and test data seeding
+5. **Login** with `alice@kindwords.com` / `password123`
+6. **Navigate** to "My Messages" → See Alice's 3 messages loaded from API
 
 ### **Expected Debug Output (Success)**
 
@@ -363,8 +380,9 @@ _Status: Successfully completed - authentication working, data loading operation
 
 **Quick Reference**:
 
-- **Solution**: `Affirm8.sln`
+- **Solution**: `Affirm8.sln` (clean, single solution file)
 - **Test Login**: `alice@kindwords.com` / `password123`
 - **API**: `https://localhost:7001`
-- **Database**: Auto-created with seeded data
+- **Database**: `(localdb)\mssqllocaldb` → `KindWordsDb` (auto-created)
 - **Command**: Press F5 in Visual Studio → Both projects start
+- **Documentation**: All in main folder - `README.md`, `CLAUDE.md`, `GUIDE.md`

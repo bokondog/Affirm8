@@ -49,29 +49,40 @@ This guide explains **how Kind Words works** from a software developer's perspec
 ### **MVVM Pattern Implementation**
 
 ```
-📁 KindWordsApp/KindWords/
+📁 Affirm8/
 ├── 📁 Models/               # Data structures
 │   ├── User.cs             # User model + auth DTOs
 │   ├── Message.cs          # Message model with business logic
-│   └── Reply.cs            # Reply model
+│   ├── Reply.cs            # Reply model
+│   └── UserStatistics.cs  # User statistics model
 ├── 📁 ViewModels/          # MVVM ViewModels (CommunityToolkit)
 │   ├── AuthenticationViewModel.cs    # Login/Register logic
 │   ├── SendMessageViewModel.cs       # Message sending logic
 │   ├── InboxViewModel.cs             # Inbox + reply logic
-│   └── MyMessagesViewModel.cs        # User's messages + replies
+│   ├── MyMessagesViewModel.cs        # User's messages + replies
+│   ├── ProfileViewModel.cs           # User statistics
+│   └── SettingsViewModel.cs          # Settings & preferences
 ├── 📁 Views/               # XAML Pages + Code-behind
 │   ├── SendMessagePage.xaml         # Send affirmations
 │   ├── InboxPage.xaml               # Browse & reply to messages
 │   ├── MyMessagesPage.xaml          # User's own messages
 │   ├── ProfilePage.xaml             # User statistics
-│   └── SettingsPage.xaml            # Login/preferences
+│   ├── SettingsPage.xaml            # Login/preferences
+│   ├── LoginPage.xaml               # Dedicated login screen
+│   └── SplashPage.xaml              # App startup screen
 ├── 📁 Services/            # Business services
 │   ├── AuthenticationService.cs     # JWT token management + API auth
-│   └── MessageService.cs            # REST API message operations (HTTP only)
-└── 📁 Converters/          # XAML value converters
+│   ├── MessageService.cs            # REST API message operations
+│   ├── LocalizationService.cs       # Language switching
+│   └── ThemeService.cs              # Dark/light mode
+└── 📁 Converters/          # XAML value converters (7 total)
     ├── BoolToSendButtonTextConverter.cs
+    ├── BoolToHeartConverter.cs
+    ├── BoolToLikeColorConverter.cs
     ├── InverseBoolConverter.cs
-    └── IsNotNullConverter.cs
+    ├── IsNotNullConverter.cs
+    ├── IsNotZeroConverter.cs
+    └── PasswordVisibilityConverter.cs
 ```
 
 ### **Data Flow in MAUI App**
@@ -456,23 +467,21 @@ private readonly ConcurrentDictionary<Guid, User> _users = new();
 ### **Start Development**
 
 ```bash
-# Option 1: Visual Studio
-# Open KindWords-FullStack.sln, press F5
+# Option 1: Visual Studio (Recommended)
+# Open Affirm8.sln, set multiple startup projects, press F5
 
-# Option 2: Command Line
-.\start-kindwords-fullstack.bat
-
-# Option 3: Manual
+# Option 2: Manual
 cd KindWordsApi/KindWordsApi && dotnet run &
-cd KindWordsApp/KindWords && dotnet run --framework net8.0-windows10.0.19041.0
+cd Affirm8 && dotnet run --framework net8.0-windows10.0.19041.0
 ```
 
 ### **Key Files to Remember**
 
+- **Solution**: `Affirm8.sln` (main solution file)
 - **API Config**: `KindWordsApi/KindWordsApi/Program.cs`
-- **MAUI Config**: `KindWordsApp/KindWords/MauiProgram.cs`
-- **API URL**: `KindWordsApp/KindWords/Services/AuthenticationService.cs`
-- **Startup**: `start-kindwords-fullstack.bat`
+- **MAUI Config**: `Affirm8/MauiProgram.cs`
+- **API URL**: `Affirm8/Services/AuthenticationService.cs`
+- **Database**: Auto-created at `(localdb)\mssqllocaldb`
 
 ### **Common URLs**
 
