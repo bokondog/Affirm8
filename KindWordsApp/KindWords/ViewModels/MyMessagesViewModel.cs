@@ -20,8 +20,11 @@ namespace KindWords.ViewModels
         [ObservableProperty]
         private bool isLoading = false;
 
-        [ObservableProperty]
-        private bool hasMessages = false;
+            [ObservableProperty]
+    private bool hasMessages = false;
+    
+    [ObservableProperty]
+    private bool isRefreshing = false;
 
         public MyMessagesViewModel(MessageService messageService, AuthenticationService authService)
         {
@@ -47,8 +50,22 @@ namespace KindWords.ViewModels
             await LoadMyMessagesAsync();
         }
 
-        [RelayCommand]
-        public async Task LoadMyMessagesAsync()
+            [RelayCommand]
+    public async Task RefreshAsync()
+    {
+        IsRefreshing = true;
+        try
+        {
+            await LoadMyMessagesAsync();
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
+    }
+
+    [RelayCommand]
+    public async Task LoadMyMessagesAsync()
         {
             IsLoading = true;
             try
@@ -69,12 +86,6 @@ namespace KindWords.ViewModels
             {
                 IsLoading = false;
             }
-        }
-
-        [RelayCommand]
-        public async Task RefreshAsync()
-        {
-            await LoadMyMessagesAsync();
         }
 
         [RelayCommand]

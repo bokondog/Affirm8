@@ -374,9 +374,9 @@ dotnet run --framework net8.0-windows10.0.19041.0
 
 Use any of these test accounts:
 
-- Email: `alice@kindwords.com` | Password: `password123`
-- Email: `bob@kindwords.com` | Password: `password123`
-- Email: `charlie@kindwords.com` | Password: `password123`
+- Email: `alice@kindwords.com` | Password: `password123` | Username: `SunflowerDreamer`
+- Email: `bob@kindwords.com` | Password: `password123` | Username: `KindSoul88`
+- Email: `charlie@kindwords.com` | Password: `password123` | Username: `WisdomSeeker`
 
 ### **Running Legacy Affirm8** (Not Recommended)
 

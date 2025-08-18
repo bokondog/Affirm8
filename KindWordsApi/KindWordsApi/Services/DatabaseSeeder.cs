@@ -24,7 +24,7 @@ namespace KindWordsApi.Services
             {
                 Id = Guid.NewGuid(),
                 Email = "alice@kindwords.com",
-                NickName = "Alice",
+                NickName = "SunflowerDreamer",
                 PasswordHash = HashPassword("password123"),
                 JoinedAt = DateTime.UtcNow.AddDays(-30)
             };
@@ -33,7 +33,7 @@ namespace KindWordsApi.Services
             {
                 Id = Guid.NewGuid(),
                 Email = "bob@kindwords.com",
-                NickName = "Bob",
+                NickName = "KindSoul88",
                 PasswordHash = HashPassword("password123"),
                 JoinedAt = DateTime.UtcNow.AddDays(-15)
             };
@@ -42,7 +42,7 @@ namespace KindWordsApi.Services
             {
                 Id = Guid.NewGuid(),
                 Email = "charlie@kindwords.com",
-                NickName = "Charlie",
+                NickName = "WisdomSeeker",
                 PasswordHash = HashPassword("password123"),
                 JoinedAt = DateTime.UtcNow.AddDays(-7)
             };

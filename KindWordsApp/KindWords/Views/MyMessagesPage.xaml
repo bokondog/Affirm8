@@ -6,7 +6,7 @@
              xmlns:viewmodels="clr-namespace:KindWords.ViewModels"
              x:DataType="viewmodels:MyMessagesViewModel"
              Title="My Messages"
-             BackgroundColor="#F5F5DC">
+             BackgroundColor="{AppThemeBinding Light=#F5F5DC, Dark=#1a1a1a}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -68,7 +68,7 @@
 
         <!-- Messages List -->
         <RefreshView Grid.Row="1" 
-                     IsRefreshing="{Binding IsLoading}" 
+                     IsRefreshing="{Binding IsRefreshing}" 
                      Command="{Binding RefreshCommand}"
                      RefreshColor="#FF6B9D">
             <RefreshView.Triggers>
@@ -130,10 +130,16 @@
                                            TextColor="#2F4F4F"
                                            LineBreakMode="WordWrap" />
 
-                                    <!-- Timestamp -->
-                                    <Label Text="{Binding CreatedAt, StringFormat='Sent on {0:MMM dd, yyyy at h:mm tt}'}"
-                                           FontSize="12"
-                                           TextColor="#A0A0A0" />
+                                    <!-- Author and Timestamp -->
+                                    <StackLayout Orientation="Horizontal" Spacing="10" Margin="0,8,0,0">
+                                        <Label Text="{Binding UserName}"
+                                               FontSize="12"
+                                               FontFamily="OpenSansSemibold"
+                                               TextColor="#663399" />
+                                        <Label Text="{Binding CreatedAt, StringFormat='• {0:MMM dd, yyyy at h:mm tt}'}"
+                                               FontSize="12"
+                                               TextColor="#A0A0A0" />
+                                    </StackLayout>
 
                                     <!-- Replies Section -->
                                     <StackLayout IsVisible="{Binding AllReplies.Count, Converter={StaticResource IsNotNullConverter}}"
@@ -162,6 +168,12 @@
                                                                    FontSize="14"
                                                                    TextColor="#2F4F4F"
                                                                    LineBreakMode="WordWrap" />
+                                                            
+                                                            <Label Text="{Binding UserName}"
+                                                                   FontSize="12"
+                                                                   FontFamily="OpenSansSemibold"
+                                                                   TextColor="#8B7355"
+                                                                   Margin="0,4,0,0" />
                                                             
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>

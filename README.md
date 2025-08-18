@@ -84,9 +84,9 @@ Email: glenn.bokondo@student.pxl.be
 
 Login met een van deze test accounts:
 
-- **Email**: `alice@kindwords.com` | **Wachtwoord**: `password123`
-- **Email**: `bob@kindwords.com` | **Wachtwoord**: `password123`
-- **Email**: `charlie@kindwords.com` | **Wachtwoord**: `password123`
+- **Email**: `alice@kindwords.com` | **Wachtwoord**: `password123` | **Gebruikersnaam**: `SunflowerDreamer`
+- **Email**: `bob@kindwords.com` | **Wachtwoord**: `password123` | **Gebruikersnaam**: `KindSoul88`
+- **Email**: `charlie@kindwords.com` | **Wachtwoord**: `password123` | **Gebruikersnaam**: `WisdomSeeker`
 
 ### Option 2: Command Line Scripts
 

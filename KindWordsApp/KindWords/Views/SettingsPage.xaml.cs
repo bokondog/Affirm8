@@ -7,13 +7,18 @@ public partial class SettingsPage : ContentPage
 {
     private readonly AuthenticationViewModel _authViewModel;
     private readonly AuthenticationService _authService;
+    private readonly SettingsViewModel _settingsViewModel;
     private bool _isLoginMode = true;
 
-    public SettingsPage(AuthenticationViewModel authViewModel, AuthenticationService authService)
+    public SettingsPage(AuthenticationViewModel authViewModel, AuthenticationService authService, SettingsViewModel settingsViewModel)
     {
         InitializeComponent();
         _authViewModel = authViewModel;
         _authService = authService;
+        _settingsViewModel = settingsViewModel;
+        
+        // Set the BindingContext to the SettingsViewModel for the appearance section
+        BindingContext = _settingsViewModel;
         
         // Subscribe to authentication state changes
         _authService.CurrentUserChanged += OnAuthenticationStateChanged;
@@ -29,14 +34,14 @@ public partial class SettingsPage : ContentPage
 
     private void UpdateUIForAuthenticationState()
     {
-        var isAuthenticated = _authService.IsAuthenticated;
+        var isAuthenticated = _settingsViewModel.IsAuthenticated;
         
         AuthForm.IsVisible = !isAuthenticated;
         LoggedInSection.IsVisible = isAuthenticated;
         
-        if (isAuthenticated && _authService.CurrentUser != null)
+        if (isAuthenticated)
         {
-            WelcomeLabel.Text = $"Welcome back, {_authService.CurrentUser.NickName}! 🌟";
+            WelcomeLabel.Text = $"Welcome back, {_settingsViewModel.UserDisplayName}! 🌟";
         }
     }
 
@@ -132,5 +137,15 @@ public partial class SettingsPage : ContentPage
         PasswordEntry.Text = "";
         NickNameEntry.Text = "";
         ErrorLabel.IsVisible = false;
+    }
+    
+    private void OnThemeToggleClicked(object sender, EventArgs e)
+    {
+        _settingsViewModel.ToggleThemeCommand.Execute(null);
+    }
+    
+    private void OnLanguageToggleClicked(object sender, EventArgs e)
+    {
+        _settingsViewModel.ToggleLanguageCommand.Execute(null);
     }
 } 

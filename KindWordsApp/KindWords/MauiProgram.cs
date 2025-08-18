@@ -21,9 +21,11 @@ public static class MauiProgram
 			});
 
 		// Register services
-		builder.Services.AddHttpClient();
-		builder.Services.AddSingleton<AuthenticationService>();
-		builder.Services.AddSingleton<MessageService>();
+		        builder.Services.AddHttpClient();
+        builder.Services.AddSingleton<AuthenticationService>();
+        builder.Services.AddSingleton<MessageService>();
+        builder.Services.AddSingleton<ThemeService>();
+        builder.Services.AddSingleton<LocalizationService>();
 
 		// Register ViewModels
 		builder.Services.AddTransient<SendMessageViewModel>();
@@ -31,6 +33,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<MyMessagesViewModel>();
 		builder.Services.AddTransient<ProfileViewModel>();
 		builder.Services.AddTransient<AuthenticationViewModel>();
+		builder.Services.AddTransient<SettingsViewModel>();
 
 		// Register Views
 		builder.Services.AddTransient<SendMessagePage>();

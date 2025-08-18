@@ -1,127 +1,120 @@
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Affirm8.Models;
+using Affirm8.Services;
 
-namespace Affirm8
+namespace Affirm8.ViewModels
 {
+    /// <summary>
+    /// ViewModel for Profile screen - shows user statistics and achievements
+    /// </summary>
     public partial class ProfileViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private string profileImage = "ProfileImage1.png";
+        private readonly MessageService _messageService;
+        private readonly AuthenticationService _authService;
 
         [ObservableProperty]
-        private string userName = "John Doe";
+        private UserStatistics? userStatistics;
 
         [ObservableProperty]
-        private string bio = "Welcome to my profile!";
+        private bool isLoading = false;
 
         [ObservableProperty]
-        private string userEmail = "user@example.com";
+        private bool hasData = false;
 
         [ObservableProperty]
-        private int followersCount = 150;
+        private string userName = "Kind User";
 
         [ObservableProperty]
-        private int followingCount = 89;
+        private string userEmail = "";
 
-        [ObservableProperty]
-        private int postsCount = 25;
-
-        [ObservableProperty]
-        private List<Post> userPosts = new();
-
-        [ObservableProperty]
-        private Post? selectedPost;
-
-        public ObservableCollection<UserPost> Posts { get; set; }
-        public ObservableCollection<UserConnection> Connections { get; set; }
-
-        public ProfileViewModel()
+        public ProfileViewModel(MessageService messageService, AuthenticationService authService)
         {
-            Posts = new ObservableCollection<UserPost>();
-            Connections = new ObservableCollection<UserConnection>();
-            LoadData();
+            _messageService = messageService;
+            _authService = authService;
+            
+            // Listen for authentication changes
+            _authService.CurrentUserChanged += OnCurrentUserChanged;
+            
+            // Initialize with current user if available
+            UpdateUserInfo();
         }
 
-        private void LoadData()
+        public async Task InitializeAsync()
         {
-            // Sample posts
-            Posts.Add(new UserPost
-            {
-                Content = "Beautiful sunset today! 🌅",
-                Timestamp = DateTime.Now.AddHours(-2),
-                LikesCount = 25
-            });
-
-            Posts.Add(new UserPost
-            {
-                Content = "Had a great workout this morning! 💪",
-                Timestamp = DateTime.Now.AddDays(-1),
-                LikesCount = 18
-            });
-
-            // Sample connections
-            Connections.Add(new UserConnection
-            {
-                Name = "Jane Smith",
-                ProfileImage = "ProfileImage2.png",
-                IsOnline = true
-            });
-
-            Connections.Add(new UserConnection
-            {
-                Name = "Mike Johnson",
-                ProfileImage = "ProfileImage3.png",
-                IsOnline = false
-            });
+            await LoadStatisticsAsync();
         }
 
         [RelayCommand]
-        private async Task EditProfile()
+        public async Task LoadStatisticsAsync()
         {
-            // Edit profile logic
-            await Task.CompletedTask;
+            if (!_authService.IsAuthenticated)
+            {
+                HasData = false;
+                return;
+            }
+
+            IsLoading = true;
+            try
+            {
+                var stats = await _messageService.GetUserStatisticsAsync();
+                if (stats != null)
+                {
+                    UserStatistics = stats;
+                    HasData = true;
+                }
+                else
+                {
+                    HasData = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading statistics: {ex.Message}");
+                HasData = false;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
 
         [RelayCommand]
-        private async Task Settings()
+        public async Task RefreshAsync()
         {
-            // Settings logic
-            await Task.CompletedTask;
+            await LoadStatisticsAsync();
         }
 
-        [RelayCommand]
-        private async Task PostSelectionChanged(Post post)
+        private void OnCurrentUserChanged(User? user)
         {
-            SelectedPost = post;
-            // Handle post selection
-            await Task.CompletedTask;
+            UpdateUserInfo();
+            
+            if (user == null)
+            {
+                // User logged out - clear data
+                UserStatistics = null;
+                HasData = false;
+            }
+            else
+            {
+                // User logged in - load stats
+                _ = Task.Run(async () => await LoadStatisticsAsync());
+            }
         }
-    }
 
-    public class Post
-    {
-        public int ID { get; set; }
-        public string Title { get; set; } = "";
-        public string Content { get; set; } = "";
-        public string ImageUrl { get; set; } = "";
-        public bool ShowOverlay { get; set; } = false;
-        public int LikesCount { get; set; } = 0;
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-    }
-
-    public class UserPost
-    {
-        public string Content { get; set; } = "";
-        public DateTime Timestamp { get; set; }
-        public int LikesCount { get; set; }
-    }
-
-    public class UserConnection
-    {
-        public string Name { get; set; } = "";
-        public string ProfileImage { get; set; } = "";
-        public bool IsOnline { get; set; }
+        private void UpdateUserInfo()
+        {
+            var currentUser = _authService.CurrentUser;
+            if (currentUser != null)
+            {
+                UserName = currentUser.NickName ?? "Kind User";
+                UserEmail = currentUser.Email ?? "";
+            }
+            else
+            {
+                UserName = "Kind User";
+                UserEmail = "";
+            }
+        }
     }
 }

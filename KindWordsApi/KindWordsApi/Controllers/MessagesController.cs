@@ -39,6 +39,7 @@ namespace KindWordsApi.Controllers
                     .ToListAsync();
 
                 var messages = await _context.Messages
+                    .Include(m => m.User)
                     .Where(m => m.UserId != currentUserId && !repliedMessageIds.Contains(m.Id))
                     .OrderBy(m => m.CreatedAt) // For now, ordered by creation time
                     .Take(count)
@@ -66,9 +67,11 @@ namespace KindWordsApi.Controllers
 
                 // Get all messages created by current user with their replies
                 var messages = await _context.Messages
-                    .Where(m => m.UserId == currentUserId)
+                    .Include(m => m.User)
                     .Include(m => m.Replies)
+                        .ThenInclude(r => r.User)
                     .Include(m => m.MessageReplies)
+                    .Where(m => m.UserId == currentUserId)
                     .OrderByDescending(m => m.CreatedAt)
                     .ToListAsync();
 
@@ -375,6 +378,7 @@ namespace KindWordsApi.Controllers
                 Category = message.Category,
                 CreatedAt = message.CreatedAt,
                 UserId = message.UserId,
+                UserName = message.User?.NickName ?? "Anonymous",
                 IsAnonymous = message.IsAnonymous,
                 ReplyCount = message.ReplyCount,
                 HasBeenRepliedTo = message.HasBeenRepliedTo,
@@ -394,6 +398,7 @@ namespace KindWordsApi.Controllers
                 Content = reply.Content,
                 CreatedAt = reply.CreatedAt,
                 UserId = reply.UserId,
+                UserName = reply.User?.NickName ?? "Anonymous",
                 IsAnonymous = reply.IsAnonymous,
                 LikeCount = reply.LikeCount,
                 IsLikedByMessageOwner = reply.IsLikedByMessageOwner

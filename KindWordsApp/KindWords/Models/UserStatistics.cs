@@ -14,18 +14,18 @@ namespace KindWords.Models
         public int DaysActive { get; set; }
 
         // UI formatting properties
-        public string ImpactRatioText => $"{ImpactRatio:F1}x";
+        public string ImpactRatioText => $"{ImpactRatio:P0}";
         public string DaysActiveText => DaysActive == 1 ? "1 day" : $"{DaysActive} days";
         public string JoinedText => $"Joined {JoinedAt:MMMM yyyy}";
         
         public string ImpactDescription => ImpactRatio switch
         {
-            >= 3.0 => "Incredible impact! 🌟",
-            >= 2.0 => "Great impact! 🎉",
-            >= 1.5 => "Good impact! 👍",
-            >= 1.0 => "Making a difference! 💪",
-            >= 0.5 => "Getting started! 🌱",
-            _ => "Share your story! 💭"
+            >= 0.9 => "Incredible replies! 🌟",
+            >= 0.75 => "Great replies! 🎉", 
+            >= 0.5 => "Good replies! 👍",
+            >= 0.25 => "Building reputation! 💪",
+            >= 0.1 => "Getting started! 🌱",
+            _ => "Send replies to earn likes! 💭"
         };
     }
 }

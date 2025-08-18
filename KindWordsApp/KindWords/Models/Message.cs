@@ -12,6 +12,7 @@ namespace KindWords.Models
         public string Category { get; set; } = "Support"; // Support, Hope, Celebration, Gratitude
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public Guid UserId { get; set; } // Changed to Guid to match API
+        public string UserName { get; set; } = "Anonymous";
         public bool IsAnonymous { get; set; } = true;
         public int ReplyCount { get; set; } = 0;
         public bool HasBeenRepliedTo { get; set; } = false;

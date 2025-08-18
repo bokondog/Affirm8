@@ -165,7 +165,7 @@
                                TextColor="#663399"
                                HorizontalOptions="Center" />
                         
-                        <Label Text="(Replies received per message sent)" 
+                        <Label Text="(Likes received per reply sent)" 
                                FontSize="12" 
                                TextColor="#888" 
                                HorizontalOptions="Center" />

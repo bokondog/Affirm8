@@ -20,8 +20,11 @@ namespace KindWords.ViewModels
         [ObservableProperty]
         private Message? selectedMessage;
 
-        [ObservableProperty]
-        private string replyContent = string.Empty;
+            [ObservableProperty]
+    private string replyContent = string.Empty;
+    
+    [ObservableProperty]
+    private bool isRefreshing = false;
 
         [ObservableProperty]
         private bool isLoading = false;
@@ -69,8 +72,22 @@ namespace KindWords.ViewModels
             await LoadMessagesAsync();
         }
 
-        [RelayCommand]
-        public async Task LoadMessagesAsync()
+            [RelayCommand]
+    public async Task RefreshAsync()
+    {
+        IsRefreshing = true;
+        try
+        {
+            await LoadMessagesAsync();
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
+    }
+
+    [RelayCommand]
+    public async Task LoadMessagesAsync()
         {
             IsLoading = true;
             try

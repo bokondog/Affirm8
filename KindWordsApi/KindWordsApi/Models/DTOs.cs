@@ -71,6 +71,7 @@ namespace KindWordsApi.Models
         public string Category { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public bool IsAnonymous { get; set; }
         public int ReplyCount { get; set; }
         public bool HasBeenRepliedTo { get; set; }
@@ -103,6 +104,7 @@ namespace KindWordsApi.Models
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public bool IsAnonymous { get; set; }
         public int LikeCount { get; set; }
         public bool IsLikedByMessageOwner { get; set; }

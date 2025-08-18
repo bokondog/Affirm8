@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace KindWords.Models
 {
@@ -12,9 +13,30 @@ namespace KindWords.Models
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public Guid UserId { get; set; } // Changed to Guid to match API
+        public string UserName { get; set; } = "Anonymous";
         public bool IsAnonymous { get; set; } = true;
-        public int LikeCount { get; set; } = 0;
-        public bool IsLikedByMessageOwner { get; set; } = false;
+        private int _likeCount = 0;
+        public int LikeCount 
+        { 
+            get => _likeCount; 
+            set 
+            { 
+                _likeCount = value; 
+                OnPropertyChanged(); 
+                OnPropertyChanged(nameof(LikeText));
+            } 
+        }
+        
+        private bool _isLikedByMessageOwner = false;
+        public bool IsLikedByMessageOwner 
+        { 
+            get => _isLikedByMessageOwner; 
+            set 
+            { 
+                _isLikedByMessageOwner = value; 
+                OnPropertyChanged(); 
+            } 
+        }
 
         // Soft, warm colors for replies
         public string ReplyColor => "#F8F4E6"; // Warm cream
@@ -41,7 +63,7 @@ namespace KindWords.Models
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

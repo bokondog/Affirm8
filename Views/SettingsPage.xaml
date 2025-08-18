@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="KindWords.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:KindWords.ViewModels"
+             x:DataType="viewmodels:SettingsViewModel"
+             Title="Settings"
+             BackgroundColor="{AppThemeBinding Light=#F0F8FF, Dark=#1a1a1a}">
+
+    <ScrollView Padding="20">
+        <StackLayout Spacing="20">
+            
+            <!-- Header -->
+            <StackLayout HorizontalOptions="Center" Spacing="8">
+                <Label Text="⚙️"
+                       FontSize="32"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="Settings"
+                       FontSize="24"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+
+            <!-- Appearance Section -->
+            <StackLayout Spacing="12">
+                <Label Text="Appearance"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}" />
+                
+                <!-- Dark Mode Toggle -->
+                <Label Text="Theme"
+                       FontSize="16"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}"
+                       Margin="0,8,0,4" />
+                
+                <Button BackgroundColor="#4682B4"
+                        TextColor="White"
+                        FontSize="16"
+                        CornerRadius="8"
+                        Padding="16"
+                        Clicked="OnThemeToggleClicked">
+                    <Button.Text>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="ThemeIcon" />
+                            <Binding Path="ThemeToggleText" />
+                        </MultiBinding>
+                    </Button.Text>
+                </Button>
+                
+                <!-- Language Selector -->
+                <Label Text="Language / Taal"
+                       FontSize="16"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}"
+                       Margin="0,16,0,8" />
+                
+                <Button BackgroundColor="#28A745"
+                        TextColor="White"
+                        FontSize="16"
+                        CornerRadius="8"
+                        Padding="16"
+                        Clicked="OnLanguageToggleClicked">
+                    <Button.Text>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="LanguageIcon" />
+                            <Binding Path="LanguageToggleText" />
+                        </MultiBinding>
+                    </Button.Text>
+                </Button>
+            </StackLayout>
+
+            <!-- Account Section -->
+            <StackLayout Spacing="12">
+                <Label Text="Account"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}" />
+
+                <!-- Logged In State -->
+                <StackLayout x:Name="LoggedInSection" IsVisible="{Binding IsAuthenticated}">
+                    <Label x:Name="WelcomeLabel" 
+                           Text="{Binding UserDisplayName, StringFormat='Welcome back, {0}! 🌟'}"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}"
+                           Margin="0,8" />
+                    
+                    <Label Text="{Binding UserEmail}"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light=#708090, Dark=#B0B0B0}"
+                           Margin="0,0,0,16" />
+                    
+                    <Button Text="Logout"
+                            BackgroundColor="#DC3545"
+                            TextColor="White"
+                            FontSize="16"
+                            CornerRadius="8"
+                            WidthRequest="100"
+                            HorizontalOptions="Center"
+                            Clicked="OnLogoutClicked" />
+                </StackLayout>
+
+                <!-- Not Logged In State -->
+                <StackLayout x:Name="AuthForm" IsVisible="{Binding IsAuthenticated, Converter={StaticResource InverseBoolConverter}}">
+                    <Label Text="Sign in to save your progress"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}"
+                           Margin="0,0,0,16" />
+
+                    <Entry x:Name="EmailEntry"
+                           Placeholder="Email"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#3d3d3d}"
+                           TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}" />
+                    
+                    <Entry x:Name="PasswordEntry"
+                           Placeholder="Password"
+                           IsPassword="True"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#3d3d3d}"
+                           TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}" />
+                    
+                    <Entry x:Name="NickNameEntry"
+                           Placeholder="Nickname (for registration)"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#3d3d3d}"
+                           TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}"
+                           IsVisible="False" />
+
+                    <Label x:Name="ErrorLabel"
+                           TextColor="Red"
+                           FontSize="14"
+                           IsVisible="False"
+                           Margin="0,8,0,0" />
+
+                    <Button Text="Login"
+                            BackgroundColor="#28A745"
+                            TextColor="White"
+                            FontSize="16"
+                            CornerRadius="8"
+                            Margin="0,16,0,8"
+                            Clicked="OnLoginClicked" />
+                    
+                    <Button x:Name="SwitchModeButton"
+                            Text="Need an account? Register"
+                            BackgroundColor="Transparent"
+                            TextColor="{AppThemeBinding Light=#4682B4, Dark=#87CEEB}"
+                            FontSize="14"
+                            Clicked="OnSwitchModeClicked" />
+                    
+                    <Button x:Name="RegisterButton"
+                            Text="Register"
+                            BackgroundColor="#17A2B8"
+                            TextColor="White"
+                            FontSize="16"
+                            CornerRadius="8"
+                            Margin="0,8,0,0"
+                            IsVisible="False"
+                            Clicked="OnRegisterClicked" />
+                </StackLayout>
+            </StackLayout>
+
+            <!-- About Section -->
+            <StackLayout Spacing="12">
+                <Label Text="About Kind Words"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="{AppThemeBinding Light=#2F4F4F, Dark=#E0E0E0}" />
+                
+                <Label Text="Version 1.0"
+                       FontSize="14"
+                       TextColor="{AppThemeBinding Light=#708090, Dark=#B0B0B0}" />
+                
+                <Label FontSize="14"
+                       TextColor="{AppThemeBinding Light=#708090, Dark=#B0B0B0}">
+                    <Label.Text>A platform for spreading kindness through anonymous messages and thoughtful replies.</Label.Text>
+                </Label>
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

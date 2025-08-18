@@ -350,6 +350,7 @@ namespace KindWords.Services
                 Category = dto.Category,
                 CreatedAt = dto.CreatedAt,
                 UserId = dto.UserId,
+                UserName = dto.UserName,
                 IsAnonymous = dto.IsAnonymous,
                 ReplyCount = dto.ReplyCount,
                 HasBeenRepliedTo = dto.HasBeenRepliedTo,
@@ -367,6 +368,7 @@ namespace KindWords.Services
                 Content = dto.Content,
                 CreatedAt = dto.CreatedAt,
                 UserId = dto.UserId,
+                UserName = dto.UserName,
                 IsAnonymous = dto.IsAnonymous,
                 LikeCount = dto.LikeCount,
                 IsLikedByMessageOwner = dto.IsLikedByMessageOwner
@@ -396,6 +398,7 @@ namespace KindWords.Services
         public string Category { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public bool IsAnonymous { get; set; }
         public int ReplyCount { get; set; }
         public bool HasBeenRepliedTo { get; set; }
@@ -410,6 +413,7 @@ namespace KindWords.Services
         public string Content { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public Guid UserId { get; set; }
+        public string UserName { get; set; } = string.Empty;
         public bool IsAnonymous { get; set; }
         public int LikeCount { get; set; }
         public bool IsLikedByMessageOwner { get; set; }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="KindWords.Views.SplashPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             BackgroundColor="#F5F1E8">
+    
+    <Grid>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+            <Image Source="kindwords_logo.png" 
+                   WidthRequest="200" 
+                   HeightRequest="200" />
+            
+            <Label Text="Kind Words"
+                   FontSize="32"
+                   FontFamily="OpenSansSemibold"
+                   TextColor="#4682B4"
+                   HorizontalTextAlignment="Center" />
+            
+            <Label Text="Spreading kindness, one message at a time"
+                   FontSize="16"
+                   TextColor="#708090"
+                   HorizontalTextAlignment="Center" />
+                   
+            <ActivityIndicator IsRunning="True" 
+                             Color="#4682B4" 
+                             VerticalOptions="Center" />
+        </StackLayout>
+    </Grid>
+</ContentPage>
