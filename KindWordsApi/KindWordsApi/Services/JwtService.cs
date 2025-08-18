@@ -5,71 +5,83 @@ using System.Text;
 
 namespace KindWordsApi.Services
 {
+    /// <summary>
+    /// Simple JWT service for Kind Words API
+    /// </summary>
     public class JwtService
     {
-        private readonly IConfiguration _configuration;
+        private readonly string _secretKey;
+        private readonly string _issuer;
+        private readonly string _audience;
 
         public JwtService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _secretKey = configuration["Jwt:SecretKey"] ?? "YourVeryLongAndSecureSecretKeyThatShouldBeAtLeast32Characters";
+            _issuer = configuration["Jwt:Issuer"] ?? "KindWordsApi";
+            _audience = configuration["Jwt:Audience"] ?? "KindWordsApp";
         }
 
-        public string GenerateToken(Guid userId, string email, string nickName)
+        public string GenerateToken(Guid userId, string email, string nickname)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_secretKey);
 
-            var claims = new[]
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Name, nickName),
-                new Claim("userId", userId.ToString())
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.Name, nickname),
+                    new Claim("userId", userId.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(24), // Token valid for 24 hours
+                Issuer = _issuer,
+                Audience = _audience,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(7), // 7 days expiration
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
 
-        public Guid? GetUserIdFromToken(string token)
+        public ClaimsPrincipal? ValidateToken(string token)
         {
             try
             {
-                var handler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_secretKey);
 
                 var validationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidAudience = _configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = _issuer,
+                    ValidateAudience = true,
+                    ValidAudience = _audience,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
 
-                var principal = handler.ValidateToken(token, validationParameters, out var validatedToken);
-                var userIdClaim = principal.FindFirst("userId");
-                
-                if (userIdClaim != null && Guid.TryParse(userIdClaim.Value, out var userId))
-                {
-                    return userId;
-                }
-
-                return null;
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+                return principal;
             }
             catch
             {
                 return null;
             }
         }
+
+        public Guid? GetUserIdFromToken(string token)
+        {
+            var principal = ValidateToken(token);
+            var userIdClaim = principal?.FindFirst("userId")?.Value;
+            
+            if (Guid.TryParse(userIdClaim, out var userId))
+                return userId;
+            
+            return null;
+        }
     }
-}
+} 

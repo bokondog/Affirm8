@@ -58,7 +58,8 @@ namespace Affirm8.ViewModels
                     Password = string.Empty;
                     ErrorMessage = string.Empty;
 
-                    await Application.Current.MainPage.DisplayAlert("Success", "Welcome back! 🌟", "OK");
+                    // Notify that authentication state changed
+                    OnPropertyChanged(nameof(IsAuthenticated));
                 }
                 else
                 {
