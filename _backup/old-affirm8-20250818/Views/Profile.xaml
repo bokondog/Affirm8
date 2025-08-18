@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Affirm8.Views.Social.Profile"
+             xmlns:local="clr-namespace:Affirm8"
+             xmlns:controls="clr-namespace:Affirm8.Controls"
+             x:DataType="local:ProfileViewModel" 
+             Title="Profile">
+
+    <ContentPage.BindingContext>
+        <local:ProfileViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="0">
+                
+                <!-- Header Section -->
+                <Grid BackgroundColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}"
+                      Padding="16,20,16,16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Profile Picture -->
+                    <Border Grid.Row="0"
+                           WidthRequest="100"
+                           HeightRequest="100"
+                           BackgroundColor="White"
+                           HorizontalOptions="Center">
+                        <Border.StrokeShape>
+                            <Ellipse />
+                        </Border.StrokeShape>
+                        <Image Source="{Binding ProfileImage}"
+                              Aspect="AspectFill" />
+                    </Border>
+
+                    <!-- User Info -->
+                    <StackLayout Grid.Row="1" 
+                                Spacing="4" 
+                                Margin="0,16,0,0"
+                                HorizontalOptions="Center">
+                        <Label Text="{Binding UserName}"
+                              FontSize="24"
+                              FontFamily="Roboto-Medium"
+                              TextColor="White"
+                              HorizontalOptions="Center" />
+                        <Label Text="{Binding UserEmail}"
+                              FontSize="14"
+                              FontFamily="Roboto-Regular"
+                              TextColor="White"
+                              Opacity="0.8"
+                              HorizontalOptions="Center" />
+                        <Label Text="{Binding Bio}"
+                              FontSize="14"
+                              FontFamily="Roboto-Regular"
+                              TextColor="White"
+                              Opacity="0.9"
+                              HorizontalOptions="Center"
+                              HorizontalTextAlignment="Center"
+                              MaxLines="3" />
+                    </StackLayout>
+
+                    <!-- Stats Row -->
+                    <Grid Grid.Row="2" 
+                          Margin="0,20,0,0"
+                          ColumnDefinitions="*,*,*">
+                        
+                        <StackLayout Grid.Column="0" 
+                                    HorizontalOptions="Center"
+                                    Spacing="4">
+                            <Label Text="{Binding PostsCount}"
+                                  FontSize="20"
+                                  FontFamily="Roboto-Medium"
+                                  TextColor="White"
+                                  HorizontalOptions="Center" />
+                            <Label Text="Posts"
+                                  FontSize="12"
+                                  FontFamily="Roboto-Regular"
+                                  TextColor="White"
+                                  Opacity="0.8"
+                                  HorizontalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="1" 
+                                    HorizontalOptions="Center"
+                                    Spacing="4">
+                            <Label Text="{Binding FollowersCount}"
+                                  FontSize="20"
+                                  FontFamily="Roboto-Medium"
+                                  TextColor="White"
+                                  HorizontalOptions="Center" />
+                            <Label Text="Followers"
+                                  FontSize="12"
+                                  FontFamily="Roboto-Regular"
+                                  TextColor="White"
+                                  Opacity="0.8"
+                                  HorizontalOptions="Center" />
+                        </StackLayout>
+
+                        <StackLayout Grid.Column="2" 
+                                    HorizontalOptions="Center"
+                                    Spacing="4">
+                            <Label Text="{Binding FollowingCount}"
+                                  FontSize="20"
+                                  FontFamily="Roboto-Medium"
+                                  TextColor="White"
+                                  HorizontalOptions="Center" />
+                            <Label Text="Following"
+                                  FontSize="12"
+                                  FontFamily="Roboto-Regular"
+                                  TextColor="White"
+                                  Opacity="0.8"
+                                  HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Grid>
+                </Grid>
+
+                <!-- Action Buttons -->
+                <Grid Padding="16,16,16,8"
+                      BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}"
+                      ColumnDefinitions="*,Auto">
+                    
+                    <Button Grid.Column="0"
+                           Text="Edit Profile"
+                           BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                           TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                           FontFamily="Roboto-Medium"
+                           CornerRadius="8"
+                           HeightRequest="40"
+                           Margin="0,0,8,0"
+                           Command="{Binding EditProfileCommand}" />
+
+                    <Button Grid.Column="1"
+                           Text="⚙️"
+                           BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                           TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                           FontSize="16"
+                           CornerRadius="8"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           Command="{Binding SettingsCommand}" />
+                </Grid>
+
+                <!-- Posts Section -->
+                <StackLayout BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}"
+                            Padding="16,8">
+                    
+                    <!-- Section Header -->
+                    <Label Text="Recent Posts"
+                          FontSize="18"
+                          FontFamily="Roboto-Medium"
+                          TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                          Margin="0,0,0,12" />
+
+                    <!-- Posts Grid -->
+                    <CollectionView ItemsSource="{Binding UserPosts}"
+                                   SelectionMode="Single"
+                                   SelectedItem="{Binding SelectedPost}"
+                                   SelectionChangedCommand="{Binding PostSelectionChangedCommand}">
+                        
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                           Span="3"
+                                           HorizontalItemSpacing="4"
+                                           VerticalItemSpacing="4" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="local:Post">
+                                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                                       Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                                       StrokeThickness="0.5">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    
+                                    <Grid>
+                                        <!-- Post Image -->
+                                        <Image Source="{Binding ImageUrl}"
+                                              Aspect="AspectFill"
+                                              HeightRequest="120" />
+
+                                        <!-- Overlay for post info -->
+                                        <Grid BackgroundColor="#80000000"
+                                             IsVisible="{Binding ShowOverlay}"
+                                             Padding="8">
+                                            <StackLayout VerticalOptions="End">
+                                                <Label Text="{Binding Title}"
+                                                      FontSize="12"
+                                                      FontFamily="Roboto-Medium"
+                                                      TextColor="White"
+                                                      MaxLines="2" />
+                                                <Label Text="{Binding LikesCount, StringFormat='{0} likes'}"
+                                                      FontSize="10"
+                                                      FontFamily="Roboto-Regular"
+                                                      TextColor="White"
+                                                      Opacity="0.8" />
+                                            </StackLayout>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                        <!-- Empty View -->
+                        <CollectionView.EmptyView>
+                            <StackLayout HorizontalOptions="Center" 
+                                        VerticalOptions="Center"
+                                        Spacing="16"
+                                        Padding="20">
+                                <Label Text="📷"
+                                      FontSize="48"
+                                      HorizontalOptions="Center" />
+                                <Label Text="No posts yet"
+                                      FontSize="16"
+                                      FontFamily="Roboto-Medium"
+                                      HorizontalOptions="Center"
+                                      TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}" />
+                                <Label Text="Share your first post!"
+                                      FontSize="14"
+                                      FontFamily="Roboto-Regular"
+                                      HorizontalOptions="Center"
+                                      TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}" />
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

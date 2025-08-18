@@ -1,44 +1,52 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using Material.Components.Maui.Extensions;
-
-using Syncfusion.Maui.Core.Hosting;
-using Syncfusion.Maui.Toolkit.Hosting;
-using Affirm8.Views.Catalog;
-using Affirm8.Data;
 using Affirm8.Services;
 using Affirm8.ViewModels;
-using Affirm8.Views.Forms;
+using Affirm8.Views;
 
-namespace Affirm8
+namespace Affirm8;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
-    {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
-            builder
-                .ConfigureSyncfusionCore()
-                .ConfigureSyncfusionToolkit()
-                .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
-                .UseMaterialComponents()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("Roboto-Medium.ttf", "Roboto-Medium");
-                    fonts.AddFont("Roboto-Regular.ttf", "Roboto-Regular");
-                    fonts.AddFont("UIFontIcons.ttf", "FontIcons");
-                });
-			//Register Syncfusion license https://help.syncfusion.com/common/essential-studio/licensing/how-to-generate
-			Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf0x3TXxbf1x1ZFRMY15bR3NPIiBoS35Rc0ViWH5fc3dXRWVZU0dz");
+	public static MauiApp CreateMauiApp()
+	{
+		var builder = MauiApp.CreateBuilder();
+		builder
+			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
+			.ConfigureFonts(fonts =>
+			{
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			});
+
+		// Register services
+		        builder.Services.AddHttpClient();
+        builder.Services.AddSingleton<AuthenticationService>();
+        builder.Services.AddSingleton<MessageService>();
+        builder.Services.AddSingleton<ThemeService>();
+        builder.Services.AddSingleton<LocalizationService>();
+
+		// Register ViewModels
+		builder.Services.AddTransient<SendMessageViewModel>();
+		builder.Services.AddTransient<InboxViewModel>();
+		builder.Services.AddTransient<MyMessagesViewModel>();
+		builder.Services.AddTransient<ProfileViewModel>();
+		builder.Services.AddTransient<AuthenticationViewModel>();
+		builder.Services.AddTransient<SettingsViewModel>();
+
+		// Register Views
+		builder.Services.AddTransient<SendMessagePage>();
+		builder.Services.AddTransient<InboxPage>();
+		builder.Services.AddTransient<MyMessagesPage>();
+		builder.Services.AddTransient<ProfilePage>();
+		builder.Services.AddTransient<SettingsPage>();
+		// Note: LoginPage is created manually in App.xaml.cs and logout flow
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+		builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
-        }
-    }
+		return builder.Build();
+	}
 }

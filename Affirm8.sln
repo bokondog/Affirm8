@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Affirm8", "Affirm8\Affirm8.csproj", "{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KindWordsApi", "KindWordsApi\KindWordsApi\KindWordsApi.csproj", "{F2E5D6A7-B8C9-4D3E-9F1A-2B3C4D5E6F7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F2E5D6A7-B8C9-4D3E-9F1A-2B3C4D5E6F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2E5D6A7-B8C9-4D3E-9F1A-2B3C4D5E6F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2E5D6A7-B8C9-4D3E-9F1A-2B3C4D5E6F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2E5D6A7-B8C9-4D3E-9F1A-2B3C4D5E6F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+		{C1D4C2E3-F4A5-4B6C-8D7E-9F1A2B3C4D5E} = {F2E5D6A7-B8C9-4D3E-9F1A-2B3C4D5E6F7A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1B2C3D4-E5F6-7A8B-9C0D-1E2F3A4B5C6D}
+	EndGlobalSection
+EndGlobal

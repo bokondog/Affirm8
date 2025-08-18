@@ -1,200 +1,120 @@
-using System.Text.Json;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Affirm8.Models;
+using Affirm8.Services;
 
-namespace Affirm8
+namespace Affirm8.ViewModels
 {
-    public class ProfileViewModel
+    /// <summary>
+    /// ViewModel for Profile screen - shows user statistics and achievements
+    /// </summary>
+    public partial class ProfileViewModel : ObservableObject
     {
-        public Profile? Profile { get; set; }
+        private readonly MessageService _messageService;
+        private readonly AuthenticationService _authService;
 
-        public ProfileViewModel()
+        [ObservableProperty]
+        private UserStatistics? userStatistics;
+
+        [ObservableProperty]
+        private bool isLoading = false;
+
+        [ObservableProperty]
+        private bool hasData = false;
+
+        [ObservableProperty]
+        private string userName = "Kind User";
+
+        [ObservableProperty]
+        private string userEmail = "";
+
+        public ProfileViewModel(MessageService messageService, AuthenticationService authService)
         {
-            LoadData();
+            _messageService = messageService;
+            _authService = authService;
+            
+            // Listen for authentication changes
+            _authService.CurrentUserChanged += OnCurrentUserChanged;
+            
+            // Initialize with current user if available
+            UpdateUserInfo();
         }
 
-        private void LoadData()
+        public async Task InitializeAsync()
         {
-            string jsonData = @"
+            await LoadStatisticsAsync();
+        }
+
+        [RelayCommand]
+        public async Task LoadStatisticsAsync()
         {
-            ""headerImagePath"": ""Album2.png"",
-            ""profileImage"": ""ProfileImage16.png"",
-            ""backgroundImage"": ""Sky-Image.png"",
-            ""profileName"": ""Lela Cortez"",
-            ""designation"": ""Designer"",
-            ""state"": ""San Francisco"",
-            ""country"": ""CA"",
-            ""about"": ""I am a UMN graduate (go Gophers!) and Minnesota native, but I am already loving my new home in the Golden Gate City! I cant wait to explore more of the great music scene here."",
-            ""postsCount"": 8,
-            ""followersCount"": 45,
-            ""followingCount"": 45,
-            ""interests"": [
+            if (!_authService.IsAuthenticated)
+            {
+                HasData = false;
+                return;
+            }
+
+            IsLoading = true;
+            try
+            {
+                var stats = await _messageService.GetUserStatisticsAsync();
+                if (stats != null)
                 {
-                    ""name"": ""Food"",
-                    ""imagePath"": ""Recipe12.png""
-                },
-                {
-                    ""name"": ""Travel"",
-                    ""imagePath"": ""Album5.png""
-                },
-                {
-                    ""name"": ""Music"",
-                    ""imagePath"": ""ArticleImage7.jpg""
-                },
-                {
-                    ""name"": ""Bags"",
-                    ""imagePath"": ""Accessories.png""
-                },
-                {
-                    ""name"": ""Market"",
-                    ""imagePath"": ""PersonalCare.png""
-                },
-                {
-                    ""name"": ""Food"",
-                    ""imagePath"": ""Recipe12.png""
-                },
-                {
-                    ""name"": ""Travel"",
-                    ""imagePath"": ""Album5.png""
-                },
-                {
-                    ""name"": ""Music"",
-                    ""imagePath"": ""ArticleImage7.jpg""
-                },
-                {
-                    ""name"": ""Bags"",
-                    ""imagePath"": ""Accessories.png""
-                },
-                {
-                    ""name"": ""Market"",
-                    ""imagePath"": ""PersonalCare.png""
+                    UserStatistics = stats;
+                    HasData = true;
                 }
-            ],
-            ""connections"": [
+                else
                 {
-                    ""name"": ""Rose King"",
-                    ""imagePath"": ""ProfileImage7.png""
-                },
-                {
-                    ""name"": ""Jeanette Bell"",
-                    ""imagePath"": ""ProfileImage9.png""
-                },
-                {
-                    ""name"": ""Lily Castro"",
-                    ""imagePath"": ""ProfileImage10.png""
-                },
-                {
-                    ""name"": ""Susie Moss"",
-                    ""imagePath"": ""ProfileImage11.png""
-                },
-                {
-                    ""name"": ""Rose King"",
-                    ""imagePath"": ""ProfileImage7.png""
-                },
-                {
-                    ""name"": ""Jeanette Bell"",
-                    ""imagePath"": ""ProfileImage9.png""
-                },
-                {
-                    ""name"": ""Lily Castro"",
-                    ""imagePath"": ""ProfileImage10.png""
-                },
-                {
-                    ""name"": ""Susie Moss"",
-                    ""imagePath"": ""ProfileImage11.png""
+                    HasData = false;
                 }
-            ],
-            ""pictures"": [
-                {
-                    ""imagePath"": ""ProfileImage8.png""
-                },
-                {
-                    ""imagePath"": ""Album6.png""
-                },
-                {
-                    ""imagePath"": ""ArticleImage4.jpg""
-                },
-                {
-                    ""imagePath"": ""Recipe17.png""
-                },
-                {
-                    ""imagePath"": ""ArticleImage5.jpg""
-                },
-                {
-                    ""imagePath"": ""Mask.png""
-                }
-            ]
-        }";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading statistics: {ex.Message}");
+                HasData = false;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
 
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            Profile = JsonSerializer.Deserialize<Profile>(jsonData, options);
+        [RelayCommand]
+        public async Task RefreshAsync()
+        {
+            await LoadStatisticsAsync();
+        }
+
+        private void OnCurrentUserChanged(User? user)
+        {
+            UpdateUserInfo();
+            
+            if (user == null)
+            {
+                // User logged out - clear data
+                UserStatistics = null;
+                HasData = false;
+            }
+            else
+            {
+                // User logged in - load stats
+                _ = Task.Run(async () => await LoadStatisticsAsync());
+            }
+        }
+
+        private void UpdateUserInfo()
+        {
+            var currentUser = _authService.CurrentUser;
+            if (currentUser != null)
+            {
+                UserName = currentUser.NickName ?? "Kind User";
+                UserEmail = currentUser.Email ?? "";
+            }
+            else
+            {
+                UserName = "Kind User";
+                UserEmail = "";
+            }
         }
     }
-
-    public class Profile
-    {
-        private string? headerImagePath;
-        private string? profileImage;
-        private string? backgroundImage;
-        public string? HeaderImagePath
-        {
-            get { return App.ImageServerPath + headerImagePath; }
-            set { headerImagePath = value; }
-        }
-
-        public string? ProfileImage
-        {
-            get { return App.ImageServerPath + profileImage; }
-            set { profileImage = value; }
-        }
-
-        public string BackgroundImage
-        {
-            get { return App.ImageServerPath + backgroundImage; }
-            set { backgroundImage = value; }
-        }
-
-        public string? ProfileName { get; set; }
-        public string? Designation { get; set; }
-        public string? State { get; set; }
-        public string? Country { get; set; }
-        public string? About { get; set; }
-        public int PostsCount { get; set; }
-        public int FollowersCount { get; set; }
-        public int FollowingCount { get; set; }
-        public List<Interest>? Interests { get; set; }
-        public List<Connection>? Connections { get; set; }
-        public List<Picture>? Pictures { get; set; }
-    }
-
-    public class Interest
-    {
-        private string? imagePath;
-        public string? Name { get; set; }
-        public string ImagePath
-        {
-            get { return App.ImageServerPath + imagePath; }
-            set { imagePath = value; }
-        }
-    }
-
-    public class Connection
-    {
-        private string? imagePath;
-        public string? Name { get; set; }
-        public string ImagePath
-        {
-            get { return App.ImageServerPath + imagePath; }
-            set { imagePath = value; }
-        }
-    }
-
-    public class Picture
-    {
-        private string? imagePath;
-        public string ImagePath
-        {
-            get { return App.ImageServerPath + imagePath; }
-            set { imagePath = value; }
-        }
-    }
-
 }

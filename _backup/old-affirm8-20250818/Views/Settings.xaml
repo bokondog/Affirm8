@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Affirm8.Views.Settings.Settings"
+             Title="Settings">
+    
+    <ContentPage.Content>
+        <ScrollView Padding="16">
+            <StackLayout Spacing="20">
+                
+                <!-- Header -->
+                <Label Text="Settings"
+                      FontSize="28"
+                      FontFamily="Roboto-Medium"
+                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                      HorizontalOptions="Center"
+                      Margin="0,0,0,20" />
+
+                <!-- Account Section -->
+                <StackLayout Spacing="12">
+                    <Label Text="Account"
+                          FontSize="18"
+                          FontFamily="Roboto-Medium"
+                          TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+                    
+                    <Border BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                           Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                           StrokeThickness="1"
+                           Padding="16">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        
+                        <StackLayout Spacing="16">
+                            <Button Text="Edit Profile"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                   FontFamily="Roboto-Regular"
+                                   HorizontalOptions="Start" />
+                            
+                            <Button Text="Change Password"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                   FontFamily="Roboto-Regular"
+                                   HorizontalOptions="Start" />
+                            
+                            <Button Text="Privacy Settings"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                   FontFamily="Roboto-Regular"
+                                   HorizontalOptions="Start" />
+                        </StackLayout>
+                    </Border>
+                </StackLayout>
+
+                <!-- Preferences Section -->
+                <StackLayout Spacing="12">
+                    <Label Text="Preferences"
+                          FontSize="18"
+                          FontFamily="Roboto-Medium"
+                          TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+                    
+                    <Border BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                           Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                           StrokeThickness="1"
+                           Padding="16">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        
+                        <StackLayout Spacing="16">
+                            <!-- Notifications Toggle -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                      Text="Push Notifications"
+                                      FontFamily="Roboto-Regular"
+                                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                      VerticalOptions="Center" />
+                                <Switch Grid.Column="1"
+                                       IsToggled="True"
+                                       OnColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            </Grid>
+                            
+                            <!-- Dark Mode Toggle -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                      Text="Dark Mode"
+                                      FontFamily="Roboto-Regular"
+                                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                      VerticalOptions="Center" />
+                                <Switch Grid.Column="1"
+                                       IsToggled="False"
+                                       OnColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            </Grid>
+                            
+                            <!-- Auto-sync Toggle -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                      Text="Auto-sync Data"
+                                      FontFamily="Roboto-Regular"
+                                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                      VerticalOptions="Center" />
+                                <Switch Grid.Column="1"
+                                       IsToggled="True"
+                                       OnColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            </Grid>
+                        </StackLayout>
+                    </Border>
+                </StackLayout>
+
+                <!-- About Section -->
+                <StackLayout Spacing="12">
+                    <Label Text="About"
+                          FontSize="18"
+                          FontFamily="Roboto-Medium"
+                          TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+                    
+                    <Border BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                           Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                           StrokeThickness="1"
+                           Padding="16">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8" />
+                        </Border.StrokeShape>
+                        
+                        <StackLayout Spacing="16">
+                            <Button Text="Help and Support"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                   FontFamily="Roboto-Regular"
+                                   HorizontalOptions="Start" />
+                            
+                            <Button Text="Terms of Service"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                   FontFamily="Roboto-Regular"
+                                   HorizontalOptions="Start" />
+                            
+                            <Button Text="Privacy Policy"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                   FontFamily="Roboto-Regular"
+                                   HorizontalOptions="Start" />
+                            
+                            <Label Text="Version 1.0.0"
+                                  FontFamily="Roboto-Regular"
+                                  FontSize="12"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                  HorizontalOptions="Center"
+                                  Margin="0,16,0,0" />
+                        </StackLayout>
+                    </Border>
+                </StackLayout>
+
+                <!-- Logout Button -->
+                <Button Text="Logout"
+                       BackgroundColor="Red"
+                       TextColor="White"
+                       FontFamily="Roboto-Medium"
+                       CornerRadius="8"
+                       HeightRequest="45"
+                       Margin="0,20,0,0" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

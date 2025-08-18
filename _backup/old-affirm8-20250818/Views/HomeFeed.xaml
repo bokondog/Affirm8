@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Affirm8.Views.Catalog.HomeFeed"
+             xmlns:local="clr-namespace:Affirm8"
+             xmlns:model="clr-namespace:Affirm8.Models"
+             xmlns:converter="clr-namespace:Affirm8.Converters"
+             xmlns:controls="clr-namespace:Affirm8.Controls"
+             xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+             xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="local:CartPageViewModel" 
+             Title="Home">
+    
+    <ContentPage.BindingContext>
+        <local:CartPageViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToStringConverter x:Key="BoolToStringConverter" />
+            <converter:StringToBoolConverter x:Key="StringToBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Header Section -->
+            <Grid Grid.Row="0" 
+                  BackgroundColor="{AppThemeBinding Light={DynamicResource BackgroundColorLight}, Dark={DynamicResource BackgroundColorDark}}"
+                  Padding="16,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                       Text="Home Feed"
+                       FontSize="24"
+                       FontFamily="Roboto-Medium"
+                       TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                       VerticalOptions="Center" />
+
+                <Button Grid.Column="1"
+                        Text="🔍"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                        FontSize="20"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                                                 Command="{Binding FilterCommand}" />
+
+                <Button Grid.Column="2"
+                        Text="⚙️"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                        FontSize="20"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        Command="{Binding SettingsCommand}" />
+            </Grid>
+
+            <!-- Main Content with CollectionView -->
+            <RefreshView Grid.Row="1"
+                        IsRefreshing="{Binding IsRefreshing}"
+                        Command="{Binding RefreshCommand}">
+                <CollectionView x:Name="ProductsCollectionView"
+                               ItemsSource="{Binding Products}"
+                               SelectionMode="Single"
+                               SelectedItem="{Binding SelectedProduct}"
+                               BackgroundColor="Transparent"
+                               SelectionChangedCommand="{Binding ProductSelectionChangedCommand}"
+                               Margin="8,0">
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Product">
+                            <Grid Padding="8">
+                                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                                       Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                                       StrokeThickness="1">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    
+                                    <!-- Card Content -->
+                                    <StackLayout Padding="16" Spacing="12">
+                                        
+                                        <!-- Header with User Info -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Avatar -->
+                                            <Border Grid.Column="0"
+                                                   WidthRequest="40"
+                                                   HeightRequest="40"
+                                                   BackgroundColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}">
+                                                <Border.StrokeShape>
+                                                    <Ellipse />
+                                                </Border.StrokeShape>
+                                                <Label Text="{Binding UserInitials}"
+                                                      TextColor="White"
+                                                      FontFamily="Roboto-Medium"
+                                                      HorizontalOptions="Center"
+                                                      VerticalOptions="Center" />
+                                            </Border>
+
+                                            <!-- User Name and Time -->
+                                            <StackLayout Grid.Column="1" 
+                                                        Spacing="2" 
+                                                        Margin="12,0,0,0"
+                                                        VerticalOptions="Center">
+                                                <Label Text="{Binding UserName}"
+                                                      FontSize="16"
+                                                      FontFamily="Roboto-Medium"
+                                                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+                                                <Label Text="{Binding Timestamp}"
+                                                      FontSize="12"
+                                                      FontFamily="Roboto-Regular"
+                                                      TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}" />
+                                            </StackLayout>
+
+                                            <!-- More Options Button -->
+                                            <Button Grid.Column="2"
+                                                   Text="⋯"
+                                                   BackgroundColor="Transparent"
+                                                   TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                                   FontSize="18"
+                                                   WidthRequest="30"
+                                                   HeightRequest="30" />
+                                        </Grid>
+
+                                        <!-- Product Image -->
+                                        <Border>
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                            <Image Source="{Binding PreviewImage}"
+                                                  Aspect="AspectFill"
+                                                  HeightRequest="200" />
+                                        </Border>
+
+                                        <!-- Product Info -->
+                                        <StackLayout Spacing="8">
+                                            <Label Text="{Binding Name}"
+                                                  FontSize="18"
+                                                  FontFamily="Roboto-Medium"
+                                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+
+                                            <Label Text="{Binding Description}"
+                                                  FontSize="14"
+                                                  FontFamily="Roboto-Regular"
+                                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                                  MaxLines="3" />
+
+                                            <!-- Rating and Price Row -->
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Rating -->
+                                                <StackLayout Grid.Column="0" 
+                                                            Orientation="Horizontal" 
+                                                            Spacing="8"
+                                                            VerticalOptions="Center">
+                                                    <controls:RatingControl Value="{Binding OverallRating}"
+                                                                           IsReadOnly="True" />
+                                                    <Label Text="{Binding OverallRating, StringFormat='{0:F1}'}"
+                                                          FontSize="14"
+                                                          FontFamily="Roboto-Regular"
+                                                          TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                                          VerticalOptions="Center" />
+                                                </StackLayout>
+
+                                                <!-- Price -->
+                                                <Label Grid.Column="1"
+                                                      Text="{Binding DiscountPrice, StringFormat='${0:F2}'}"
+                                                      FontSize="18"
+                                                      FontFamily="Roboto-Medium"
+                                                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}"
+                                                      VerticalOptions="Center" />
+                                            </Grid>
+                                        </StackLayout>
+
+                                        <!-- Action Buttons -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Like Button -->
+                                            <Button Grid.Column="0"
+                                                   Text="❤️"
+                                                   BackgroundColor="Transparent"
+                                                   TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                                   FontSize="18"
+                                                   HorizontalOptions="Start"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:CartPageViewModel}}, Path=LikeCommand}"
+                                                   CommandParameter="{Binding .}" />
+
+                                            <!-- Comment Button -->
+                                            <Button Grid.Column="1"
+                                                   Text="💬"
+                                                   BackgroundColor="Transparent"
+                                                   TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                                   FontSize="18"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:CartPageViewModel}}, Path=CommentCommand}"
+                                                   CommandParameter="{Binding .}" />
+
+                                            <!-- Share Button -->
+                                            <Button Grid.Column="2"
+                                                   Text="📤"
+                                                   BackgroundColor="Transparent"
+                                                   TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                                   FontSize="18"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:CartPageViewModel}}, Path=ShareCommand}"
+                                                   CommandParameter="{Binding .}" />
+
+                                            <!-- Add to Cart Button -->
+                                            <Button Grid.Column="3"
+                                                   Text="Add to Cart"
+                                                   BackgroundColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}"
+                                                   TextColor="White"
+                                                   FontFamily="Roboto-Medium"
+                                                   FontSize="12"
+                                                   CornerRadius="16"
+                                                   Padding="12,6"
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:CartPageViewModel}}, Path=AddToCartCommand}"
+                                                   CommandParameter="{Binding .}" />
+                                        </Grid>
+                                    </StackLayout>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <!-- Empty View -->
+                    <CollectionView.EmptyView>
+                        <StackLayout HorizontalOptions="Center" 
+                                    VerticalOptions="Center"
+                                    Spacing="16">
+                            <Label Text="📱"
+                                  FontSize="48"
+                                  HorizontalOptions="Center" />
+                            <Label Text="No posts available"
+                                  FontSize="18"
+                                  FontFamily="Roboto-Medium"
+                                  HorizontalOptions="Center"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}" />
+                            <Label Text="Pull down to refresh"
+                                  FontSize="14"
+                                  FontFamily="Roboto-Regular"
+                                  HorizontalOptions="Center"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}" />
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

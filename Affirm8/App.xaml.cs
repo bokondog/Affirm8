@@ -1,23 +1,42 @@
-using Affirm8.Views.Social;
-using Affirm8.Views.Chat;
-using Affirm8.Views.Feedback;
-using Affirm8.Views.Catalog;
-using Affirm8.Views.Settings;
-using Affirm8.Views.Forms;
-using Affirm8.Views.Navigation;
-using Affirm8.Pages;
+﻿using Affirm8.Services;
+using Affirm8.Views;
+using Affirm8.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Affirm8
+namespace Affirm8;
+
+public partial class App : Application
 {
-    public partial class App : Application
-    {
-		public static string ImageServerPath { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-.net-maui/common/uikitimages/";
+	public App()
+	{
+		InitializeComponent();
+	}
 
-        public App()
-        {
-            InitializeComponent();
-            
-            MainPage = new AppShell();
-        }
-    }
+	protected override Window CreateWindow(IActivationState? activationState)
+	{
+		var window = new Window();
+		
+		// Now we can safely access the service provider
+		var serviceProvider = this.Handler?.MauiContext?.Services ?? IPlatformApplication.Current?.Services;
+		
+		if (serviceProvider != null)
+		{
+			var authService = serviceProvider.GetRequiredService<AuthenticationService>();
+			var authViewModel = serviceProvider.GetRequiredService<AuthenticationViewModel>();
+			var loginPage = new LoginPage(authViewModel);
+			
+			window.Page = new NavigationPage(loginPage);
+		}
+		else
+		{
+			// Fallback to manual creation if DI not available
+			var authService = new AuthenticationService();
+			var authViewModel = new AuthenticationViewModel(authService);
+			var loginPage = new LoginPage(authViewModel);
+			
+			window.Page = new NavigationPage(loginPage);
+		}
+		
+		return window;
+	}
 }

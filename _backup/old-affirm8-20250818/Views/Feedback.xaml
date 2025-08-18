@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Affirm8.Views.Feedback.Feedback"
+             xmlns:local="clr-namespace:Affirm8"
+             xmlns:model="clr-namespace:Affirm8.Models"
+             xmlns:controls="clr-namespace:Affirm8.Controls"
+             x:DataType="local:FeedbackViewModel" 
+             Title="Feedback">
+
+    <ContentPage.BindingContext>
+        <local:FeedbackViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="16" Padding="16">
+                
+                <!-- Header -->
+                <Label Text="Product Feedback"
+                      FontSize="24"
+                      FontFamily="Roboto-Medium"
+                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                      HorizontalOptions="Center" />
+
+                <!-- Product Card -->
+                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                       Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                       StrokeThickness="1"
+                       Padding="16">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    
+                    <Grid ColumnDefinitions="Auto,*">
+                        <Image Grid.Column="0"
+                              Source="{Binding ProductImage}"
+                              WidthRequest="80"
+                              HeightRequest="80"
+                              Aspect="AspectFill" />
+                        
+                        <StackLayout Grid.Column="1" 
+                                    Margin="16,0,0,0"
+                                    VerticalOptions="Center"
+                                    Spacing="4">
+                            <Label Text="{Binding ProductName}"
+                                  FontSize="18"
+                                  FontFamily="Roboto-Medium"
+                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+                            <Label Text="{Binding ProductDescription}"
+                                  FontSize="14"
+                                  FontFamily="Roboto-Regular"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                  MaxLines="3" />
+                            
+                            <!-- Overall Rating -->
+                            <StackLayout Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                                <Label Text="Rating:"
+                                      FontSize="14"
+                                      FontFamily="Roboto-Medium"
+                                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                      VerticalOptions="Center" />
+                                <controls:RatingControl Value="{Binding OverallRating}"
+                                                       IsReadOnly="True" />
+                                <Label Text="{Binding OverallRating, StringFormat='{0:F1}'}"
+                                      FontSize="14"
+                                      FontFamily="Roboto-Regular"
+                                      TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                      VerticalOptions="Center" />
+                            </StackLayout>
+                        </StackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Rating Breakdown -->
+                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                       Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                       StrokeThickness="1"
+                       Padding="16">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="8" />
+                    </Border.StrokeShape>
+                    
+                    <StackLayout Spacing="12">
+                        <Label Text="Rating Breakdown"
+                              FontSize="18"
+                              FontFamily="Roboto-Medium"
+                              TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+
+                        <!-- 5 Star Rating -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0" Text="5 ★" FontSize="14" FontFamily="Roboto-Regular" 
+                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" 
+                                  VerticalOptions="Center" />
+                            <ProgressBar Grid.Column="1" Progress="{Binding FiveStarPercent}" 
+                                        Margin="8,0" VerticalOptions="Center"
+                                        ProgressColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            <Label Grid.Column="2" Text="{Binding FiveStarCount}" FontSize="14" FontFamily="Roboto-Regular"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                  VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- 4 Star Rating -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0" Text="4 ★" FontSize="14" FontFamily="Roboto-Regular" 
+                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" 
+                                  VerticalOptions="Center" />
+                            <ProgressBar Grid.Column="1" Progress="{Binding FourStarPercent}" 
+                                        Margin="8,0" VerticalOptions="Center"
+                                        ProgressColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            <Label Grid.Column="2" Text="{Binding FourStarCount}" FontSize="14" FontFamily="Roboto-Regular"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                  VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- 3 Star Rating -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0" Text="3 ★" FontSize="14" FontFamily="Roboto-Regular" 
+                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" 
+                                  VerticalOptions="Center" />
+                            <ProgressBar Grid.Column="1" Progress="{Binding ThreeStarPercent}" 
+                                        Margin="8,0" VerticalOptions="Center"
+                                        ProgressColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            <Label Grid.Column="2" Text="{Binding ThreeStarCount}" FontSize="14" FontFamily="Roboto-Regular"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                  VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- 2 Star Rating -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0" Text="2 ★" FontSize="14" FontFamily="Roboto-Regular" 
+                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" 
+                                  VerticalOptions="Center" />
+                            <ProgressBar Grid.Column="1" Progress="{Binding TwoStarPercent}" 
+                                        Margin="8,0" VerticalOptions="Center"
+                                        ProgressColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            <Label Grid.Column="2" Text="{Binding TwoStarCount}" FontSize="14" FontFamily="Roboto-Regular"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                  VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- 1 Star Rating -->
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Label Grid.Column="0" Text="1 ★" FontSize="14" FontFamily="Roboto-Regular" 
+                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" 
+                                  VerticalOptions="Center" />
+                            <ProgressBar Grid.Column="1" Progress="{Binding OneStarPercent}" 
+                                        Margin="8,0" VerticalOptions="Center"
+                                        ProgressColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}" />
+                            <Label Grid.Column="2" Text="{Binding OneStarCount}" FontSize="14" FontFamily="Roboto-Regular"
+                                  TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                  VerticalOptions="Center" />
+                        </Grid>
+                    </StackLayout>
+                </Border>
+
+                <!-- Recent Reviews -->
+                <Label Text="Recent Reviews"
+                      FontSize="18"
+                      FontFamily="Roboto-Medium"
+                      TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+
+                <CollectionView ItemsSource="{Binding Reviews}"
+                               HeightRequest="400">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="local:Review">
+                            <Border Margin="0,4"
+                                   Padding="16"
+                                   BackgroundColor="{AppThemeBinding Light={DynamicResource CardBackgroundLight}, Dark={DynamicResource CardBackgroundDark}}"
+                                   Stroke="{AppThemeBinding Light={DynamicResource BorderColorLight}, Dark={DynamicResource BorderColorDark}}"
+                                   StrokeThickness="0.5">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                
+                                <StackLayout Spacing="8">
+                                    <!-- Review Header -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <StackLayout Grid.Column="0" Spacing="2">
+                                            <Label Text="{Binding ReviewerName}"
+                                                  FontSize="16"
+                                                  FontFamily="Roboto-Medium"
+                                                  TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+                                            <controls:RatingControl Value="{Binding Rating}"
+                                                                   IsReadOnly="True" />
+                                        </StackLayout>
+                                        
+                                        <Label Grid.Column="1"
+                                              Text="{Binding Date, StringFormat='{0:MMM dd, yyyy}'}"
+                                              FontSize="12"
+                                              FontFamily="Roboto-Regular"
+                                              TextColor="{AppThemeBinding Light={DynamicResource SecondaryTextColorLight}, Dark={DynamicResource SecondaryTextColorDark}}"
+                                              VerticalOptions="Start" />
+                                    </Grid>
+                                    
+                                    <!-- Review Title -->
+                                    <Label Text="{Binding Title}"
+                                          FontSize="14"
+                                          FontFamily="Roboto-Medium"
+                                          TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}" />
+                                    
+                                    <!-- Review Content -->
+                                    <Label Text="{Binding Content}"
+                                          FontSize="14"
+                                          FontFamily="Roboto-Regular"
+                                          TextColor="{AppThemeBinding Light={DynamicResource PrimaryTextColorLight}, Dark={DynamicResource PrimaryTextColorDark}}"
+                                          LineHeight="1.4" />
+                                </StackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Write Review Button -->
+                <Button Text="Write a Review"
+                       Command="{Binding WriteReviewCommand}"
+                       BackgroundColor="{AppThemeBinding Light={DynamicResource PrimaryColorLight}, Dark={DynamicResource PrimaryColorDark}}"
+                       TextColor="White"
+                       FontFamily="Roboto-Medium"
+                       CornerRadius="8"
+                       HeightRequest="45"
+                       Margin="0,16,0,0" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

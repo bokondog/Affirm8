@@ -1,23 +1,54 @@
-namespace Affirm8.Views.Forms
+using Affirm8.ViewModels;
+
+namespace Affirm8.Views
 {
     public partial class LoginPage : ContentPage
     {
-        public LoginPage()
+        private readonly AuthenticationViewModel _viewModel;
+
+        public LoginPage(AuthenticationViewModel viewModel)
         {
             InitializeComponent();
-            InitPopup();
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
         }
 
-        private void InitPopup()
+        protected override async void OnAppearing()
         {
-            syncPopup.HeaderTitle = "Login success";
-            syncPopup.Message = "You have successfully logged in! Congratulations, user";
+            base.OnAppearing();
+            
+            // Subscribe to authentication state changes
+            if (_viewModel != null)
+            {
+                // If user successfully logs in, navigate to main app
+                // We'll handle this through events or direct navigation
+                _viewModel.PropertyChanged += OnViewModelPropertyChanged;
+            }
         }
 
-        private void loginButton_Clicked(object sender, EventArgs e)
+        protected override void OnDisappearing()
         {
-            // DisplayAlert("Login SUCCESS", "You have successfully logged in! Congratulations, user", "...ok");
-            syncPopup.Show();
+            base.OnDisappearing();
+            
+            if (_viewModel != null)
+            {
+                _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            }
+        }
+
+        private async void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AuthenticationViewModel.IsAuthenticated) && _viewModel.IsAuthenticated)
+            {
+                // User successfully logged in, navigate to main app
+                await NavigateToMainApp();
+            }
+        }
+
+        private async Task NavigateToMainApp()
+        {
+            // Navigate to the main shell
+            Application.Current.MainPage = new AppShell();
         }
     }
 }
