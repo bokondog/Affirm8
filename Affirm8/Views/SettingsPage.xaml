@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="Affirm8.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Affirm8.ViewModels"
+             x:DataType="vm:SettingsViewModel"
+             Title="Settings"
+             BackgroundColor="#FDF6E3">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="30">
+            
+            <!-- Header -->
+            <StackLayout HorizontalOptions="Center" Spacing="8">
+                <Label Text="⚙️" 
+                       FontSize="48" 
+                       HorizontalOptions="Center" />
+                <Label Text="Settings"
+                       FontSize="24"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="#8B4513"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+
+            <!-- Account Section -->
+            <StackLayout Spacing="20">
+                <Label Text="Account"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="#2F4F4F" />
+                
+                <!-- User Info -->
+                <Border BackgroundColor="#F0F8FF"
+                        Stroke="#B0C4DE"
+                        StrokeThickness="2"
+                        Padding="20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <StackLayout Spacing="8">
+                        <Label Text="{Binding CurrentUserEmail}"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="16"
+                               TextColor="#4682B4" />
+                        <Label Text="{Binding CurrentUserNickname}"
+                               FontFamily="OpenSansRegular"
+                               FontSize="14"
+                               TextColor="#6B8E23" />
+                    </StackLayout>
+                </Border>
+                
+                <!-- Logout Button -->
+                <Button Text="Logout"
+                        Command="{Binding LogoutCommand}"
+                        BackgroundColor="#DC143C"
+                        TextColor="White"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        CornerRadius="25"
+                        Margin="0,20,0,0" />
+            </StackLayout>
+
+            <!-- App Info Section -->
+            <StackLayout Spacing="15">
+                <Label Text="About"
+                       FontSize="18"
+                       FontFamily="OpenSansSemibold"
+                       TextColor="#2F4F4F" />
+                
+                <Border BackgroundColor="#FFFEF0"
+                        Stroke="#DEB887"
+                        StrokeThickness="2"
+                        Padding="20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <StackLayout Spacing="8">
+                        <Label Text="Kind Words"
+                               FontFamily="OpenSansSemibold"
+                               FontSize="16"
+                               TextColor="#8B4513" />
+                        <Label Text="Share kindness anonymously with the world"
+                               FontFamily="OpenSansRegular"
+                               FontSize="14"
+                               TextColor="#2F4F4F" />
+                        <Label Text="Version 1.0"
+                               FontFamily="OpenSansRegular"
+                               FontSize="12"
+                               TextColor="#8B4513"
+                               Margin="0,8,0,0" />
+                    </StackLayout>
+                </Border>
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>

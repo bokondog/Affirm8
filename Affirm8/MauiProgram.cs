@@ -40,6 +40,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<InboxPage>();
 		builder.Services.AddTransient<MyMessagesPage>();
 		builder.Services.AddTransient<ProfilePage>();
+		builder.Services.AddTransient<SettingsPage>();
+		// Note: LoginPage is created manually in App.xaml.cs and logout flow
 
 #if DEBUG
 		builder.Logging.AddDebug();

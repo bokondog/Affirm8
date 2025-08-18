@@ -32,5 +32,11 @@
             Icon="{FontImage Glyph=👤, Size=24}"
             ContentTemplate="{DataTemplate views:ProfilePage}"
             Route="Profile" />
+        
+        <ShellContent
+            Title="Settings"
+            Icon="{FontImage Glyph=⚙️, Size=24}"
+            ContentTemplate="{DataTemplate views:SettingsPage}"
+            Route="Settings" />
 </TabBar>
 </Shell>
