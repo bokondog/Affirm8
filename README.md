@@ -240,5 +240,5 @@ Users (Id, Email, NickName, PasswordHash, JoinedAt)
 
 ---
 
-**Ontwikkeld door Glenn Bokondo** - PXL Hogeschool - C# Mobile Development  
+**Ontwikkeld door Glenn Bokondo** - PXL Hogeschool - C# Mobile Development
 _Last Updated: January 15, 2025_

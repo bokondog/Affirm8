@@ -44,6 +44,14 @@ namespace Affirm8.Services
                     var messageDtos = JsonSerializer.Deserialize<List<MessageDto>>(json, GetJsonOptions());
                     var messages = messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
                     System.Diagnostics.Debug.WriteLine($"GetInboxMessagesAsync: Converted {messages.Count} messages");
+                    
+                    // Debug: Check for duplicates
+                    var duplicates = messages.GroupBy(m => m.Id).Where(g => g.Count() > 1);
+                    if (duplicates.Any())
+                    {
+                        System.Diagnostics.Debug.WriteLine($"WARNING: Found duplicate message IDs: {string.Join(", ", duplicates.Select(d => d.Key))}");
+                    }
+                    
                     return messages;
                 }
                 else

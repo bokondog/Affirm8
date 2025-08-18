@@ -94,16 +94,25 @@ namespace Affirm8.ViewModels
     [RelayCommand]
     public async Task LoadMessagesAsync()
         {
+            if (IsLoading) return; // Prevent concurrent loading
+            
             IsLoading = true;
             try
             {
                 // Get inbox messages (random 5 that user hasn't replied to)
                 var messageList = await _messageService.GetInboxMessagesAsync(5);
+                System.Diagnostics.Debug.WriteLine($"LoadMessagesAsync: Received {messageList.Count} messages from API");
+                
                 Messages.Clear();
+                System.Diagnostics.Debug.WriteLine($"LoadMessagesAsync: Cleared messages collection, now adding {messageList.Count} messages");
+                
                 foreach (var message in messageList)
                 {
                     Messages.Add(message);
+                    System.Diagnostics.Debug.WriteLine($"LoadMessagesAsync: Added message ID {message.Id}: '{message.Content.Substring(0, Math.Min(50, message.Content.Length))}...'");
                 }
+                
+                System.Diagnostics.Debug.WriteLine($"LoadMessagesAsync: Final collection has {Messages.Count} messages");
             }
             catch (Exception ex)
             {
@@ -125,6 +134,8 @@ namespace Affirm8.ViewModels
                 return;
             }
 
+            if (IsLoading) return; // Prevent concurrent searching
+            
             IsLoading = true;
             try
             {
@@ -211,7 +222,7 @@ namespace Affirm8.ViewModels
         partial void OnSearchTextChanged(string value)
         {
             // Auto-search after a short delay (debouncing could be added here)
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value) && !IsLoading)
             {
                 Task.Run(async () => await LoadMessagesAsync());
             }
@@ -219,7 +230,10 @@ namespace Affirm8.ViewModels
 
         partial void OnSelectedCategoryFilterChanged(string value)
         {
-            Task.Run(async () => await SearchMessagesAsync());
+            if (!IsLoading)
+            {
+                Task.Run(async () => await SearchMessagesAsync());
+            }
         }
     }
 } 

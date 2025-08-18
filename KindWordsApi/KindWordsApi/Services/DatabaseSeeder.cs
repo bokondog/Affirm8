@@ -10,8 +10,8 @@ namespace KindWordsApi.Services
     {
         public static async Task SeedAsync(ApplicationDbContext context)
         {
-            // Ensure database is created
-            await context.Database.EnsureCreatedAsync();
+            // Apply any pending migrations (creates database if needed)
+            await context.Database.MigrateAsync();
 
             // Check if data already exists
             if (await context.Users.AnyAsync())
