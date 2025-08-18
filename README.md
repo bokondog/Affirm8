@@ -3,7 +3,7 @@
 **Course**: C# Mobile Development  
 **Year**: 2024-25
 
-# KIND WORDS - Full-Stack Social Affirmation Platform
+# AFFIRM8 - Full-Stack Social Affirmation Platform
 
 ## 📖 **Project Beschrijving**
 
