@@ -16,7 +16,7 @@ namespace KindWordsApi.Services
 
         public JwtService(IConfiguration configuration)
         {
-            _secretKey = configuration["Jwt:SecretKey"] ?? "YourVeryLongAndSecureSecretKeyThatShouldBeAtLeast32Characters";
+            _secretKey = configuration["Jwt:Key"] ?? "YourVeryLongAndSecureSecretKeyThatShouldBeAtLeast32Characters";
             _issuer = configuration["Jwt:Issuer"] ?? "KindWordsApi";
             _audience = configuration["Jwt:Audience"] ?? "KindWordsApp";
         }
@@ -24,7 +24,7 @@ namespace KindWordsApi.Services
         public string GenerateToken(Guid userId, string email, string nickname)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secretKey);
+            var key = Encoding.UTF8.GetBytes(_secretKey);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -50,7 +50,7 @@ namespace KindWordsApi.Services
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_secretKey);
+                var key = Encoding.UTF8.GetBytes(_secretKey);
 
                 var validationParameters = new TokenValidationParameters
                 {

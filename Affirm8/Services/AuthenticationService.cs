@@ -58,6 +58,7 @@ namespace Affirm8.Services
                         // Set the token in the user object
                         accessPass.User.Token = accessPass.Token;
                         CurrentUser = accessPass.User;
+                        System.Diagnostics.Debug.WriteLine($"LoginAsync: Successfully set CurrentUser = {CurrentUser.Email}, Token length = {accessPass.Token?.Length}");
 
                         // Set default auth header for future requests
                         _httpClient.DefaultRequestHeaders.Authorization = 

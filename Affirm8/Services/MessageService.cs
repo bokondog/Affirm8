@@ -29,17 +29,28 @@ namespace Affirm8.Services
             {
                 if (!AddAuthorizationHeader())
                 {
-                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot get inbox messages");
+                    System.Diagnostics.Debug.WriteLine("GetInboxMessagesAsync: Not authenticated - cannot get inbox messages");
                     return new List<Message>();
                 }
 
+                System.Diagnostics.Debug.WriteLine($"GetInboxMessagesAsync: Making request to {BaseUrl}/messages/inbox?count={count}");
                 var response = await _httpClient.GetAsync($"{BaseUrl}/messages/inbox?count={count}");
+                System.Diagnostics.Debug.WriteLine($"GetInboxMessagesAsync: Response status: {response.StatusCode}");
                 
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"GetInboxMessagesAsync: Response JSON: {json}");
                     var messageDtos = JsonSerializer.Deserialize<List<MessageDto>>(json, GetJsonOptions());
-                    return messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                    var messages = messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                    System.Diagnostics.Debug.WriteLine($"GetInboxMessagesAsync: Converted {messages.Count} messages");
+                    return messages;
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"GetInboxMessagesAsync: API returned error status: {response.StatusCode}");
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"GetInboxMessagesAsync: Error content: {errorContent}");
                 }
                 
                 return new List<Message>();
@@ -60,17 +71,28 @@ namespace Affirm8.Services
             {
                 if (!AddAuthorizationHeader())
                 {
-                    System.Diagnostics.Debug.WriteLine("Not authenticated - cannot get my messages");
+                    System.Diagnostics.Debug.WriteLine("GetMyMessagesAsync: Not authenticated - cannot get my messages");
                     return new List<Message>();
                 }
 
+                System.Diagnostics.Debug.WriteLine($"GetMyMessagesAsync: Making request to {BaseUrl}/messages/my-messages");
                 var response = await _httpClient.GetAsync($"{BaseUrl}/messages/my-messages");
+                System.Diagnostics.Debug.WriteLine($"GetMyMessagesAsync: Response status: {response.StatusCode}");
                 
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"GetMyMessagesAsync: Response JSON: {json}");
                     var messageDtos = JsonSerializer.Deserialize<List<MessageDto>>(json, GetJsonOptions());
-                    return messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                    var messages = messageDtos?.Select(ConvertFromDto).ToList() ?? new List<Message>();
+                    System.Diagnostics.Debug.WriteLine($"GetMyMessagesAsync: Converted {messages.Count} messages");
+                    return messages;
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"GetMyMessagesAsync: API returned error status: {response.StatusCode}");
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"GetMyMessagesAsync: Error content: {errorContent}");
                 }
                 
                 return new List<Message>();
@@ -323,12 +345,15 @@ namespace Affirm8.Services
         private bool AddAuthorizationHeader()
         {
             var token = _authService.CurrentUser?.Token;
+            System.Diagnostics.Debug.WriteLine($"AddAuthorizationHeader: CurrentUser = {_authService.CurrentUser?.Email}, Token present = {!string.IsNullOrEmpty(token)}");
             if (!string.IsNullOrEmpty(token))
             {
                 _httpClient.DefaultRequestHeaders.Authorization = 
                     new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                System.Diagnostics.Debug.WriteLine($"AddAuthorizationHeader: Authorization header set successfully");
                 return true;
             }
+            System.Diagnostics.Debug.WriteLine($"AddAuthorizationHeader: No token available");
             return false;
         }
 

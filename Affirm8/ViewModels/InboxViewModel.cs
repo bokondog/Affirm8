@@ -56,14 +56,19 @@ namespace Affirm8.ViewModels
             _authService.CurrentUserChanged += OnCurrentUserChanged;
         }
 
-        private void OnCurrentUserChanged(User? user)
+        private async void OnCurrentUserChanged(User? user)
         {
-            // Clear messages when user logs out
             if (user == null)
             {
+                // Clear messages when user logs out
                 Messages.Clear();
                 SelectedMessage = null;
                 ReplyContent = string.Empty;
+            }
+            else
+            {
+                // Load messages when user logs in
+                await LoadMessagesAsync();
             }
         }
 

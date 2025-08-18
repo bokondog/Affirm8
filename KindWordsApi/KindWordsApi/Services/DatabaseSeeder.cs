@@ -19,10 +19,10 @@ namespace KindWordsApi.Services
                 return; // Database already seeded
             }
 
-            // Create sample users
+            // Create sample users with consistent GUIDs
             var user1 = new User
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("11111111-1111-1111-1111-111111111111"),
                 Email = "alice@kindwords.com",
                 NickName = "SunflowerDreamer",
                 PasswordHash = HashPassword("password123"),
@@ -31,7 +31,7 @@ namespace KindWordsApi.Services
 
             var user2 = new User
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("22222222-2222-2222-2222-222222222222"),
                 Email = "bob@kindwords.com",
                 NickName = "KindSoul88",
                 PasswordHash = HashPassword("password123"),
@@ -40,7 +40,7 @@ namespace KindWordsApi.Services
 
             var user3 = new User
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("33333333-3333-3333-3333-333333333333"),
                 Email = "charlie@kindwords.com",
                 NickName = "WisdomSeeker",
                 PasswordHash = HashPassword("password123"),

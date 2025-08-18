@@ -29,6 +29,9 @@ namespace Affirm8.ViewModels
         [ObservableProperty]
         private string errorMessage = string.Empty;
 
+        [ObservableProperty]
+        private bool isPasswordVisible = false;
+
         public bool IsAuthenticated => _authService.IsAuthenticated;
 
         public AuthenticationViewModel(AuthenticationService authService)
@@ -136,6 +139,12 @@ namespace Affirm8.ViewModels
             Password = string.Empty;
             NickName = string.Empty;
             ErrorMessage = string.Empty;
+        }
+
+        [RelayCommand]
+        public void TogglePasswordVisibility()
+        {
+            IsPasswordVisible = !IsPasswordVisible;
         }
     }
 } 
