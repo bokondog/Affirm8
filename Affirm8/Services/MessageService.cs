@@ -12,12 +12,29 @@ namespace Affirm8.Services
     {
         private readonly HttpClient _httpClient;
         private readonly AuthenticationService _authService;
-        private const string BaseUrl = "https://localhost:7001/api";
+        private readonly string BaseUrl;
+
+        private static string GetApiBaseUrl()
+        {
+#if ANDROID
+            // Android emulator maps host machine's localhost to 10.0.2.2
+            return "https://10.0.2.2:7001/api";
+#else
+            // Windows, iOS, MacCatalyst use localhost
+            return "https://localhost:7001/api";
+#endif
+        }
 
         public MessageService(IHttpClientFactory httpClientFactory, AuthenticationService authService)
         {
+#if ANDROID
+            _httpClient = httpClientFactory.CreateClient("default");
+#else
             _httpClient = httpClientFactory.CreateClient();
+#endif
             _authService = authService;
+            BaseUrl = GetApiBaseUrl();
+            System.Diagnostics.Debug.WriteLine($"MessageService: Using API URL: {BaseUrl}");
         }
 
         /// <summary>

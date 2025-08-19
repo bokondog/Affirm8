@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "Windows",
+    "Projects": [
+      {
+        "Path": "KindWordsApi\\KindWordsApi\\KindWordsApi.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      },
+      {
+        "Path": "Affirm8\\Affirm8.csproj",
+        "Action": "Start",
+        "DebugTarget": "Windows Machine"
+      }
+    ]
+  },
+  {
+    "Name": "Android",
+    "Projects": [
+      {
+        "Path": "KindWordsApi\\KindWordsApi\\KindWordsApi.csproj",
+        "Action": "Start",
+        "DebugTarget": "https"
+      },
+      {
+        "Path": "Affirm8\\Affirm8.csproj",
+        "Action": "Start",
+        "DebugTarget": "Pixel 7 - API 34 (Android 14.0 - API 34)"
+      }
+    ]
+  }
+]

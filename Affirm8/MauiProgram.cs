@@ -3,6 +3,7 @@ using CommunityToolkit.Maui;
 using Affirm8.Services;
 using Affirm8.ViewModels;
 using Affirm8.Views;
+using System.Net.Http;
 
 namespace Affirm8;
 
@@ -21,7 +22,21 @@ public static class MauiProgram
 			});
 
 		// Register services
-		        builder.Services.AddHttpClient();
+#if ANDROID
+        // Configure HttpClient for Android to handle localhost HTTPS
+        builder.Services.AddHttpClient("default", client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+        }).ConfigurePrimaryHttpMessageHandler(() =>
+        {
+            var handler = new HttpClientHandler();
+            // For development only - bypass SSL certificate validation
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+            return handler;
+        });
+#else
+        builder.Services.AddHttpClient();
+#endif
         builder.Services.AddSingleton<AuthenticationService>();
         builder.Services.AddSingleton<MessageService>();
         builder.Services.AddSingleton<ThemeService>();

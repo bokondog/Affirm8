@@ -10,7 +10,18 @@ namespace Affirm8.Services
     public class AuthenticationService
     {
         private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://localhost:7001/api"; // Affirm8 API URL
+        private readonly string BaseUrl;
+
+        private static string GetApiBaseUrl()
+        {
+#if ANDROID
+            // Android emulator maps host machine's localhost to 10.0.2.2
+            return "https://10.0.2.2:7001/api";
+#else
+            // Windows, iOS, MacCatalyst use localhost
+            return "https://localhost:7001/api";
+#endif
+        }
 
         private User? _currentUser;
         public User? CurrentUser 
@@ -27,9 +38,15 @@ namespace Affirm8.Services
 
         public event Action<User?>? CurrentUserChanged;
 
-        public AuthenticationService()
+        public AuthenticationService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = new HttpClient();
+#if ANDROID
+            _httpClient = httpClientFactory.CreateClient("default");
+#else
+            _httpClient = httpClientFactory.CreateClient();
+#endif
+            BaseUrl = GetApiBaseUrl();
+            System.Diagnostics.Debug.WriteLine($"AuthenticationService: Using API URL: {BaseUrl}");
         }
 
         /// <summary>

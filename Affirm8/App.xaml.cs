@@ -29,12 +29,8 @@ public partial class App : Application
 		}
 		else
 		{
-			// Fallback to manual creation if DI not available
-			var authService = new AuthenticationService();
-			var authViewModel = new AuthenticationViewModel(authService);
-			var loginPage = new LoginPage(authViewModel);
-			
-			window.Page = new NavigationPage(loginPage);
+			// This should not happen with proper DI setup, but provide a basic fallback
+			throw new InvalidOperationException("Service provider not available. Check DI configuration in MauiProgram.cs");
 		}
 		
 		return window;

@@ -75,11 +75,8 @@ namespace Affirm8.ViewModels
                     }
                     else
                     {
-                        // Fallback to manual creation if DI not available
-                        var authService = new AuthenticationService();
-                        var authViewModel = new AuthenticationViewModel(authService);
-                        var loginPage = new Views.LoginPage(authViewModel);
-                        Application.Current.MainPage = new NavigationPage(loginPage);
+                        // This should not happen with proper DI setup
+                        throw new InvalidOperationException("Service provider not available. Check DI configuration in MauiProgram.cs");
                     }
                 }
             }
